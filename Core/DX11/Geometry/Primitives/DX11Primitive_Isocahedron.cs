@@ -28,20 +28,20 @@ namespace FeralTic.DX11.Geometry
 
             Pos3Norm3Tex2Vertex v = new Pos3Norm3Tex2Vertex();
 
-            v.Position = new Vector3(-1, t, 0); v.Normals = v.Position; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
-            v.Position = new Vector3(1, t, 0); v.Normals = v.Position; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
-            v.Position = new Vector3(-1, -t, 0); v.Normals = v.Position; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
-            v.Position = new Vector3(1, -t, 0); v.Normals = v.Position; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
+            v.Position = Vector3.Normalize(new Vector3(-1, t, 0))*0.5f; v.Normals = v.Position*2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
+            v.Position = Vector3.Normalize(new Vector3(1, t, 0)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
+            v.Position = Vector3.Normalize(new Vector3(-1, -t, 0)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
+            v.Position = Vector3.Normalize(new Vector3(1, -t, 0)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
 
-            v.Position = new Vector3(0, -1, t); v.Normals = v.Position; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
-            v.Position = new Vector3(0, 1, t); v.Normals = v.Position; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
-            v.Position = new Vector3(0, -1, -t); v.Normals = v.Position; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
-            v.Position = new Vector3(0, 1, -t); v.Normals = v.Position; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
+            v.Position = Vector3.Normalize(new Vector3(0, -1, t)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
+            v.Position = Vector3.Normalize(new Vector3(0, 1, t)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
+            v.Position = Vector3.Normalize(new Vector3(0, -1, -t)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
+            v.Position = Vector3.Normalize(new Vector3(0, 1, -t)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
 
-            v.Position = new Vector3(t, 0, -1); v.Normals = v.Position; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
-            v.Position = new Vector3(t, 0, 1); v.Normals = v.Position; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
-            v.Position = new Vector3(-t, 0, -1); v.Normals = v.Position; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
-            v.Position = new Vector3(-t, 0, 1); v.Normals = v.Position; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
+            v.Position = Vector3.Normalize(new Vector3(t, 0, -1)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
+            v.Position = Vector3.Normalize(new Vector3(t, 0, 1)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
+            v.Position = Vector3.Normalize(new Vector3(-t, 0, -1)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
+            v.Position = Vector3.Normalize(new Vector3(-t, 0, 1)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
 
             
 

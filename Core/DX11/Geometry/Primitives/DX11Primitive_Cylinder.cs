@@ -85,6 +85,8 @@ namespace FeralTic.DX11.Geometry
             ds.Position = 0;
             ds.WriteRange(verts.ToArray());
             ds.Position = 0;
+
+
             var vbuffer = new SlimDX.Direct3D11.Buffer(context.Device, ds, new BufferDescription()
             {
                 BindFlags = BindFlags.VertexBuffer,
