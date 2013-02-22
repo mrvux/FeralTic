@@ -72,7 +72,7 @@ namespace FeralTic.DX11
 
         public void SelectTechnique(int index)
         {
-            this.currenttechnique = this.effect.GetTechniqueByIndex(0);
+            this.currenttechnique = this.effect.GetTechniqueByIndex(index);
         }
 
         public void ApplyPass(int index)
