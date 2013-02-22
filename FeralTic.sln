@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeralTic", "..\vvvv-dx11\Core\FeralTic\FeralTic.csproj", "{9EAD0F44-E6AA-4363-BE4D-D944C1D35044}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeralTic", "Core\FeralTic.csproj", "{9EAD0F44-E6AA-4363-BE4D-D944C1D35044}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
