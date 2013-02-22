@@ -10,7 +10,7 @@ namespace FeralTic.DX11.Geometry
 {
     public partial class DX11PrimitivesManager
     {
-        public DX11IndexedGeometry Torus(int resX, int resY, float radius, float thick)
+        public DX11IndexedGeometry Torus(int resX, int resY, float radius, float thick, float phasey,float phasex,float rot, float cy)
         {
             List<Pos4Norm3Tex2Vertex> vertices = new List<Pos4Norm3Tex2Vertex>();
             List<int> indices = new List<int>();
@@ -24,18 +24,22 @@ namespace FeralTic.DX11.Geometry
             for (int i = 0; i <= resY; i++)
             {
                 float u = (float)i / (float)resY;
+                //u *= cy;
 
                 float outerAngle = (float)i * twopi / (float)resY - pidiv2;
 
-                Matrix transform = Matrix.Translation(radius, 0, 0) * Matrix.RotationY(outerAngle);
+                Matrix transform = Matrix.Translation(radius, 0, 0) * Matrix.RotationY(outerAngle*rot);
 
+                
                 for (int j = 0; j <= resX; j++)
                 {
+                    float fj = (float)j * cy;
+
                     float v = 1 - (float)j / resX;
 
-                    float innerAngle = (float)j * twopi / (float)resX + pi;
-                    float dy = (float)Math.Sin(innerAngle);
-                    float dx = (float)Math.Cos(innerAngle);
+                    float innerAngle = fj * twopi / (float)resX + pi;
+                    float dy = (float)Math.Sin(innerAngle)*phasey;
+                    float dx = (float)Math.Cos(innerAngle)*phasex;
 
                     Pos4Norm3Tex2Vertex vertex = new Pos4Norm3Tex2Vertex();
 
