@@ -16,6 +16,7 @@ namespace FeralTic.DX11
         private DX11RenderTargetPool targetpool;
         private DX11StructuredBufferPool sbufferpool;
         private DX11VolumeTexturePool volumepool;
+        private DX11DepthStencilPool depthpool;
 
         public DX11ResourcePoolManager(DX11RenderContext ctx)
         {
@@ -23,6 +24,7 @@ namespace FeralTic.DX11
             this.targetpool = new DX11RenderTargetPool(this.ctx);
             this.sbufferpool = new DX11StructuredBufferPool(this.ctx);
             this.volumepool = new DX11VolumeTexturePool(this.ctx);
+            this.depthpool = new DX11DepthStencilPool(this.ctx);
         }
 
         public void BeginFrame()
@@ -50,6 +52,11 @@ namespace FeralTic.DX11
             return this.volumepool.Lock(w, h, d, format);
         }
 
+        public DX11ResourcePoolEntry<DX11DepthStencil> LockDepth(int w, int h, SampleDescription sd, Format format)
+        {
+            return this.depthpool.Lock(w, h, format,sd);
+        }
+
         public void Unlock(DX11RenderTarget2D target)
         {
             this.targetpool.UnLock(target);
@@ -65,9 +72,21 @@ namespace FeralTic.DX11
             this.volumepool.UnLock(target);
         }
 
-        public void UnlockStructuredBuffers()
+        public void Unlock(DX11DepthStencil target)
+        {
+            this.depthpool.UnLock(target);
+        }
+
+        /*public void UnlockStructuredBuffers()
         {
             this.sbufferpool.UnlockAll();
+        }*/
+
+        public void ClearUnlocked()
+        {
+            this.sbufferpool.ClearUnlocked();
+            this.targetpool.ClearUnlocked();
+            this.volumepool.ClearUnlocked();
         }
 
         public void ClearBuffers()

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SlimDX.Direct3D11;
 using Buffer = SlimDX.Direct3D11.Buffer;
+using SlimDX;
 
 namespace FeralTic.DX11.Resources
 {
@@ -110,6 +111,47 @@ namespace FeralTic.DX11.Resources
         {
             if (this.SRV != null) { this.SRV.Dispose(); }
             if (this.Buffer != null) { this.Buffer.Dispose(); }
+        }
+    }
+
+    public class DX11StagingRawBuffer : IDX11ReadableResource
+    {
+        public ShaderResourceView SRV { get; protected set; }
+
+        public Buffer Buffer { get; protected set; }
+
+        public int Size { get; protected set; }
+
+        public DX11StagingRawBuffer(Device dev, int size)
+        {
+            this.Size = size;
+
+            BufferDescription bd = new BufferDescription()
+            {
+                BindFlags = BindFlags.None,
+                CpuAccessFlags = CpuAccessFlags.Read | CpuAccessFlags.Write,
+                OptionFlags = ResourceOptionFlags.None,
+                SizeInBytes = this.Size,
+                Usage = ResourceUsage.Staging,
+            };
+            this.Buffer = new Buffer(dev, bd);
+
+        }
+
+        public void Dispose()
+        {
+
+            if (this.Buffer != null) { this.Buffer.Dispose(); }
+        }
+
+        public DataStream MapForRead(DeviceContext ctx)
+        {
+            return ctx.MapSubresource(this.Buffer, MapMode.Read, MapFlags.None).Data;
+        }
+
+        public void UnMap(DeviceContext ctx)
+        {
+            ctx.UnmapSubresource(this.Buffer, 0);
         }
     }
 }

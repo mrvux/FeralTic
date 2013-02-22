@@ -73,6 +73,21 @@ namespace FeralTic.DX11
             return false;
         }
 
+        public void ClearUnlocked()
+        {
+            List<DX11ResourcePoolEntry<T>> todelete = new List<DX11ResourcePoolEntry<T>>();
+            foreach (DX11ResourcePoolEntry<T> entry in this.pool)
+            {
+                if (!entry.IsLocked) { todelete.Add(entry); }
+            }
+
+            foreach (DX11ResourcePoolEntry<T> entry in todelete)
+            {
+                this.pool.Remove(entry);
+                entry.Element.Dispose();
+            }
+        }
+
         public void Dispose()
         {
             foreach (DX11ResourcePoolEntry<T> entry in this.pool)

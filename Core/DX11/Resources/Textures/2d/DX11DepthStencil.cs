@@ -75,6 +75,11 @@ namespace FeralTic.DX11.Resources
             this.isowner = true;
         }
 
+        public void Clear(float depth = 1.0f,byte stencil = 0)
+        {
+            this.context.CurrentDeviceContext.ClearDepthStencilView(this.DSV, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, depth, stencil);
+        }
+
         public override void Dispose()
         {
             if (this.DSV != null) { this.DSV.Dispose(); }

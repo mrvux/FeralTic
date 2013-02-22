@@ -7,6 +7,7 @@ using SlimDX.Direct3D11;
 using SlimDX.DXGI;
 
 using FeralTic.DX11.Resources;
+using FeralTic.DX11.Utils;
 
 
 namespace FeralTic.DX11
@@ -70,6 +71,39 @@ namespace FeralTic.DX11
             DX11RenderTarget2D res = new DX11RenderTarget2D(this.context, w, h,sd, format, genMM, mmLevels);
 
             DX11ResourcePoolEntry<DX11RenderTarget2D> newentry = new DX11ResourcePoolEntry<DX11RenderTarget2D>(res);
+
+            this.pool.Add(newentry);
+
+            return newentry;
+        }
+    }
+
+    public class DX11DepthStencilPool : DX11ResourcePool<DX11DepthStencil>
+    {
+        public DX11DepthStencilPool(DX11RenderContext context)
+            : base(context)
+        {
+
+        }
+
+        public DX11ResourcePoolEntry<DX11DepthStencil> Lock(int w, int h, Format format, SampleDescription sd)
+        {
+            foreach (DX11ResourcePoolEntry<DX11DepthStencil> entry in this.pool)
+            {
+                DX11DepthStencil tr = entry.Element;
+
+                if (!entry.IsLocked && tr.Width == w && tr.Format == DepthFormatsHelper.GetGenericTextureFormat(format) && tr.Height == h
+                    && tr.Resource.Description.SampleDescription.Count == sd.Count
+                    && tr.Resource.Description.SampleDescription.Quality == sd.Quality)
+                {
+                    entry.Lock();
+                    return entry;
+                }
+            }
+
+            DX11DepthStencil res = new DX11DepthStencil(this.context, w, h, sd, format);
+
+            DX11ResourcePoolEntry<DX11DepthStencil> newentry = new DX11ResourcePoolEntry<DX11DepthStencil>(res);
 
             this.pool.Add(newentry);
 

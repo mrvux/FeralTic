@@ -97,6 +97,11 @@ namespace FeralTic.DX11
             this.immediatecontext.VertexShader.SetShaderResources(nullsrvs, 0, 128);
         }
 
+        public void CleanUpPS()
+        {
+            this.immediatecontext.PixelShader.SetShaderResources(nullsrvs, 0, 128);
+        }
+
         public void CleanUpCS()
         {
             this.immediatecontext.ComputeShader.SetShaderResources(nullsrvs, 0, 128);
@@ -114,6 +119,8 @@ namespace FeralTic.DX11
             
             this.Device.Dispose();
         }
+
+        public FeatureLevel FeatureLevel { get { return this.Device.FeatureLevel; } }
 
         public bool IsFeatureLevel11 { get { return this.Device.FeatureLevel >= SlimDX.Direct3D11.FeatureLevel.Level_11_0; } }
         public bool IsAtLeast101 { get { return this.Device.FeatureLevel >= SlimDX.Direct3D11.FeatureLevel.Level_10_1; } }
