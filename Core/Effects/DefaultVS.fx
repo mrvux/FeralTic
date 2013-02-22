@@ -6,16 +6,16 @@
 
 struct vs2ps
 {
-    float4 PosWVP: SV_POSITION;
-    float2 TexCd: TEXCOORD0;
+	float4 PosWVP: SV_POSITION;
+	float2 TexCd: TEXCOORD0;
 };
 
 vs2ps VS(VS_IN input)
 {
-    vs2ps Out = (vs2ps)0;
-    Out.PosWVP  =input.PosO;
-    Out.TexCd = input.TexCd;
-    return Out;
+	vs2ps Out = (vs2ps)0;
+	Out.PosWVP  =input.PosO;
+	Out.TexCd = input.TexCd;
+	return Out;
 }
 
 technique10 Render
