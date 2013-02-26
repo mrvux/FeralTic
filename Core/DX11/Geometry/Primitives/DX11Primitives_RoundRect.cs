@@ -99,7 +99,7 @@ namespace FeralTic.DX11.Geometry
             innerv = TexCoord(innerv, mx, my);
             verts.Add(innerv);
 
-            int[] idxarray = new int[] { 0, 1, 2, 0, 3, 1 };
+            int[] idxarray = new int[] { 0, 2, 1, 0, 1, 3 };
             for (int i = 0; i < idxarray.Length; i++) { idxarray[i] += lastindex; }
             inds.AddRange(idxarray);
 
@@ -136,8 +136,8 @@ namespace FeralTic.DX11.Geometry
             for (int i = 0; i < ires; i++)
             {
                 inds.Add(lastindex);
-                inds.Add(lastindex + i + 1);
                 inds.Add(lastindex + i + 2);
+                inds.Add(lastindex + i + 1);
             }
 
             return lastindex + ires + 2;

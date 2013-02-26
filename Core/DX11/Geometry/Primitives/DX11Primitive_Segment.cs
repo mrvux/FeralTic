@@ -88,13 +88,14 @@ namespace FeralTic.DX11.Geometry
             {
                 //Triangle from low to high
                 indices[indstep] = i;
-                indices[indstep + 2] = i + 1;
-                indices[indstep + 1] = res + i;
+                indices[indstep + 2] = res + i;
+                indices[indstep + 1] = i + 1;
+                
 
                 //Triangle from high to low
                 indices[indstep + 3] = i + 1;
-                indices[indstep + 4] = res + i;
-                indices[indstep + 5] = res + i + 1;
+                indices[indstep + 5] = res + i;
+                indices[indstep + 4] = res + i + 1;
 
                 indstep += 6;
             }
