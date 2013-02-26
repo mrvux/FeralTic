@@ -71,11 +71,12 @@ namespace FeralTic.DX11.Geometry
                     int col = i * (resX - 1);
 
                     indlist.Add(0 + rowlow + i);
-                    indlist.Add(1 + rowlow + i);
                     indlist.Add(0 + rowup + i);
                     indlist.Add(1 + rowlow + i);
+
+                    indlist.Add(1 + rowlow + i);
+                    indlist.Add(0 + rowup + i);
                     indlist.Add(1 + rowup + i);
-                    indlist.Add(0 + rowup + i);
                 }
             }
 
