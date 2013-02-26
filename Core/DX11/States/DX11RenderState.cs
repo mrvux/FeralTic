@@ -28,7 +28,7 @@ namespace FeralTic.DX11
         {
             this.Rasterizer = new RasterizerStateDescription()
             {
-                CullMode = CullMode.None,
+                CullMode = CullMode.Back,
                 DepthBias = 0,
                 DepthBiasClamp = 0.0f,
                 FillMode = FillMode.Solid,
