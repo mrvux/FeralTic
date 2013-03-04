@@ -38,16 +38,16 @@ namespace FeralTic.DX11.Geometry
 
             geom.VertexBuffer = BufferHelper.CreateVertexBuffer(context, ds, true);
 
-            var indexstream = new DataStream(60 * 4, true, true);
+            var indexstream = new DataStream(24 * 4, true, true);
 
             int[] inds = new int[] { 
-                0,2,4,
-                0,2,5,
+                0,4,2,
+                0,2,5, 
                 0,3,4,
-                0,3,5,
+                0,5,3,
                 1,2,4,
-                1,2,5,
-                1,3,4,
+                1,5,2,
+                1,4,3,
                 1,3,5 };
 
             indexstream.WriteRange(inds);

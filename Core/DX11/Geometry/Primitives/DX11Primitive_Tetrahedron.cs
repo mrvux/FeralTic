@@ -47,11 +47,9 @@ namespace FeralTic.DX11.Geometry
             //v.Position = new Vector3(-t, 0, -1); v.Normals = v.Position; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
             //v.Position = new Vector3(-t, 0, 1); v.Normals = v.Position; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
 
-            
-
             geom.VertexBuffer = BufferHelper.CreateVertexBuffer(context, ds, true);
 
-            var indexstream = new DataStream(20 * 4, true, true);
+            var indexstream = new DataStream(12 * 4, true, true);
 
             int[] inds = new int[] { 
                 0,1,2,
