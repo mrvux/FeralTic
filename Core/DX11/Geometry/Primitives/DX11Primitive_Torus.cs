@@ -57,12 +57,12 @@ namespace FeralTic.DX11.Geometry
                     int nextJ = (j + 1) % stride;
 
                     indices.Add(j * stride + i);
-                    indices.Add(j * stride + nextI);
                     indices.Add(nextJ * stride + i);
+                    indices.Add(j * stride + nextI);
 
-                    indices.Add(j * stride + nextI);
-                    indices.Add(nextJ * stride + nextI);
+                    indices.Add(j * stride + nextI);               
                     indices.Add(nextJ * stride + i);
+                    indices.Add(nextJ * stride + nextI);
                 }
             }
 
