@@ -45,7 +45,7 @@ namespace FeralTic.DX11.Geometry
 
             
 
-            geom.VertexBuffer = BufferHelper.CreateVertexBuffer(context.Device, ds, true);
+            geom.VertexBuffer = BufferHelper.CreateVertexBuffer(context, ds, true);
 
             var indexstream = new DataStream(60 * 4, true, true);
 

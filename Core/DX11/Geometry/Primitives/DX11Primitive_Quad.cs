@@ -41,7 +41,7 @@ namespace FeralTic.DX11.Geometry
             v.TexCoords = new Vector2(1, 1);
             ds.Write<Pos4Norm3Tex2Vertex>(v);
 
-            var vertices = BufferHelper.CreateVertexBuffer(context.Device, ds, true);
+            var vertices = BufferHelper.CreateVertexBuffer(context, ds, true);
 
             var indexstream = new DataStream(24, true, true);
             indexstream.WriteRange(new int[] { 0, 1, 3, 3, 2, 0 });
@@ -88,7 +88,7 @@ namespace FeralTic.DX11.Geometry
             v.TexCoords = new Vector2(1, 1);
             ds.Write<Pos4Col4Tex2Vertex>(v);
 
-            var vertices = BufferHelper.CreateDynamicVertexBuffer(context.Device, ds, true);
+            var vertices = BufferHelper.CreateDynamicVertexBuffer(context, ds, true);
 
             var indexstream = new DataStream(24, true, true);
             indexstream.WriteRange(new int[] { 0, 1, 3, 3, 2, 0 });

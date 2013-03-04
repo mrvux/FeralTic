@@ -124,5 +124,16 @@ namespace FeralTic.DX11
 
         public bool IsFeatureLevel11 { get { return this.Device.FeatureLevel >= SlimDX.Direct3D11.FeatureLevel.Level_11_0; } }
         public bool IsAtLeast101 { get { return this.Device.FeatureLevel >= SlimDX.Direct3D11.FeatureLevel.Level_10_1; } }
+
+        public bool ComputeShaderSupport
+        {
+            get
+            {
+                if (this.IsFeatureLevel11) return true;
+
+                //Enum not in slimdx
+                return this.Device.CheckFeatureSupport((Feature)4);
+            }
+        }
     }
 }

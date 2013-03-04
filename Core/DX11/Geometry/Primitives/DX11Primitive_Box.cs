@@ -119,7 +119,7 @@ namespace FeralTic.DX11.Geometry
             this.WriteTopFace(vertexstream, indexstream, size);
             this.WriteBottomFace(vertexstream, indexstream, size);
 
-            var vertices = BufferHelper.CreateVertexBuffer(context.Device, vertexstream, true);
+            var vertices = BufferHelper.CreateVertexBuffer(context, vertexstream, true);
 
             geom.VertexBuffer = vertices;
             geom.IndexBuffer = new DX11IndexBuffer(context, indexstream, false, true);
