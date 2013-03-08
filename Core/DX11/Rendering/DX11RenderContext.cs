@@ -108,6 +108,16 @@ namespace FeralTic.DX11
             this.immediatecontext.ComputeShader.SetUnorderedAccessViews(nulluavs, 0, 8);
         }
 
+        public void CleanShaderStages()
+        {
+            this.immediatecontext.HullShader.Set(null);
+            this.immediatecontext.DomainShader.Set(null);
+            this.immediatecontext.VertexShader.Set(null);
+            this.immediatecontext.PixelShader.Set(null);
+            this.immediatecontext.GeometryShader.Set(null);
+            this.immediatecontext.ComputeShader.Set(null);
+        }
+
         public void Dispose()
         {
             this.ResourcePool.Dispose();

@@ -10,9 +10,9 @@ using SlimDX.Direct3D11;
 namespace FeralTic.DX11.Geometry
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Pos3Tex2Vertex
+    public struct Pos2Tex2Vertex
     {
-        public Vector3 Position;
+        public Vector2 Position;
         public Vector2 TexCoords;
 
         private static InputElement[] layout;
@@ -25,8 +25,8 @@ namespace FeralTic.DX11.Geometry
                 {
                     layout = new InputElement[]
                     {
-                        new InputElement("POSITION",0,SlimDX.DXGI.Format.R32G32B32_Float,0, 0),
-                        new InputElement("TEXCOORD",0,SlimDX.DXGI.Format.R32G32_Float,12,0),
+                        new InputElement("POSITION",0,SlimDX.DXGI.Format.R32G32_Float,0, 0),
+                        new InputElement("TEXCOORD",0,SlimDX.DXGI.Format.R32G32_Float,8,0),
                     };
                 }
                 return layout;
@@ -35,7 +35,7 @@ namespace FeralTic.DX11.Geometry
 
         public static int VertexSize
         {
-            get { return Marshal.SizeOf(typeof(Pos3Tex2Vertex)); }
+            get { return Marshal.SizeOf(typeof(Pos2Tex2Vertex)); }
         }
     }
 }

@@ -129,6 +129,8 @@
     <Compile Include="DX11\Geometry\Primitives\DX11Primitive_Octahedron.cs" />
     <Compile Include="DX11\Geometry\Primitives\DX11Primitive_Tetrahedron.cs" />
     <Compile Include="DX11\Geometry\Primitives\DX11Primitive_Torus.cs" />
+    <Compile Include="DX11\Geometry\VertexLayouts\Pos2Norm2Tex2Vertex.cs" />
+    <Compile Include="DX11\Geometry\VertexLayouts\Pos2Tex2Vertex.cs" />
     <Compile Include="DX11\Geometry\VertexLayouts\Pos3Norm3Col4Vertex.cs" />
     <Compile Include="DX11\Queries\DX11OcclusionQuery.cs" />
     <Compile Include="DX11\Queries\DX11PipelineQuery.cs" />
