@@ -29,7 +29,7 @@ namespace FeralTic.DX11.Geometry
                     {
                         new InputElement("POSITION",0,SlimDX.DXGI.Format.R32G32B32_Float,0, 0),
                         new InputElement("NORMAL",0,SlimDX.DXGI.Format.R32G32B32_Float,12,0),
-                        new InputElement("COLOR",0,SlimDX.DXGI.Format.R32G32B32A32_Float,12,0),
+                        new InputElement("COLOR",0,SlimDX.DXGI.Format.R32G32B32A32_Float,24,0),
                     };
                 }
                 return layout;
