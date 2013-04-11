@@ -6,11 +6,16 @@ using SlimDX.Direct3D11;
 
 namespace FeralTic.DX11.Resources
 {
+    public interface IDX11GeometryDrawer
+    {
+        void Draw(DeviceContext ctx);
+    }
+
     /// <summary>
     /// Drawer for DX11 geometry
     /// </summary>
     /// <typeparam name="T">Geometry type</typeparam>
-    public interface IDX11GeometryDrawer<T> where T : IDX11Geometry
+    public interface IDX11GeometryDrawer<T> : IDX11GeometryDrawer where T : IDX11Geometry
     {
         /// <summary>
         /// Assigns the geometry to the drawer
