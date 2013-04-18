@@ -9,6 +9,7 @@ using SlimDX.DXGI;
 
 using FeralTic.Utils;
 using FeralTic.DX11.Geometry;
+using FeralTic.DX11.Resources;
 
 namespace FeralTic.DX11
 {
@@ -73,12 +74,28 @@ namespace FeralTic.DX11
             this.ResourceScheduler = new DX11ResourceScheduler(this);
             this.ResourceScheduler.Initialize();
 
+            this.CheckBufferSupport();
+
             if (this.Factory == null)
             {
                 this.Factory = this.Device.Factory as Factory1;
             }
 
             this.BuildFormatSampling();
+        }
+
+        private void CheckBufferSupport()
+        {
+            try
+            {
+                DX11RawBuffer raw = new DX11RawBuffer(this.Device, 16);
+                raw.Dispose();
+                this.computesupport = true;
+            }
+            catch
+            {
+                this.computesupport = false;
+            }
         }
 
         public void BeginFrame()
@@ -135,14 +152,15 @@ namespace FeralTic.DX11
         public bool IsFeatureLevel11 { get { return this.Device.FeatureLevel >= SlimDX.Direct3D11.FeatureLevel.Level_11_0; } }
         public bool IsAtLeast101 { get { return this.Device.FeatureLevel >= SlimDX.Direct3D11.FeatureLevel.Level_10_1; } }
 
+        private bool computesupport;
+
         public bool ComputeShaderSupport
         {
             get
             {
                 if (this.IsFeatureLevel11) return true;
 
-                //Enum not in slimdx
-                return this.Device.CheckFeatureSupport((Feature)4);
+                return this.computesupport;
             }
         }
     }
