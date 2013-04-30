@@ -89,11 +89,6 @@ namespace FeralTic.DX11
             this.volumepool.ClearUnlocked();
         }
 
-        public void ClearBuffers()
-        {
-            this.sbufferpool.Dispose();
-        }
-
         public int RenderTargetCount
         {
             get { return this.targetpool.Count; }
