@@ -68,6 +68,15 @@ namespace FeralTic.DX11.Resources
         }
 
 
+        public override void  Dispose()
+        {
+            if (this.SRV != null) { this.SRV.Dispose(); }
+            if (this.RTV != null) { this.RTV.Dispose(); }
+            if (this.UAV != null) { this.UAV.Dispose(); }
+            if (this.Resource != null) { this.Resource.Dispose(); }
+        }
+
+
 
     }
 }

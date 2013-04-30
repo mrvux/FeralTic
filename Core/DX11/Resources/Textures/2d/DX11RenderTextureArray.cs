@@ -14,8 +14,6 @@ namespace FeralTic.DX11.Resources
     {
         public RenderTargetView RTV { get; protected set; }
 
-        public ShaderResourceView[] SRVArray { get; protected set; }
-
         public int ElemCnt { get { return desc.ArraySize; } }
 
 
@@ -59,27 +57,23 @@ namespace FeralTic.DX11.Resources
             this.SRV = new ShaderResourceView(context.Device, this.Resource, srvd);
             this.RTV = new RenderTargetView(context.Device, this.Resource, rtd);
 
-            this.SRVArray = new ShaderResourceView[elemcnt];
-
-            ShaderResourceViewDescription srvad = new ShaderResourceViewDescription()
-            {
-                ArraySize = 1,
-                Dimension = ShaderResourceViewDimension.Texture2DArray,
-                Format = format,
-                MipLevels = 1,
-                MostDetailedMip = 0
-            };
-
-            for (int i = 0; i < elemcnt; i++)
-            {
-                srvad.FirstArraySlice = i;
-                this.SRVArray[i] = new ShaderResourceView(context.Device, this.Resource, srvad);
-            }
-
             this.desc = texBufferDesc;
         }
 
-        public RenderTargetView GetView(int slice,int count)
+        public ShaderResourceView GetSRVSlice(int slice, int count)
+        {
+            ShaderResourceViewDescription rtd = new ShaderResourceViewDescription()
+            {
+                ArraySize = count,
+                FirstArraySlice = slice,
+                Dimension = ShaderResourceViewDimension.Texture2DArray,
+                Format = this.Format
+            };
+
+            return new ShaderResourceView(context.Device, this.Resource, rtd);
+        }
+
+        public RenderTargetView GetRTVSlice(int slice,int count)
         {
             RenderTargetViewDescription rtd = new RenderTargetViewDescription()
             {
