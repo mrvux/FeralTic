@@ -38,6 +38,7 @@ namespace FeralTic.DX11
             this.CreateNoDepth();
             this.CreateLessEqualReadOnly();
             this.CreateLessEqualRW();
+            this.CreateWriteOnly();
         }
 
         private void CreateNoDepth()
@@ -103,6 +104,19 @@ namespace FeralTic.DX11
             };
 
             this.AddState("LessEqualReadWrite", ds);
+        }
+
+        private void CreateWriteOnly()
+        {
+            DepthStencilStateDescription ds = new DepthStencilStateDescription()
+            {
+                IsDepthEnabled = true,
+                IsStencilEnabled = false,
+                DepthWriteMask = DepthWriteMask.All,
+                DepthComparison = Comparison.Always
+            };
+
+            this.AddState("WriteOnly", ds);
         }
     }
 }
