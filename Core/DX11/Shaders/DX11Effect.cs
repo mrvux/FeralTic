@@ -10,6 +10,44 @@ using System.Reflection;
 
 namespace FeralTic.DX11
 {
+    public class FolderIncludeHandler : Include
+    {
+        public string BaseShaderPath { get; set; }
+
+        public void Close(Stream stream)
+        {
+            /*if (stream != null)
+            {
+                stream.Dispose();
+            }*/
+        }
+
+        public void Open(IncludeType type, string fileName, Stream parentStream, out Stream stream)
+        {
+            if (type == IncludeType.Local)
+            {
+                string path = this.BaseShaderPath + "\\" + fileName;
+                if (File.Exists(path))
+                {
+                    string content = File.ReadAllText(path);
+                    stream = new MemoryStream();
+                    StreamWriter writer = new StreamWriter(stream);
+                    writer.Write(content);
+                    writer.Flush();
+                    stream.Position = 0;
+                }
+                else
+                {
+                    stream = null;
+                }
+            }
+            else
+            {
+                stream = null;
+            }
+        }
+    }
+
     /// <summary>
     /// Effect Compiler
     /// Compiles effect against a null device, so reflection can be kept even
@@ -17,6 +55,8 @@ namespace FeralTic.DX11
     /// </summary>
     public class DX11Effect : IDisposable
     {
+        private static FolderIncludeHandler folderhandler = new FolderIncludeHandler();
+
         private DX11Effect()
 		{
 			//To prevent instancing
@@ -55,9 +95,11 @@ namespace FeralTic.DX11
         private static DX11Effect Compile(string content, bool isfile, Include include)
         {
             DX11Effect shader = new DX11Effect();
+
+            string errors;
             try
             {
-                string errors;
+                
 
                 ShaderFlags flags = ShaderFlags.OptimizationLevel1;
 
@@ -100,7 +142,8 @@ namespace FeralTic.DX11
 
         public static DX11Effect FromFile(string path)
         {
-            return Compile(path, true, null);
+            folderhandler.BaseShaderPath = Path.GetDirectoryName(path);
+            return Compile(path, true, folderhandler);
         }
 
         public static DX11Effect FromResource(Assembly assembly, string path)
