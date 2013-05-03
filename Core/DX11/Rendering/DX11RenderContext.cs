@@ -111,6 +111,9 @@ namespace FeralTic.DX11
         {
             this.immediatecontext.ComputeShader.SetShaderResources(nullsrvs, 0, 128);
             this.immediatecontext.PixelShader.SetShaderResources(nullsrvs, 0, 128);
+            this.immediatecontext.DomainShader.SetShaderResources(nullsrvs, 0, 128);
+            this.immediatecontext.HullShader.SetShaderResources(nullsrvs, 0, 128);
+            this.immediatecontext.GeometryShader.SetShaderResources(nullsrvs, 0, 128);
             this.immediatecontext.VertexShader.SetShaderResources(nullsrvs, 0, 128);
         }
 
