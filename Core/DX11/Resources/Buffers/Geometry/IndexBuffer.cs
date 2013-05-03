@@ -42,7 +42,7 @@ namespace FeralTic.DX11.Resources
 
             BindFlags flags = BindFlags.IndexBuffer;
 
-            if (context.IsFeatureLevel11) { flags |= BindFlags.ShaderResource; }
+            if (context.ComputeShaderSupport) { flags |= BindFlags.ShaderResource; }
 
             BufferDescription bd = new BufferDescription()
             {
@@ -62,24 +62,32 @@ namespace FeralTic.DX11.Resources
             if (dispose) { initial.Dispose(); }
         }
 
-        public DX11IndexBuffer(DX11RenderContext context, int elementcount, bool uav = false)
+        public DX11IndexBuffer(DX11RenderContext context, int elementcount, bool uav = false, bool streamout = false)
         {
             this.context = context;
             this.IndicesCount = elementcount;
             format =SlimDX.DXGI.Format.R32_UInt;
 
+
             BufferDescription bd = new BufferDescription()
             {
-                BindFlags = BindFlags.IndexBuffer | BindFlags.ShaderResource,
+                BindFlags = BindFlags.IndexBuffer,
                 CpuAccessFlags = CpuAccessFlags.None,
                 OptionFlags =ResourceOptionFlags.None,
                 SizeInBytes = elementcount * sizeof(int),
                 Usage = ResourceUsage.Default,
             };
 
+            if (streamout)
+            {
+
+                bd.BindFlags |= BindFlags.StreamOutput;
+            }
+
             if (uav && context.IsFeatureLevel11)
             {
                 bd.BindFlags |= BindFlags.UnorderedAccess;
+                bd.BindFlags |= BindFlags.ShaderResource;
                 bd.OptionFlags |= ResourceOptionFlags.RawBuffer;
             }
 
@@ -96,9 +104,10 @@ namespace FeralTic.DX11.Resources
                 };
 
                 this.uav = new UnorderedAccessView(context.Device, this.Buffer, uavd);
+                this.CreateSRV();
             }
 
-            this.CreateSRV();
+            
         }
 
         private void CreateSRV()
