@@ -141,6 +141,7 @@
     <Compile Include="DX11\Devices\NullRenderDevice.cs" />
     <Compile Include="DX11\Resources\Geometry\Drawers\DX11NullIndirectDrawer.cs" />
     <Compile Include="DX11\Scheduler\Textures\FileTextureLoadTask.cs" />
+    <Compile Include="DX11\Utils\FormatHelper.cs" />
     <Compile Include="Utils\DXGIScreen.cs" />
     <Compile Include="DX11\Geometry\Primitives\DX11Primitive_Isocahedron.cs" />
     <Compile Include="DX11\Geometry\Primitives\DX11Primitive_Line.cs" />
