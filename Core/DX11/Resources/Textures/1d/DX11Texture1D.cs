@@ -7,7 +7,7 @@ using SlimDX.Direct3D11;
 
 namespace FeralTic.DX11.Resources
 {
-    public class DX11Texture1D : DX11DeviceResource<Texture1D>
+    public class DX11Texture1D : DX11DeviceResource<Texture1D>, IDX11ReadableResource
     {
         protected DX11RenderContext context;
 
