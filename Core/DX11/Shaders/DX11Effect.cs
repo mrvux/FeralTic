@@ -143,6 +143,12 @@ namespace FeralTic.DX11
             return Compile(code, false, include, defines);
         }
 
+        public static DX11Effect FromFile(string path, ShaderMacro[] defines)
+        {
+            folderhandler.BaseShaderPath = Path.GetDirectoryName(path);
+            return Compile(path, true, folderhandler, defines);
+        }
+
         public static DX11Effect FromFile(string path)
         {
             folderhandler.BaseShaderPath = Path.GetDirectoryName(path);
@@ -155,6 +161,11 @@ namespace FeralTic.DX11
             string code = textStreamReader.ReadToEnd();
             textStreamReader.Dispose();
             return Compile(code, false, null, null);
+        }
+
+        public static DX11Effect FromFile(string path, Include include, ShaderMacro[] defines)
+        {
+            return Compile(path, true, include, defines);
         }
 
         public static DX11Effect FromFile(string path, Include include)
