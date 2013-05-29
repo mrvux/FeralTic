@@ -36,5 +36,9 @@ namespace FeralTic.DX11.Resources
         bool HasBoundingBox { get; set; }
 
         IDX11Geometry ShallowCopy();
+
+        string PrimitiveType { get; set; }
+
+        object Tag { get; set; }
     }
 }

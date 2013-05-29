@@ -59,5 +59,9 @@ namespace FeralTic.DX11.Resources
         public abstract void Dispose();
 
         public abstract IDX11Geometry ShallowCopy();
+
+        public object Tag { get; set; }
+
+        public string PrimitiveType { get; set; }
     }
 }
