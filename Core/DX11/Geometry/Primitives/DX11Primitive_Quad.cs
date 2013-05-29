@@ -13,9 +13,13 @@ namespace FeralTic.DX11.Geometry
 {
     public partial class DX11PrimitivesManager
     {
-        public DX11IndexedGeometry QuadNormals(Vector2 size)
+        public DX11IndexedGeometry QuadNormals(Quad settings)
         {
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
+            geom.Tag = settings;
+            geom.PrimitiveType = "Quad";
+
+            Vector2 size = settings.Size;
 
             DataStream ds = new DataStream(4 * Pos4Norm3Tex2Vertex.VertexSize, true, true);
             ds.Position = 0;

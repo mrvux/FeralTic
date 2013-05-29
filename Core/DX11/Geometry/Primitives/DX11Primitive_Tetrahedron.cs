@@ -14,9 +14,13 @@ namespace FeralTic.DX11.Geometry
 {
     public partial class DX11PrimitivesManager
     {
-        public DX11IndexedGeometry Tetrahedron(Vector3 size)
+        public DX11IndexedGeometry Tetrahedron(Tetrahedron settings)
         {
+            Vector3 size = settings.Size;
+
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
+            geom.Tag = settings;
+            geom.PrimitiveType = "Tetrahedron";
             geom.VerticesCount = 4;
             geom.InputLayout = Pos3Norm3Tex2Vertex.Layout;
             geom.VertexSize = Pos3Norm3Tex2Vertex.VertexSize;

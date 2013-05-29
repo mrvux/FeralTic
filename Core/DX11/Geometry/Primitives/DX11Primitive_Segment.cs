@@ -12,9 +12,17 @@ namespace FeralTic.DX11.Geometry
 {
     public partial class DX11PrimitivesManager
     {
-        public DX11IndexedGeometry Segment(float phase, float cycles, float inner, int res, bool flat)
+        public DX11IndexedGeometry Segment(Segment settings)
         {
+            float phase = settings.Phase;
+            float cycles = settings.Cycles; 
+            float inner = settings.InnerRadius; 
+            int res = settings.Resolution;
+            bool flat = settings.Flat;
+
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
+            geom.Tag = settings;
+            geom.PrimitiveType = "Segment";
             int vcount = res * 2;
             int icount = (res - 1) * 6;
 

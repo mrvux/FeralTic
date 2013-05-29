@@ -12,9 +12,15 @@ namespace FeralTic.DX11.Geometry
 {
     public partial class DX11PrimitivesManager
     {
-        public DX11IndexedGeometry RoundRect(Vector2 inner, float outer, int ires)
+        public DX11IndexedGeometry RoundRect(RoundRect settings)
         {
+            Vector2 inner = settings.InnerRadius;
+           float outer = settings.OuterRadius;
+           int ires = settings.CornerResolution;
+
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
+            geom.PrimitiveType = "RoundRectangle";
+            geom.Tag = settings;
             List<Pos4Norm3Tex2Vertex> vl = new List<Pos4Norm3Tex2Vertex>();
             List<int> il = new List<int>();
 
@@ -27,7 +33,10 @@ namespace FeralTic.DX11.Geometry
             float my = ucy * 2.0f;
 
             //Need 1 quad for center
-            idx = SetQuad(vl, il, 0.0f, 0.0f, inner.X, inner.Y, idx, mx, my);
+            if (settings.EnableCenter)
+            {
+                idx = SetQuad(vl, il, 0.0f, 0.0f, inner.X, inner.Y, idx, mx, my);
+            }
 
             //Need 2 quads up/down
             idx = SetQuad(vl, il, 0.0f, ucy, inner.X, (float)outer, idx, mx, my);
