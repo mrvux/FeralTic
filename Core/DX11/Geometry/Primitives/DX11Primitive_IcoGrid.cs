@@ -13,8 +13,12 @@ namespace FeralTic.DX11.Geometry
 {
     public partial class DX11PrimitivesManager
     {
-        public DX11IndexedGeometry IcoGrid(Vector2 size, int resX, int resY)
+        public DX11IndexedGeometry IcoGrid(IcoGrid grid)
         {
+            Vector2 size = grid.Size;
+            int resX = grid.ResolutionX;
+            int resY = grid.ResolutionY;
+
             float fdispx = -0.5f;
             float fdispy = (float)Math.Sqrt(0.75);
             List<Pos4Norm3Tex2Vertex> verts = new List<Pos4Norm3Tex2Vertex>();
@@ -116,6 +120,8 @@ namespace FeralTic.DX11.Geometry
             }
 
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
+            geom.Tag = grid;
+            geom.PrimitiveType = "IcoGrid";
 
             DataStream vertexstream = new DataStream(verts.Count * Pos4Norm3Tex2Vertex.VertexSize, true, true);
             vertexstream.Position = 0;

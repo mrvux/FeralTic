@@ -126,8 +126,10 @@
     <Compile Include="Core\Maths\Frustrum.cs" />
     <Compile Include="Core\Maths\BernsteinBasis.cs" />
     <Compile Include="Core\RefCounter.cs" />
+    <Compile Include="DX11\Geometry\Primitives\DX11PrimitiveDescriptors.cs" />
     <Compile Include="DX11\Geometry\Primitives\DX11Primitive_IcoGrid.cs" />
     <Compile Include="DX11\Geometry\Primitives\DX11Primitive_Octahedron.cs" />
+    <Compile Include="DX11\Geometry\Primitives\DX11Primitive_SegmentZ.cs" />
     <Compile Include="DX11\Geometry\Primitives\DX11Primitive_Tetrahedron.cs" />
     <Compile Include="DX11\Geometry\Primitives\DX11Primitive_Torus.cs" />
     <Compile Include="DX11\Geometry\VertexLayouts\Pos2Norm2Tex2Vertex.cs" />

@@ -12,9 +12,15 @@ namespace FeralTic.DX11.Geometry
 {
     public partial class DX11PrimitivesManager
     {
-        public DX11IndexedGeometry Grid(Vector2 size, int resX, int resY)
+        public DX11IndexedGeometry Grid(Grid settings)
         {
+            Vector2 size = settings.Size;
+            int resX = settings.ResolutionX;
+            int resY = settings.ResolutionY;
+
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
+            geom.Tag = settings;
+            geom.PrimitiveType = "Grid";
 
             DataStream ds = new DataStream(resX * resY * Pos4Norm3Tex2Vertex.VertexSize, true, true);
             ds.Position = 0;

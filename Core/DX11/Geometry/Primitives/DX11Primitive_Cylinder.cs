@@ -12,9 +12,20 @@ namespace FeralTic.DX11.Geometry
 {
     public partial class DX11PrimitivesManager
     {
-        public DX11IndexedGeometry Cylinder(float radius1, float radius2, float cycles, float length, int resX, int resY, bool caps)
+        public DX11IndexedGeometry Cylinder(Cylinder settings)
         {
+            float radius1 = settings.Radius1;
+            float radius2 = settings.Radius2;
+            float cycles = settings.Cycles;
+            float length = settings.Length;
+            int resX = settings.ResolutionX;
+            int resY = settings.ResolutionY;
+            bool caps = settings.Caps;
+
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
+            geom.Tag = settings;
+            geom.PrimitiveType = "Cylinder";
+
             int vcount = resX * (resY + 1);
             int icount = vcount * 6;
 
