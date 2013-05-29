@@ -88,7 +88,7 @@ namespace FeralTic.DX11.Geometry
         {
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
             geom.Tag = settings;
-            geom.PrimitiveType = "Box";
+            geom.PrimitiveType = settings.PrimitiveType;
 
             int vertexcount = 24;
 

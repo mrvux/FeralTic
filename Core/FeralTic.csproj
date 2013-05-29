@@ -126,6 +126,7 @@
     <Compile Include="Core\Maths\Frustrum.cs" />
     <Compile Include="Core\Maths\BernsteinBasis.cs" />
     <Compile Include="Core\RefCounter.cs" />
+    <Compile Include="DX11\Geometry\Primitives\DX11Primitive_PType.cs" />
     <Compile Include="DX11\Geometry\Primitives\DX11PrimitiveDescriptors.cs" />
     <Compile Include="DX11\Geometry\Primitives\DX11Primitive_IcoGrid.cs" />
     <Compile Include="DX11\Geometry\Primitives\DX11Primitive_Octahedron.cs" />

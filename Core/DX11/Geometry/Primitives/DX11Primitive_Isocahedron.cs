@@ -17,7 +17,7 @@ namespace FeralTic.DX11.Geometry
         public DX11IndexedGeometry Isocahedron(Isocahedron settings)
         {
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
-            geom.PrimitiveType = "Isocahedron";
+            geom.PrimitiveType = settings.PrimitiveType;
             geom.Tag = settings;
             geom.VerticesCount = 12;
             geom.InputLayout = Pos3Norm3Tex2Vertex.Layout;

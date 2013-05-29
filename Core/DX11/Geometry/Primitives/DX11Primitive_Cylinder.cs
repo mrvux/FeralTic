@@ -24,7 +24,7 @@ namespace FeralTic.DX11.Geometry
 
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
             geom.Tag = settings;
-            geom.PrimitiveType = "Cylinder";
+            geom.PrimitiveType = settings.PrimitiveType;
 
             int vcount = resX * (resY + 1);
             int icount = vcount * 6;

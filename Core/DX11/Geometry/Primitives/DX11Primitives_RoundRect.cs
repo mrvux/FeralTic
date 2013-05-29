@@ -19,7 +19,7 @@ namespace FeralTic.DX11.Geometry
            int ires = settings.CornerResolution;
 
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
-            geom.PrimitiveType = "RoundRectangle";
+            geom.PrimitiveType = settings.PrimitiveType;
             geom.Tag = settings;
             List<Pos4Norm3Tex2Vertex> vl = new List<Pos4Norm3Tex2Vertex>();
             List<int> il = new List<int>();

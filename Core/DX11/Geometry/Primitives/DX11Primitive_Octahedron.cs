@@ -17,7 +17,7 @@ namespace FeralTic.DX11.Geometry
         public DX11IndexedGeometry Octahedron(Octahedron settings)
         {
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
-            geom.PrimitiveType = "Octahedron";
+            geom.PrimitiveType = settings.PrimitiveType;
             geom.Tag = settings;
             geom.VerticesCount = 6;
             geom.InputLayout = Pos3Norm3Tex2Vertex.Layout;

@@ -22,7 +22,7 @@ namespace FeralTic.DX11.Geometry
 
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
             geom.Tag = settings;
-            geom.PrimitiveType = "Segment";
+            geom.PrimitiveType = settings.PrimitiveType;
             int vcount = res * 2;
             int icount = (res - 1) * 6;
 

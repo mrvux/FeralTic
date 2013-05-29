@@ -20,7 +20,7 @@ namespace FeralTic.DX11.Geometry
 
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
             geom.Tag = settings;
-            geom.PrimitiveType = "Tetrahedron";
+            geom.PrimitiveType = settings.PrimitiveType;
             geom.VerticesCount = 4;
             geom.InputLayout = Pos3Norm3Tex2Vertex.Layout;
             geom.VertexSize = Pos3Norm3Tex2Vertex.VertexSize;

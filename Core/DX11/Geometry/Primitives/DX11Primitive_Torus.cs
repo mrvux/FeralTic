@@ -77,7 +77,7 @@ namespace FeralTic.DX11.Geometry
 
             DX11IndexedGeometry geom = DX11IndexedGeometry.CreateFrom<Pos4Norm3Tex2Vertex>(context, vertices.ToArray(), indices.ToArray(), Pos4Norm3Tex2Vertex.Layout);
             geom.Tag = settings;
-            geom.PrimitiveType = "Torus";
+            geom.PrimitiveType = settings.PrimitiveType;
             geom.HasBoundingBox = false;
             geom.BoundingBox = new BoundingBox(new Vector3(-radius), new Vector3(radius));
 

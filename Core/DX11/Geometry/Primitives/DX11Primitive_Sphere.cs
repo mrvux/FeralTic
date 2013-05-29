@@ -86,7 +86,7 @@ namespace FeralTic.DX11.Geometry
             geom.HasBoundingBox = true;
             geom.BoundingBox = new BoundingBox(new Vector3(-radius), new Vector3(radius));
             geom.Tag = settings;
-            geom.PrimitiveType = "Sphere";
+            geom.PrimitiveType = settings.PrimitiveType;
 
             return geom;
         }

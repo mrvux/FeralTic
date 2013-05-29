@@ -121,7 +121,7 @@ namespace FeralTic.DX11.Geometry
 
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
             geom.Tag = grid;
-            geom.PrimitiveType = "IcoGrid";
+            geom.PrimitiveType = grid.PrimitiveType;
 
             DataStream vertexstream = new DataStream(verts.Count * Pos4Norm3Tex2Vertex.VertexSize, true, true);
             vertexstream.Position = 0;
