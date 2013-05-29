@@ -17,6 +17,7 @@ namespace FeralTic.DX11.Geometry
 
 
         private Dictionary<string, CreatePrimitiveDelegate> primitivecreator = new Dictionary<string,CreatePrimitiveDelegate>();
+        private Dictionary<string, Type> primitivetypes = new Dictionary<string, Type>();
 
         private void InitializeDelegates()
         {
@@ -33,6 +34,32 @@ namespace FeralTic.DX11.Geometry
             this.primitivecreator.Add("SegmentZ", () => new SegmentZ());
             this.primitivecreator.Add("Sphere", () => new Sphere());
             this.primitivecreator.Add("Torus", () => new Torus());
+
+            this.primitivetypes.Add("Box", typeof(Box));
+            this.primitivetypes.Add("Cylinder", typeof(Cylinder));
+            this.primitivetypes.Add("Grid", typeof(Grid));
+            this.primitivetypes.Add("IcoGrid", typeof(IcoGrid));
+            this.primitivetypes.Add("Isocahedron", typeof(Isocahedron));
+            this.primitivetypes.Add("Octahedron", typeof(Octahedron));
+            this.primitivetypes.Add("Tetrahedron", typeof(Tetrahedron));
+            this.primitivetypes.Add("Quad", typeof(Quad));
+            this.primitivetypes.Add("RoundRect", typeof(RoundRect));
+            this.primitivetypes.Add("Segment", typeof(Segment));
+            this.primitivetypes.Add("SegmentZ", typeof(SegmentZ));
+            this.primitivetypes.Add("Sphere", typeof(Sphere));
+            this.primitivetypes.Add("Torus", typeof(Torus));
+        }
+
+        public Type GetDescriptorType(string ptype)
+        {
+            if (this.primitivetypes.ContainsKey(ptype))
+            {
+                return this.primitivetypes[ptype];
+            }
+            else
+            {
+                throw new Exception("Unknown Primitive Type");
+            }
         }
 
         public IDX11Geometry GetByPrimitiveType(string ptype, Dictionary<string,object> properties)
