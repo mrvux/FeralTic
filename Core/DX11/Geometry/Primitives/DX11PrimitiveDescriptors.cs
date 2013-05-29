@@ -36,6 +36,16 @@ namespace FeralTic.DX11.Geometry
         public int ResolutionY { get; set; }
     }
 
+    public class Isocahedron
+    {
+        public Vector3 Size { get; set; }
+    }
+
+    public class Octahedron
+    {
+        public Vector3 Size { get; set; }
+    }
+
     public class Sphere
     {
         public float Radius { get; set; }
