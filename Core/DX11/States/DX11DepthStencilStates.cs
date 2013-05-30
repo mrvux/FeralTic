@@ -40,6 +40,7 @@ namespace FeralTic.DX11
             this.CreateLessEqualRW();
             this.CreateWriteOnly();
             this.CreateLessStencilIncrement();
+            this.CreateStencilLess();
         }
 
         private void CreateNoDepth()
