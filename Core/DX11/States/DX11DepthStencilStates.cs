@@ -39,6 +39,7 @@ namespace FeralTic.DX11
             this.CreateLessEqualReadOnly();
             this.CreateLessEqualRW();
             this.CreateWriteOnly();
+            this.CreateLessStencilIncrement();
         }
 
         private void CreateNoDepth()
@@ -117,6 +118,64 @@ namespace FeralTic.DX11
             };
 
             this.AddState("WriteOnly", ds);
+        }
+
+        private void CreateLessStencilIncrement()
+        {
+            DepthStencilStateDescription ds = new DepthStencilStateDescription()
+            {
+                IsDepthEnabled = true,
+                IsStencilEnabled = true,
+                DepthWriteMask = DepthWriteMask.All,
+                DepthComparison = Comparison.Less,
+                StencilReadMask = 0,
+                StencilWriteMask = 255,
+                FrontFace = new DepthStencilOperationDescription()
+                {
+                    Comparison = Comparison.Always,
+                    DepthFailOperation = StencilOperation.Keep,
+                    FailOperation = StencilOperation.Keep,
+                    PassOperation = StencilOperation.IncrementAndClamp
+                },
+                BackFace = new DepthStencilOperationDescription()
+                {
+                    Comparison = Comparison.Always,
+                    DepthFailOperation = StencilOperation.Keep,
+                    FailOperation = StencilOperation.Keep,
+                    PassOperation = StencilOperation.IncrementAndClamp
+                }
+            };
+
+            this.AddState("LessReadStencilIncrement", ds);
+        }
+
+        private void CreateStencilLess()
+        {
+            DepthStencilStateDescription ds = new DepthStencilStateDescription()
+            {
+                IsDepthEnabled = false,
+                IsStencilEnabled = true,
+                DepthWriteMask = DepthWriteMask.Zero,
+                DepthComparison = Comparison.Always,
+                StencilReadMask = 0,
+                StencilWriteMask = 255,
+                FrontFace = new DepthStencilOperationDescription()
+                {
+                    Comparison = Comparison.Less,
+                    DepthFailOperation = StencilOperation.Keep,
+                    FailOperation = StencilOperation.Keep,
+                    PassOperation = StencilOperation.Keep
+                },
+                BackFace = new DepthStencilOperationDescription()
+                {
+                    Comparison = Comparison.Less,
+                    DepthFailOperation = StencilOperation.Keep,
+                    FailOperation = StencilOperation.Keep,
+                    PassOperation = StencilOperation.Keep
+                }
+            };
+
+            this.AddState("StencilLess", ds);
         }
     }
 }
