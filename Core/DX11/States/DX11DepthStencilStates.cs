@@ -158,8 +158,8 @@ namespace FeralTic.DX11
                 IsStencilEnabled = true,
                 DepthWriteMask = DepthWriteMask.Zero,
                 DepthComparison = Comparison.Always,
-                StencilReadMask = 0,
-                StencilWriteMask = 255,
+                StencilReadMask = 255,
+                StencilWriteMask = 0,
                 FrontFace = new DepthStencilOperationDescription()
                 {
                     Comparison = Comparison.Less,
