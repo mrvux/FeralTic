@@ -26,7 +26,7 @@ namespace FeralTic.DX11.Resources
         /// <summary>
         /// Vertex Input Layout
         /// </summary>
-        public InputElement[] InputLayout { get; set; }
+        public virtual InputElement[] InputLayout { get; set; }
 
 
         public PrimitiveTopology Topology
