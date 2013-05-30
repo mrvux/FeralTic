@@ -158,8 +158,8 @@ namespace FeralTic.DX11.Geometry
 
                 for (int j = 0; j < resX; j++)
                 {
-                    float x = Convert.ToSingle(radius1 * Math.Cos(phi)) * radius1;
-                    float z = Convert.ToSingle(radius1 * Math.Sin(phi)) * radius1;
+                    float x = Convert.ToSingle(radius1 * Math.Cos(phi)) * radius2;
+                    float z = Convert.ToSingle(radius1 * Math.Sin(phi)) * radius2;
 
                     v.Position = new Vector4(x, y, z, 1.0f);
                     verts.Add(v);
