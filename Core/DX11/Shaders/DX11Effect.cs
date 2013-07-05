@@ -143,6 +143,8 @@ namespace FeralTic.DX11
             return Compile(code, false, include, defines);
         }
 
+
+
         public static DX11Effect FromFile(string path, ShaderMacro[] defines)
         {
             folderhandler.BaseShaderPath = Path.GetDirectoryName(path);

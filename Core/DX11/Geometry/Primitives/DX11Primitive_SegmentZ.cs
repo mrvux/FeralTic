@@ -277,6 +277,20 @@ namespace FeralTic.DX11.Geometry
 
             #endregion
 
+            float minx = float.MaxValue, miny = float.MaxValue, minz = float.MaxValue;
+            float maxx = float.MinValue, maxy = float.MinValue, maxz = float.MinValue;
+
+            foreach (Pos4Norm3Tex2Vertex v in vlist)
+            {
+                minx = v.Position.X < minx ? v.Position.X : minx;
+                miny = v.Position.Y < miny ? v.Position.Y : miny;
+                minz = v.Position.Z < minz ? v.Position.Z : minz;
+
+                maxx = v.Position.X > maxx ? v.Position.X : maxx;
+                maxy = v.Position.Y > maxy ? v.Position.Y : maxy;
+                maxz = v.Position.Z > maxz ? v.Position.Z : maxz;
+            }
+
             DataStream ds = new DataStream(vlist.Count * Pos4Norm3Tex2Vertex.VertexSize, true, true);
             ds.Position = 0;
             ds.WriteRange(vlist.ToArray());
@@ -304,7 +318,8 @@ namespace FeralTic.DX11.Geometry
             geom.VerticesCount = vlist.Count;
             geom.VertexSize = Pos4Norm3Tex2Vertex.VertexSize;
 
-            geom.HasBoundingBox = false;
+            geom.HasBoundingBox = true;
+            geom.BoundingBox = new BoundingBox(new Vector3(minx, miny, minz), new Vector3(maxx, maxy, maxz));
 
             return geom;
         }

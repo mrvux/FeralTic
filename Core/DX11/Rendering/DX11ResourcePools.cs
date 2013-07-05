@@ -111,6 +111,41 @@ namespace FeralTic.DX11
         }
     }
 
+    public class DX11VertexBufferPool : DX11ResourcePool<DX11VertexBuffer>
+    {
+        public DX11VertexBufferPool(DX11RenderContext context)
+            : base(context)
+        {
+
+        }
+
+        public DX11ResourcePoolEntry<DX11VertexBuffer> Lock(int verticescount, int vertexsize, bool allowstreamout)
+        {
+            //We can lock any buffer of the right size
+            int totalsize = vertexsize * verticescount;
+
+            foreach (DX11ResourcePoolEntry<DX11VertexBuffer> entry in this.pool)
+            {
+                DX11VertexBuffer tr = entry.Element;
+
+
+                if (!entry.IsLocked && totalsize == tr.TotalSize && allowstreamout == tr.AllowStreamOutput)
+                {
+                    entry.Lock();
+                    return entry;
+                }
+            }
+
+            DX11VertexBuffer res = new DX11VertexBuffer(this.context, verticescount, vertexsize, allowstreamout);
+
+            DX11ResourcePoolEntry<DX11VertexBuffer> newentry = new DX11ResourcePoolEntry<DX11VertexBuffer>(res);
+
+            this.pool.Add(newentry);
+
+            return newentry;
+        }
+    }
+
     public class DX11VolumeTexturePool : DX11ResourcePool<DX11RenderTexture3D>
     {
         public DX11VolumeTexturePool(DX11RenderContext context)

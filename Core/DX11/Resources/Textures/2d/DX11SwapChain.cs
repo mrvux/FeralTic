@@ -64,12 +64,11 @@ namespace FeralTic.DX11.Resources
 
         public void SetFullScreen(bool fullscreen)
         {
-            /*bool fs;
+            bool fs;
             Output opt;
-            this.swapchain.is
             this.swapchain.GetFullScreenState(out fs, out opt);
 
-            if (fs != fullscreen)
+            /*if (fs != fullscreen)
             {
                 if (fullscreen)
                 {

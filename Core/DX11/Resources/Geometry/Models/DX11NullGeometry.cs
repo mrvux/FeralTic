@@ -33,6 +33,7 @@ namespace FeralTic.DX11.Resources
         {
             DX11NullDrawer d = new DX11NullDrawer();
             d.VertexCount = VertexCount;
+           
             this.drawer = d;
             this.drawer.Assign(this);
             

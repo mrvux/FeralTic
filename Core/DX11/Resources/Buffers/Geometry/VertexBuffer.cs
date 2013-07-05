@@ -18,10 +18,40 @@ namespace FeralTic.DX11.Resources
         public int VerticesCount { get; protected set; }
         public int VertexSize { get; protected set; }
 
+        public bool AllowStreamOutput { get; private set; }
+        public int TotalSize { get; private set; }
+
         /// <summary>
         /// Vertex Input Layout
         /// </summary>
         public InputElement[] InputLayout { get; set; }
+
+        public DX11VertexBuffer(DX11RenderContext context, int verticescount, int vertexsize, bool allowstreamout)
+        {
+            this.context = context;
+            this.TotalSize = verticescount * vertexsize;
+            this.AllowStreamOutput = allowstreamout;
+
+            BindFlags flags = BindFlags.VertexBuffer;
+
+            if (allowstreamout)
+            {
+                flags |= BindFlags.StreamOutput;
+            }
+
+            BufferDescription bd = new BufferDescription()
+            {
+                BindFlags = flags,
+                CpuAccessFlags = CpuAccessFlags.None,
+                OptionFlags = ResourceOptionFlags.None,
+                SizeInBytes = this.TotalSize,
+                Usage = ResourceUsage.Default
+            };
+
+            this.Buffer = new SlimDX.Direct3D11.Buffer(context.Device, bd);
+            this.VertexSize = vertexsize;
+            this.VerticesCount = verticescount;
+        }
 
         public DX11VertexBuffer(DX11RenderContext context, DataStream initial,int verticescount,int vertexsize, bool dynamic, bool dispose)
         {

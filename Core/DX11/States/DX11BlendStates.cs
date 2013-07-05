@@ -42,8 +42,6 @@ namespace FeralTic.DX11
             this.CreateAlphaAdd();
         }
 
-
-
         private void CreateNoBlend()
         {
             BlendStateDescription bs = new BlendStateDescription()
