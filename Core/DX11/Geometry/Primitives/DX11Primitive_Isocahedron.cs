@@ -24,6 +24,7 @@ namespace FeralTic.DX11.Geometry
             geom.VertexSize = Pos3Norm3Tex2Vertex.VertexSize;
             geom.Topology = PrimitiveTopology.TriangleList;
 
+            // This is the golden ratio
             float t = (1.0f + (float)Math.Sqrt(5.0f)) / 2.0f;
 
             DataStream ds = new DataStream(12 * Pos3Norm3Tex2Vertex.VertexSize, false, true);
