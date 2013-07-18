@@ -145,6 +145,10 @@
     <Compile Include="DX11\Queries\IDX11Query.cs" />
     <Compile Include="DX11\Devices\NullRenderDevice.cs" />
     <Compile Include="DX11\Resources\Geometry\Drawers\DX11NullIndirectDrawer.cs" />
+    <Compile Include="DX11\Resources\Textures\2d\DX11SliceRenderTarget.cs" />
+    <Compile Include="DX11\Resources\Textures\2d\DX11CubeDepthStencil.cs" />
+    <Compile Include="DX11\Resources\Textures\2d\DX11CubeRenderTarget.cs" />
+    <Compile Include="DX11\Resources\Textures\2d\DX11SliceDepthStencil.cs" />
     <Compile Include="DX11\Scheduler\Textures\FileTextureLoadTask.cs" />
     <Compile Include="DX11\Utils\FormatHelper.cs" />
     <Compile Include="Utils\DXGIScreen.cs" />
@@ -233,7 +237,6 @@
     <Compile Include="DX11\Resources\Textures\2d\DX11Texture2D.cs" />
     <Compile Include="DX11\Resources\Textures\3d\DX11RenderTexture3D.cs" />
     <Compile Include="DX11\Resources\Textures\3d\DX11Texture3D.cs" />
-    <Compile Include="DX11\Resources\Textures\2d\DX11CubeRenderTarget.cs" />
     <Compile Include="DX11\Shaders\DX11Effect.cs" />
     <Compile Include="DX11\Shaders\DX11Shader.cs" />
     <Compile Include="DX11\Shaders\DX11ShaderInstance.cs" />
