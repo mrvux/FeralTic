@@ -12,7 +12,7 @@ namespace FeralTic.DX11.Geometry
 {
     public partial class DX11PrimitivesManager
     {
-        public DX11VertexGeometry LineStrip(List<Vector3> points, bool loop)
+        public DX11VertexGeometry LineStrip3d(List<Vector3> points, bool loop)
         {
             DX11VertexGeometry geom = new DX11VertexGeometry(context);
 
@@ -66,7 +66,7 @@ namespace FeralTic.DX11.Geometry
             return geom;
         }
 
-        public DX11VertexGeometry LineStrip(List<Vector3> points,List<Vector3> directions, bool loop)
+        public DX11VertexGeometry LineStrip3d(List<Vector3> points,List<Vector3> directions, bool loop)
         {
             //Use direction verctor as normal, useful when we have analytical derivatives for direction
             DX11VertexGeometry geom = new DX11VertexGeometry(context);
@@ -124,5 +124,6 @@ namespace FeralTic.DX11.Geometry
 
             return geom;
         }
+
     }
 }

@@ -40,7 +40,7 @@ namespace FeralTic.DX11.Resources
 
         public int Stride { get; protected set; }
 
-        protected virtual void OnDispose() { }
+        protected abstract void OnDispose();
 
         public void Copy(DeviceContext ctx, DX11StructuredBuffer<T> destination)
         {
@@ -54,8 +54,9 @@ namespace FeralTic.DX11.Resources
             }
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
+            this.OnDispose();
             if (this.Buffer != null) { this.Buffer.Dispose(); }
         }
     }
@@ -139,7 +140,6 @@ namespace FeralTic.DX11.Resources
         protected override void OnDispose()
         {
             if (this.SRV != null) { this.SRV.Dispose(); }
-            base.OnDispose();
         }
 
 
@@ -198,7 +198,6 @@ namespace FeralTic.DX11.Resources
         {
             if (this.SRV != null) { this.SRV.Dispose(); }
             if (this.UAV != null) { this.UAV.Dispose(); }
-            base.OnDispose();
         }
 
         public void Clear(DeviceContext ctx, int value)
@@ -239,7 +238,7 @@ namespace FeralTic.DX11.Resources
 
         protected override void OnDispose()
         {
-            base.OnDispose();
+
         }
 
         public DataStream MapForRead(DeviceContext ctx)

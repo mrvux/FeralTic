@@ -10,16 +10,6 @@ using FeralTic.DX11.Resources;
 
 namespace FeralTic.DX11.Geometry
 {
-    public enum eBoxUVMap { Default, HCross, VCross }
-
-    public struct BoxSettings
-    {
-        public Vector3 Size;
-        public bool SoftNormals;
-        public eBoxUVMap UvMap;
-        public bool FaceIndex;
-    }
-
     internal static class BoxData
     {
         public static Vector4 BottomLeftFront { get { return new Vector4(-1.0f, -1.0f, 1.0f, 1.0f); } }
@@ -94,9 +84,11 @@ namespace FeralTic.DX11.Geometry
 
     public partial class DX11PrimitivesManager
     {
-        public DX11IndexedGeometry Box(BoxSettings settings)
+        public DX11IndexedGeometry Box(Box settings)
         {
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
+            geom.Tag = settings;
+            geom.PrimitiveType = settings.PrimitiveType;
 
             int vertexcount = 24;
 
@@ -119,7 +111,7 @@ namespace FeralTic.DX11.Geometry
             this.WriteTopFace(vertexstream, indexstream, size);
             this.WriteBottomFace(vertexstream, indexstream, size);
 
-            var vertices = BufferHelper.CreateVertexBuffer(context.Device, vertexstream, true);
+            var vertices = BufferHelper.CreateVertexBuffer(context, vertexstream, true);
 
             geom.VertexBuffer = vertices;
             geom.IndexBuffer = new DX11IndexBuffer(context, indexstream, false, true);

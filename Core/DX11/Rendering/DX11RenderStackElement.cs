@@ -28,7 +28,7 @@ namespace FeralTic.DX11
         {
             this.depth = dsv;
             this.rendertargets = rts;
-            this.rodsv = false;
+            this.rodsv = rodsv;
 
             this.vp = vp;
             this.scissor = scissor;
@@ -42,7 +42,7 @@ namespace FeralTic.DX11
         {
             this.depth = dsv;
             this.rendertargets = rts;
-            this.rodsv = false;
+            this.rodsv = rodsv;
 
             this.vp = vp;
             this.hasscissor = false;
@@ -55,7 +55,7 @@ namespace FeralTic.DX11
         {
             this.depth = dsv;
             this.rendertargets = rts;
-            this.rodsv = false;
+            this.rodsv = rodsv;
 
             this.vp.X = 0;
             this.vp.Y = 0;

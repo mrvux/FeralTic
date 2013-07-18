@@ -152,5 +152,11 @@ namespace FeralTic.DX11
         {
             this.effect.Dispose();
         }
+
+        public void BindClass(string classname, string interfacename)
+        {
+            this.Effect.GetVariableByName(interfacename).AsInterface().ClassInstance = this.Effect.GetVariableByName(classname).AsClassInstance();
+        }
+
     }
 }

@@ -11,25 +11,35 @@ namespace FeralTic.DX11.Utils
 {
     public static class BufferHelper
     {
-        public static Buffer CreateStreamOutBuffer(Device device, int vertexsize, int maxelements)
+        public static Buffer CreateStreamOutBuffer(DX11RenderContext context, int vertexsize, int maxelements, bool allowvbo = true, bool allowibo = false)
         {
-            //Create a stream out buffer (no init data, but also allow to bind as SO
-            Buffer buffer = new SlimDX.Direct3D11.Buffer(device, new BufferDescription()
+            BindFlags flags = BindFlags.StreamOutput;
+
+            //Flag as raw if possible
+            //flags |= context.ComputeShaderSupport ? BindFlags.UnorderedAccess : BindFlags.None;
+            flags |= context.ComputeShaderSupport ? BindFlags.ShaderResource : BindFlags.None;
+
+            flags |= allowvbo ? BindFlags.VertexBuffer : BindFlags.None;
+            flags |= allowibo ? BindFlags.IndexBuffer : BindFlags.None;
+
+
+            //Allow access as raw if possible
+            Buffer buffer = new SlimDX.Direct3D11.Buffer(context.Device, new BufferDescription()
             {
-                BindFlags = BindFlags.VertexBuffer | BindFlags.StreamOutput | BindFlags.ShaderResource,
+                BindFlags = flags,
                 CpuAccessFlags = CpuAccessFlags.None,
-                OptionFlags = ResourceOptionFlags.RawBuffer,
+                OptionFlags = context.ComputeShaderSupport ? ResourceOptionFlags.RawBuffer : ResourceOptionFlags.None,
                 SizeInBytes = vertexsize * maxelements,
                 Usage = ResourceUsage.Default
             });
             return buffer;
         }
 
-        public static Buffer CreateVertexBuffer(Device device, DataStream ds,bool alloraw =false, bool dispose = false)
+        public static Buffer CreateVertexBuffer(DX11RenderContext context, DataStream ds, bool alloraw = false, bool dispose = false)
         { 
             ds.Position = 0;
 
-            var vertices = new SlimDX.Direct3D11.Buffer(device, ds, new BufferDescription()
+            var vertices = new SlimDX.Direct3D11.Buffer(context.Device, ds, new BufferDescription()
             {
                 BindFlags = BindFlags.VertexBuffer | BindFlags.ShaderResource,
                 CpuAccessFlags = CpuAccessFlags.None,
@@ -46,10 +56,11 @@ namespace FeralTic.DX11.Utils
             return vertices;
         }
 
-        public static Buffer CreateDynamicVertexBuffer(Device device, DataStream ds, bool dispose = false)
+        public static Buffer CreateDynamicVertexBuffer(DX11RenderContext context, DataStream ds, bool dispose = false)
         {
             ds.Position = 0;
-            var vertices = new SlimDX.Direct3D11.Buffer(device, ds, new BufferDescription()
+
+            var vertices = new SlimDX.Direct3D11.Buffer(context.Device, ds, new BufferDescription()
             {
                 BindFlags = BindFlags.VertexBuffer,
                 CpuAccessFlags = CpuAccessFlags.Write,
@@ -63,6 +74,19 @@ namespace FeralTic.DX11.Utils
                 ds.Dispose();
             }
 
+            return vertices;
+        }
+
+        public static Buffer CreateDynamicVertexBuffer(DX11RenderContext context, int size)
+        {
+            var vertices = new SlimDX.Direct3D11.Buffer(context.Device, new BufferDescription()
+            {
+                BindFlags = BindFlags.VertexBuffer,
+                CpuAccessFlags = CpuAccessFlags.Write,
+                OptionFlags = ResourceOptionFlags.None,
+                SizeInBytes = size,
+                Usage = ResourceUsage.Dynamic
+            });
             return vertices;
         }
     }

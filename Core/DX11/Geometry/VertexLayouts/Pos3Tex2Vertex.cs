@@ -26,7 +26,7 @@ namespace FeralTic.DX11.Geometry
                     layout = new InputElement[]
                     {
                         new InputElement("POSITION",0,SlimDX.DXGI.Format.R32G32B32_Float,0, 0),
-                        new InputElement("TEXCOORD",0,SlimDX.DXGI.Format.R32G32_Float,16,0),
+                        new InputElement("TEXCOORD",0,SlimDX.DXGI.Format.R32G32_Float,12,0),
                     };
                 }
                 return layout;

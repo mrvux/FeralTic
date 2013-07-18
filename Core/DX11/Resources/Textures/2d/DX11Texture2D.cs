@@ -9,20 +9,29 @@ using SlimDX.Direct3D11;
 using SlimDX.DXGI;
 using Device = SlimDX.Direct3D11.Device;
 
-
-
 namespace FeralTic.DX11.Resources
 {
     public class DX11Texture2D : DX11DeviceResource<Texture2D>, IDX11ReadableResource
     {
+        public Texture2DDescription Description { get { return this.desc; } }
         protected bool isowner;
         protected Texture2DDescription desc;
         protected DX11RenderContext context;
 
+        public static DX11Texture2D FromDescription(DX11RenderContext context, Texture2DDescription desc)
+        {
+            DX11Texture2D res = new DX11Texture2D();
+            res.context = context;
+            res.Resource = new Texture2D(context.Device, desc);
+            res.isowner = true;
+            res.desc = desc;
+            res.SRV = new ShaderResourceView(context.Device, res.Resource);
+
+            return res;
+        }
+
         public static DX11Texture2D FromTextureAndSRV(DX11RenderContext context, Texture2D tex,ShaderResourceView srv)
         {
-
-
             Texture2DDescription desc = tex.Description;
 
             DX11Texture2D res = new DX11Texture2D();

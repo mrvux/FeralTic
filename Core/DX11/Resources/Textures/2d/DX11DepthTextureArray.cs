@@ -73,7 +73,7 @@ namespace FeralTic.DX11.Resources
             this.desc = texBufferDesc;
         }
 
-        public DepthStencilView GetView(int slice, int count)
+        /*public DepthStencilView GetView(int slice, int count)
         {
             DepthStencilViewDescription dsvd = new DepthStencilViewDescription()
             {
@@ -85,13 +85,14 @@ namespace FeralTic.DX11.Resources
             };
 
             return new DepthStencilView(context.Device, this.Resource, dsvd);
-        }
+        }*/
 
         public override void Dispose()
         {
-            this.DSV.Dispose();
-            this.SRV.Dispose();
-            this.Resource.Dispose();
+            if (this.DSV != null) { this.DSV.Dispose(); }
+            if (this.SRV != null) { this.SRV.Dispose(); }
+            if (this.Resource != null) { this.Resource.Dispose(); }
+            if (this.ReadOnlyDSV != null) { this.ReadOnlyDSV.Dispose(); }
         }
     }
 }

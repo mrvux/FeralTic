@@ -28,6 +28,7 @@ namespace FeralTic.DX11.Geometry
         public DX11PrimitivesManager(DX11RenderContext context)
         {
             this.context = context;
+            this.InitializeDelegates();
             Effect e = this.FullTriVS;
         }
 

@@ -40,10 +40,6 @@ namespace FeralTic.DX11
                     {
                         sdl.Add(new SampleDescription(i, level));
                     }
-                    if (level > 1)
-                    {
-                        Console.WriteLine("Hello");
-                    }
                 }
 
                 multisampleformats.Add(fmt, sdl);

@@ -18,8 +18,12 @@ namespace FeralTic.DX11.Resources
         public DepthStencilView DSV { get; protected set; }
         public DepthStencilView ReadOnlyDSV { get; protected set; }
 
-        public DX11DepthStencil(DX11RenderContext context, int w, int h, SampleDescription sd) 
-            : this(context,w,h,sd,Format.D32_Float)
+        public DX11Texture2D Stencil { get; protected set; }
+        private ShaderResourceView stencilview;
+
+
+        public DX11DepthStencil(DX11RenderContext context, int w, int h, SampleDescription sd)
+            : this(context, w, h, sd, Format.D32_Float)
         {
         }
 
@@ -53,6 +57,29 @@ namespace FeralTic.DX11.Resources
 
             this.SRV = new ShaderResourceView(context.Device, this.Resource, srvd);
 
+
+            if (format == Format.D24_UNorm_S8_UInt)
+            {
+                ShaderResourceViewDescription stencild = new ShaderResourceViewDescription()
+                {
+                    ArraySize = 1,
+                    Format = SlimDX.DXGI.Format.X24_Typeless_G8_UInt,
+                    Dimension = sd.Count == 1 ? ShaderResourceViewDimension.Texture2D : ShaderResourceViewDimension.Texture2DMultisampled,
+                    MipLevels = 1,
+                    MostDetailedMip = 0
+                };
+
+                this.stencilview = new ShaderResourceView(this.context.Device, this.Resource, stencild);
+
+                this.Stencil = DX11Texture2D.FromTextureAndSRV(this.context, this.Resource, this.stencilview);
+
+            }
+            else
+            {
+                //Just pass depth instead
+                this.Stencil = DX11Texture2D.FromTextureAndSRV(this.context, this.Resource, this.SRV);
+            }
+
             DepthStencilViewDescription dsvd = new DepthStencilViewDescription()
             {
                 Format = DepthFormatsHelper.GetDepthFormat(format),
@@ -61,6 +88,8 @@ namespace FeralTic.DX11.Resources
             };
 
             this.DSV = new DepthStencilView(context.Device, this.Resource, dsvd);
+
+
 
             //Read only dsv only supported in dx11 minimum
             if (context.IsFeatureLevel11)
@@ -71,17 +100,30 @@ namespace FeralTic.DX11.Resources
                 this.ReadOnlyDSV = new DepthStencilView(context.Device, this.Resource, dsvd);
             }
 
+
+
+
             this.desc = depthBufferDesc;
             this.isowner = true;
         }
 
-        public void Clear(float depth = 1.0f,byte stencil = 0)
+        public void Clear(bool cleardepth = true, bool clearstencil = true, float depth = 1.0f, byte stencil = 0)
         {
-            this.context.CurrentDeviceContext.ClearDepthStencilView(this.DSV, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, depth, stencil);
+            if (cleardepth || clearstencil)
+            {
+                DepthStencilClearFlags flags = (DepthStencilClearFlags)0;
+                if (cleardepth) { flags = DepthStencilClearFlags.Depth; }
+                if (clearstencil) { flags |= DepthStencilClearFlags.Stencil; }
+
+                this.context.CurrentDeviceContext.ClearDepthStencilView(this.DSV, flags, depth, stencil);
+            }
+
+            
         }
 
         public override void Dispose()
         {
+            if (this.stencilview != null) { this.stencilview.Dispose(); }
             if (this.DSV != null) { this.DSV.Dispose(); }
             if (this.ReadOnlyDSV != null) { this.ReadOnlyDSV.Dispose(); }
             base.Dispose();

@@ -10,6 +10,44 @@ using System.Reflection;
 
 namespace FeralTic.DX11
 {
+    public class FolderIncludeHandler : Include
+    {
+        public string BaseShaderPath { get; set; }
+
+        public void Close(Stream stream)
+        {
+            /*if (stream != null)
+            {
+                stream.Dispose();
+            }*/
+        }
+
+        public void Open(IncludeType type, string fileName, Stream parentStream, out Stream stream)
+        {
+            if (type == IncludeType.Local)
+            {
+                string path = this.BaseShaderPath + "\\" + fileName;
+                if (File.Exists(path))
+                {
+                    string content = File.ReadAllText(path);
+                    stream = new MemoryStream();
+                    StreamWriter writer = new StreamWriter(stream);
+                    writer.Write(content);
+                    writer.Flush();
+                    stream.Position = 0;
+                }
+                else
+                {
+                    stream = null;
+                }
+            }
+            else
+            {
+                stream = null;
+            }
+        }
+    }
+
     /// <summary>
     /// Effect Compiler
     /// Compiles effect against a null device, so reflection can be kept even
@@ -17,10 +55,12 @@ namespace FeralTic.DX11
     /// </summary>
     public class DX11Effect : IDisposable
     {
+        private static FolderIncludeHandler folderhandler = new FolderIncludeHandler();
+
         private DX11Effect()
-		{
-			//To prevent instancing
-		}
+        {
+            //To prevent instancing
+        }
 
         #region Load from byte code
         private static DX11Effect LoadByteCode(byte[] bytecode)
@@ -52,22 +92,22 @@ namespace FeralTic.DX11
         #endregion
 
         #region Compile (from string)
-        private static DX11Effect Compile(string content, bool isfile, Include include)
+        private static DX11Effect Compile(string content, bool isfile, Include include, ShaderMacro[] defines)
         {
             DX11Effect shader = new DX11Effect();
+
+            string errors;
             try
             {
-                string errors;
-
                 ShaderFlags flags = ShaderFlags.OptimizationLevel1;
 
                 if (isfile)
                 {
-                    shader.ByteCode = ShaderBytecode.CompileFromFile(content, "fx_5_0", flags, EffectFlags.None, null, include, out errors);
+                    shader.ByteCode = ShaderBytecode.CompileFromFile(content, "fx_5_0", flags, EffectFlags.None, defines, include, out errors);
                 }
                 else
                 {
-                    shader.ByteCode = ShaderBytecode.Compile(content, "fx_5_0", flags, EffectFlags.None, null, include, out errors);
+                    shader.ByteCode = ShaderBytecode.Compile(content, "fx_5_0", flags, EffectFlags.None, defines, include, out errors);
                 }
 
                 //Compilation worked, but we can still have warning
@@ -90,17 +130,31 @@ namespace FeralTic.DX11
         #region Overload utils
         public static DX11Effect FromString(string code)
         {
-            return Compile(code, false, null);
+            return Compile(code, false, null, null);
         }
 
         public static DX11Effect FromString(string code, Include include)
         {
-            return Compile(code, false, include);
+            return Compile(code, false, include, null);
+        }
+
+        public static DX11Effect FromString(string code, Include include, ShaderMacro[] defines)
+        {
+            return Compile(code, false, include, defines);
+        }
+
+
+
+        public static DX11Effect FromFile(string path, ShaderMacro[] defines)
+        {
+            folderhandler.BaseShaderPath = Path.GetDirectoryName(path);
+            return Compile(path, true, folderhandler, defines);
         }
 
         public static DX11Effect FromFile(string path)
         {
-            return Compile(path, true, null);
+            folderhandler.BaseShaderPath = Path.GetDirectoryName(path);
+            return Compile(path, true, folderhandler, null);
         }
 
         public static DX11Effect FromResource(Assembly assembly, string path)
@@ -108,12 +162,17 @@ namespace FeralTic.DX11
             var textStreamReader = new StreamReader(assembly.GetManifestResourceStream(path));
             string code = textStreamReader.ReadToEnd();
             textStreamReader.Dispose();
-            return Compile(code, false, null);
+            return Compile(code, false, null, null);
+        }
+
+        public static DX11Effect FromFile(string path, Include include, ShaderMacro[] defines)
+        {
+            return Compile(path, true, include, defines);
         }
 
         public static DX11Effect FromFile(string path, Include include)
         {
-            return Compile(path, true, include);
+            return Compile(path, true, include, null);
         }
 
         public static DX11Effect FromByteCode(byte[] bytecode)

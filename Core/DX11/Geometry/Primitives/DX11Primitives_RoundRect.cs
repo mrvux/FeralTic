@@ -12,9 +12,15 @@ namespace FeralTic.DX11.Geometry
 {
     public partial class DX11PrimitivesManager
     {
-        public DX11IndexedGeometry RoundRect(Vector2 inner, float outer, int ires)
+        public DX11IndexedGeometry RoundRect(RoundRect settings)
         {
+            Vector2 inner = settings.InnerRadius;
+           float outer = settings.OuterRadius;
+           int ires = settings.CornerResolution;
+
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
+            geom.PrimitiveType = settings.PrimitiveType;
+            geom.Tag = settings;
             List<Pos4Norm3Tex2Vertex> vl = new List<Pos4Norm3Tex2Vertex>();
             List<int> il = new List<int>();
 
@@ -27,7 +33,10 @@ namespace FeralTic.DX11.Geometry
             float my = ucy * 2.0f;
 
             //Need 1 quad for center
-            idx = SetQuad(vl, il, 0.0f, 0.0f, inner.X, inner.Y, idx, mx, my);
+            if (settings.EnableCenter)
+            {
+                idx = SetQuad(vl, il, 0.0f, 0.0f, inner.X, inner.Y, idx, mx, my);
+            }
 
             //Need 2 quads up/down
             idx = SetQuad(vl, il, 0.0f, ucy, inner.X, (float)outer, idx, mx, my);
@@ -99,7 +108,7 @@ namespace FeralTic.DX11.Geometry
             innerv = TexCoord(innerv, mx, my);
             verts.Add(innerv);
 
-            int[] idxarray = new int[] { 0, 1, 2, 0, 3, 1 };
+            int[] idxarray = new int[] { 0, 2, 1, 0, 1, 3 };
             for (int i = 0; i < idxarray.Length; i++) { idxarray[i] += lastindex; }
             inds.AddRange(idxarray);
 
@@ -136,8 +145,8 @@ namespace FeralTic.DX11.Geometry
             for (int i = 0; i < ires; i++)
             {
                 inds.Add(lastindex);
-                inds.Add(lastindex + i + 1);
                 inds.Add(lastindex + i + 2);
+                inds.Add(lastindex + i + 1);
             }
 
             return lastindex + ires + 2;

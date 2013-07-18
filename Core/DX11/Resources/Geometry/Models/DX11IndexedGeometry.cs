@@ -94,6 +94,11 @@ namespace FeralTic.DX11.Resources
             this.drawer.Assign(this);
         }
 
+        public void Draw(IDX11GeometryDrawer<DX11IndexedGeometry> drawer)
+        {
+            drawer.Draw(this.context.CurrentDeviceContext);
+        }
+
         public DX11IndexedGeometry(DX11IndexedGeometry owner)
         {
             this.ownsvbo = false;

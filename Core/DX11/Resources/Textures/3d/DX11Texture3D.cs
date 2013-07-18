@@ -27,7 +27,13 @@ namespace FeralTic.DX11.Resources
         public int Height { get; protected set; }
         public int Depth { get; protected set; }
 
-        public override void Dispose() { }
+       // protected virtual void OnDispose() { }
+
+
+        public override void Dispose() 
+        {
+            //his.OnDispose();
+        }
 
         public static DX11Texture3D FromFile(DX11RenderContext context, string path)
         {

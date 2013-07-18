@@ -14,14 +14,17 @@ namespace FeralTic.DX11.Geometry
 {
     public partial class DX11PrimitivesManager
     {
-        public DX11IndexedGeometry Isocahedron(Vector3 size)
+        public DX11IndexedGeometry Isocahedron(Isocahedron settings)
         {
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
+            geom.PrimitiveType = settings.PrimitiveType;
+            geom.Tag = settings;
             geom.VerticesCount = 12;
             geom.InputLayout = Pos3Norm3Tex2Vertex.Layout;
             geom.VertexSize = Pos3Norm3Tex2Vertex.VertexSize;
             geom.Topology = PrimitiveTopology.TriangleList;
 
+            // This is the golden ratio
             float t = (1.0f + (float)Math.Sqrt(5.0f)) / 2.0f;
 
             DataStream ds = new DataStream(12 * Pos3Norm3Tex2Vertex.VertexSize, false, true);
@@ -45,7 +48,7 @@ namespace FeralTic.DX11.Geometry
 
             
 
-            geom.VertexBuffer = BufferHelper.CreateVertexBuffer(context.Device, ds, true);
+            geom.VertexBuffer = BufferHelper.CreateVertexBuffer(context, ds, true);
 
             var indexstream = new DataStream(60 * 4, true, true);
 
