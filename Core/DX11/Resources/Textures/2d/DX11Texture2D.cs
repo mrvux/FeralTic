@@ -105,13 +105,14 @@ namespace FeralTic.DX11.Resources
 
         public static DX11Texture2D FromFile(DX11RenderContext context, string path)
         {
+            return DX11Texture2D.FromFile(context, path, ImageLoadInformation.FromDefaults());
+        }
+
+        public static DX11Texture2D FromFile(DX11RenderContext context, string path, ImageLoadInformation loadinfo)
+        {
             try
             {
-                //ImageLoadInformation inf = new ImageLoadInformation();
-                //inf.
-                //res.Resource = Texture2D.FromFile(context.Device, path);
-
-                Texture2D tex = Texture2D.FromFile(context.Device, path);
+                Texture2D tex = Texture2D.FromFile(context.Device, path, loadinfo);
 
                 if (tex.Description.ArraySize == 1)
                 {
