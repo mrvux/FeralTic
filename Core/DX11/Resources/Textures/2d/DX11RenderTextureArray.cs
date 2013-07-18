@@ -16,8 +16,9 @@ namespace FeralTic.DX11.Resources
 
         public int ElemCnt { get { return desc.ArraySize; } }
 
+        public DX11SliceRenderTarget[] SliceRTV { get; protected set; }
 
-        public DX11RenderTextureArray(DX11RenderContext context, int w, int h, int elemcnt, Format format)
+        public DX11RenderTextureArray(DX11RenderContext context, int w, int h, int elemcnt, Format format, bool buildslices = true)
         {
             this.context = context;
 
@@ -58,6 +59,16 @@ namespace FeralTic.DX11.Resources
             this.RTV = new RenderTargetView(context.Device, this.Resource, rtd);
 
             this.desc = texBufferDesc;
+
+            this.SliceRTV = new DX11SliceRenderTarget[this.ElemCnt];
+
+            if (buildslices)
+            {
+                for (int i = 0; i < this.ElemCnt; i++)
+                {
+                    this.SliceRTV[i] = new DX11SliceRenderTarget(this.context, this, i);
+                }
+            }
         }
 
         public ShaderResourceView GetSRVSlice(int slice, int count)
@@ -88,6 +99,11 @@ namespace FeralTic.DX11.Resources
 
         public override void Dispose()
         {
+            foreach (DX11SliceRenderTarget slice in this.SliceRTV)
+            {
+                 if (slice != null) { slice.Dispose(); }
+            }
+
             this.RTV.Dispose();
             this.SRV.Dispose();
             this.Resource.Dispose();

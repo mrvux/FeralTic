@@ -14,14 +14,16 @@ namespace FeralTic.DX11.Resources
     public class DX11DepthTextureArray : DX11Texture2D, IDX11DepthStencil
     {
         public DepthStencilView DSV { get; protected set; }
+
         public DepthStencilView ReadOnlyDSV { get; protected set; }
+
+        public DX11SliceDepthStencil[] SliceDSV { get; protected set; }
 
         public int ElemCnt { get { return desc.ArraySize; } }
 
-
         private Format original;
 
-        public DX11DepthTextureArray(DX11RenderContext context, int w, int h, int elemcnt, Format format)
+        public DX11DepthTextureArray(DX11RenderContext context, int w, int h, int elemcnt, Format format, bool buildslices = true)
         {
             this.context = context;
 
@@ -58,7 +60,7 @@ namespace FeralTic.DX11.Resources
             {
                 ArraySize = elemcnt,
                 FirstArraySlice = 0,
-                Format = DepthFormatsHelper.GetDepthFormat(format),// Format.D32_Float,
+                Format = DepthFormatsHelper.GetDepthFormat(format),
                 Dimension = DepthStencilViewDimension.Texture2DArray,
                 MipSlice = 0
             };
@@ -71,21 +73,17 @@ namespace FeralTic.DX11.Resources
             this.ReadOnlyDSV = new DepthStencilView(context.Device, this.Resource, dsvd);
 
             this.desc = texBufferDesc;
-        }
 
-        /*public DepthStencilView GetView(int slice, int count)
-        {
-            DepthStencilViewDescription dsvd = new DepthStencilViewDescription()
+            this.SliceDSV = new DX11SliceDepthStencil[this.ElemCnt];
+
+            if (buildslices)
             {
-                ArraySize = count,
-                FirstArraySlice = slice,
-                Format = DepthFormatsHelper.GetDepthFormat(this.original),// Format.D32_Float,
-                Dimension = DepthStencilViewDimension.Texture2DArray,
-                MipSlice = 0
-            };
-
-            return new DepthStencilView(context.Device, this.Resource, dsvd);
-        }*/
+                for (int i = 0; i < this.ElemCnt; i++)
+                {
+                    this.SliceDSV[i] = new DX11SliceDepthStencil(this.context, this, i, DepthFormatsHelper.GetDepthFormat(format));
+                }
+            }
+        }
 
         public override void Dispose()
         {
