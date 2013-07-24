@@ -116,7 +116,7 @@ namespace FeralTic.DX11.Geometry
             var vertices = BufferHelper.CreateVertexBuffer(context, ds, true);
 
             var indexstream = new DataStream(48, true, true);
-            indexstream.WriteRange(new int[] { 0, 1, 3, 3, 2, 0, 4, 5,6,6,5,4 });
+            indexstream.WriteRange(new int[] { 0, 1, 3, 3, 2, 0, 4, 5, 7, 7, 6, 4 });
 
 
             geom.VertexBuffer = vertices;
