@@ -34,4 +34,30 @@ namespace FeralTic.DX11
             this.Resource = DX11Texture2D.FromFile(this.Context, path);
         }
     }
+
+    public class FileTexture1dLoadTask : FileTextureLoadTask<DX11Texture1D>
+    {
+        public FileTexture1dLoadTask(DX11RenderContext context, string path)
+            : base(context, path)
+        {
+        }
+
+        protected override void DoProcess()
+        {
+            this.Resource = DX11Texture1D.FromFile(this.Context, path);
+        }
+    }
+
+    public class FileTexture3dLoadTask : FileTextureLoadTask<DX11Texture3D>
+    {
+        public FileTexture3dLoadTask(DX11RenderContext context, string path)
+            : base(context, path)
+        {
+        }
+
+        protected override void DoProcess()
+        {
+            this.Resource = DX11Texture3D.FromFile(this.Context, path);
+        }
+    }
 }

@@ -42,7 +42,7 @@ namespace FeralTic.DX11
                 DepthBiasClamp = 0.0f,
                 FillMode = FillMode.Solid,
                 IsAntialiasedLineEnabled = false,
-                IsDepthClipEnabled = false,
+                IsDepthClipEnabled = true,
                 IsFrontCounterclockwise = false,
                 IsMultisampleEnabled = false,
                 IsScissorEnabled = false,
