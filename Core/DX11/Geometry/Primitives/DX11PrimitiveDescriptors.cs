@@ -172,6 +172,11 @@ namespace FeralTic.DX11.Geometry
         }
     }
 
+    public class QuadCross : Quad
+    {
+        public override string PrimitiveType { get { return "QuadCross"; } }
+    }
+
     public class RoundRect : AbstractPrimitiveDescriptor
     {
         public RoundRect()
