@@ -17,13 +17,12 @@ namespace FeralTic.DX11
 
         private int thrcount;
 
+        public int PendingTasks { get { return tasklist.Count; } }
 
         public DX11ResourceScheduler(DX11RenderContext context, int threadcount = 1)
         {
             this.context = context;
             this.thrcount = threadcount;
-
-            
         }
 
         public void Initialize()
