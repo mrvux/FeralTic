@@ -169,7 +169,5 @@ namespace FeralTic.DX11
             this.AddState("AlphaAdd", bs);
         }
 
-
-
     }
 }
