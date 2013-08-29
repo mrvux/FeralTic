@@ -95,6 +95,7 @@ namespace FeralTic.DX11.Resources
             this.Size = cnt;
             this.Buffer = buffer;
             this.SRV = new ShaderResourceView(context.Device, this.Buffer);
+            this.Stride = Marshal.SizeOf(typeof(T));
         }
 
         public DX11DynamicStructuredBuffer(DX11RenderContext context, IntPtr initial, int cnt) //Dynamic default buffer
@@ -165,6 +166,7 @@ namespace FeralTic.DX11.Resources
             this.Size = elementcount * Marshal.SizeOf(typeof(T));
             this.ElementCount = elementcount;
             this.BufferType = mode;
+            this.Stride = Marshal.SizeOf(typeof(T));
 
             BufferDescription bd = new BufferDescription()
             {
@@ -223,6 +225,7 @@ namespace FeralTic.DX11.Resources
         {
             this.Size = elementcount * Marshal.SizeOf(typeof(T));
             this.ElementCount = elementcount;
+            this.Stride = Marshal.SizeOf(typeof(T));
 
             BufferDescription bd = new BufferDescription()
             {
