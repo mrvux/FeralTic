@@ -40,7 +40,9 @@ namespace FeralTic.DX11.Resources
                 MipLevels = levels,
             };
 
+            
             this.Resource = new Texture2D(context.Device, texBufferDesc);
+            this.desc = this.Resource.Description;
 
             this.SRV = new ShaderResourceView(context.Device, this.Resource);
 

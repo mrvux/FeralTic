@@ -39,6 +39,9 @@ namespace FeralTic.DX11.Resources
             };
 
             this.Resource = new Texture3D(context.Device, texBufferDesc);
+            this.Width = w;
+            this.Height = h;
+            this.Depth = d;
 
             this.SRV = new ShaderResourceView(context.Device, this.Resource);
 
