@@ -40,7 +40,7 @@ namespace FeralTic.DX11.Resources
                 BindFlags = BindFlags.ConstantBuffer,
                 CpuAccessFlags = CpuAccessFlags.Write,
                 OptionFlags = ResourceOptionFlags.None,
-                SizeInBytes = size,
+                SizeInBytes = Math.Max(size,16),
                 Usage = ResourceUsage.Dynamic
             };
 
