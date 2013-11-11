@@ -131,13 +131,13 @@ namespace FeralTic.DX11
                 bs.RenderTargets[i] = new RenderTargetBlendDescription()
                 {
                     BlendEnable = true,
-                    BlendOperation = SlimDX.Direct3D11.BlendOperation.Minimum,
+                    BlendOperation = SlimDX.Direct3D11.BlendOperation.Add,
                     BlendOperationAlpha = SlimDX.Direct3D11.BlendOperation.Add,
-                    DestinationBlend = BlendOption.InverseSourceAlpha,
-                    DestinationBlendAlpha = BlendOption.One,
+                    DestinationBlend = BlendOption.Zero,
+                    DestinationBlendAlpha = BlendOption.Zero,
                     RenderTargetWriteMask = ColorWriteMaskFlags.All,
-                    SourceBlend = BlendOption.One,
-                    SourceBlendAlpha = BlendOption.One
+                    SourceBlend = BlendOption.DestinationColor,
+                    SourceBlendAlpha = BlendOption.DestinationAlpha
                 };
             }
 
