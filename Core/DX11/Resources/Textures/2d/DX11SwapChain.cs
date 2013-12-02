@@ -25,7 +25,7 @@ namespace FeralTic.DX11.Resources
 
 
 
-        public DX11SwapChain(DX11RenderContext context, IntPtr handle, Format format, SampleDescription sampledesc)
+        public DX11SwapChain(DX11RenderContext context, IntPtr handle, Format format, SampleDescription sampledesc,int rate = 60)
         {
             this.context = context;
             this.handle = handle;
@@ -33,7 +33,7 @@ namespace FeralTic.DX11.Resources
             SwapChainDescription sd = new SwapChainDescription()
             {
                 BufferCount = 1,
-                ModeDescription = new ModeDescription(0, 0, new Rational(60, 1), format),
+                ModeDescription = new ModeDescription(0, 0, new Rational(rate, 1), format),
                 IsWindowed = true,
                 OutputHandle = handle,
                 SampleDescription = sampledesc,
@@ -68,17 +68,6 @@ namespace FeralTic.DX11.Resources
             Output opt;
             this.swapchain.GetFullScreenState(out fs, out opt);
 
-            /*if (fs != fullscreen)
-            {
-                if (fullscreen)
-                {
-                    this.swapchain.SetFullScreenState(fullscreen, opt);
-                }
-                else
-                {
-                    this.swapchain.SetFullScreenState(false, null);
-                }
-            }*/
             if (this.swapchain.IsFullScreen != fullscreen)
             {
                 this.swapchain.IsFullScreen = fullscreen;
