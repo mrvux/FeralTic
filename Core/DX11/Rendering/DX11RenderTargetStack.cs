@@ -82,15 +82,7 @@ namespace FeralTic.DX11
 
         public void Apply()
         {
-            if (stack.Count > 0)
-            {
-                stack.Peek().Apply(context.CurrentDeviceContext);
-            }
-            else
-            {
-                RenderTargetView[] zero = new RenderTargetView[] { null,null,null,null,null,null,null,null };
-                context.CurrentDeviceContext.OutputMerger.SetTargets(null, zero);
-            }
+            Apply(context.CurrentDeviceContext);
         }
 
         public void Apply(DeviceContext ctx)

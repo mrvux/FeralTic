@@ -65,15 +65,25 @@ namespace FeralTic.DX11.Resources
             this.drawer.Assign(this);
         }
 
+        public override void Bind(DeviceContext ctx, InputLayout layout)
+        {
+            ctx.InputAssembler.PrimitiveTopology = this.Topology;
+            this.drawer.PrepareInputAssembler(ctx, null);
+        }
+
         public override void Bind(InputLayout layout)
         {
-            this.context.CurrentDeviceContext.InputAssembler.PrimitiveTopology = this.Topology;
-            this.drawer.PrepareInputAssembler(this.context.CurrentDeviceContext, null);
+            Bind(context.CurrentDeviceContext, null);
         }
 
         public override void Draw()
         {
-            this.drawer.Draw(this.context.CurrentDeviceContext);
+            Draw(this.context.CurrentDeviceContext);
+        }
+
+        public override void Draw(DeviceContext ctx)
+        {
+            this.drawer.Draw(ctx);
         }
 
         public override void Dispose()

@@ -57,6 +57,13 @@ namespace FeralTic.DX11.Resources
             }
         }
 
+        public void Update(DeviceContext ctx,ref T value)
+        {
+            DataBox db = ctx.MapSubresource(this.Buffer, MapMode.WriteDiscard, MapFlags.None);
+            db.Data.Write<T>(value);
+            ctx.UnmapSubresource(this.Buffer, 0);
+        }
+
         public SlimDX.Direct3D11.Buffer Buffer { get; protected set; }
 
         public void Dispose()

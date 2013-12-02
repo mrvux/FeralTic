@@ -54,7 +54,11 @@ namespace FeralTic.DX11.Resources
 
         public abstract void Draw();
 
+        public abstract void Draw(DeviceContext ctx);
+
         public abstract void Bind(InputLayout layout);
+
+        public abstract void Bind(DeviceContext ctx, InputLayout layout);
 
         public abstract void Dispose();
 
