@@ -112,6 +112,41 @@ namespace FeralTic.DX11.Resources
             }
         }
 
+        public static DX11Texture2D FromStream(DX11RenderContext context, Stream s, int size)
+        {
+            try
+            {
+                Texture2D tex = Texture2D.FromStream(context.Device, s, size);
+
+                if (tex.Description.ArraySize == 1)
+                {
+                    DX11Texture2D res = new DX11Texture2D();
+                    res.context = context;
+                    res.Resource = tex;
+                    res.SRV = new ShaderResourceView(context.Device, res.Resource);
+                    res.desc = res.Resource.Description;
+                    res.isowner = true;
+                    return res;
+                }
+                else
+                {
+                    if (tex.Description.OptionFlags.HasFlag(ResourceOptionFlags.TextureCube))
+                    {
+                        return new DX11TextureCube(context, tex);
+                    }
+                    else
+                    {
+                        return new DX11TextureArray2D(context, tex);
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+
         public static DX11Texture2D FromFile(DX11RenderContext context, string path)
         {
             return DX11Texture2D.FromFile(context, path, ImageLoadInformation.FromDefaults());
