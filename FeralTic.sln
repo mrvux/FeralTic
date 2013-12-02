@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeralTic", "Core\FeralTic.csproj", "{9EAD0F44-E6AA-4363-BE4D-D944C1D35044}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShaderCompTest", "ShaderCompTest\ShaderCompTest.csproj", "{00D760A3-5C2A-478C-BAD7-242428DA0A72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -19,6 +21,12 @@ Global
 		{9EAD0F44-E6AA-4363-BE4D-D944C1D35044}.Release|x64.Build.0 = Release|x64
 		{9EAD0F44-E6AA-4363-BE4D-D944C1D35044}.Release|x86.ActiveCfg = Release|x86
 		{9EAD0F44-E6AA-4363-BE4D-D944C1D35044}.Release|x86.Build.0 = Release|x86
+		{00D760A3-5C2A-478C-BAD7-242428DA0A72}.Debug|x64.ActiveCfg = Debug|x86
+		{00D760A3-5C2A-478C-BAD7-242428DA0A72}.Debug|x86.ActiveCfg = Debug|x86
+		{00D760A3-5C2A-478C-BAD7-242428DA0A72}.Debug|x86.Build.0 = Debug|x86
+		{00D760A3-5C2A-478C-BAD7-242428DA0A72}.Release|x64.ActiveCfg = Release|x86
+		{00D760A3-5C2A-478C-BAD7-242428DA0A72}.Release|x86.ActiveCfg = Release|x86
+		{00D760A3-5C2A-478C-BAD7-242428DA0A72}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

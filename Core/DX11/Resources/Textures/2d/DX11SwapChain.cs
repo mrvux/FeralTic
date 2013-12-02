@@ -137,7 +137,14 @@ namespace FeralTic.DX11.Resources
 
         public void Present(int syncInterval,PresentFlags flags)
         {
-            this.swapchain.Present(syncInterval,flags);
+            try
+            {
+                this.swapchain.Present(syncInterval, flags);
+            }
+            catch
+            {
+                
+            }
         }  
     }
 }
