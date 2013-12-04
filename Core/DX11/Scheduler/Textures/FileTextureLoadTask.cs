@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FeralTic.DX11.Resources;
+using SlimDX.Direct3D11;
 
 namespace FeralTic.DX11
 {
@@ -24,14 +25,23 @@ namespace FeralTic.DX11
 
     public class FileTexture2dLoadTask : FileTextureLoadTask<DX11Texture2D>
     {
-        public FileTexture2dLoadTask(DX11RenderContext context, string path)
+        private bool domips;
+
+        public FileTexture2dLoadTask(DX11RenderContext context, string path, bool domips)
             : base(context, path)
         {
+            this.domips = domips;
         }
 
         protected override void DoProcess()
         {
-            this.Resource = DX11Texture2D.FromFile(this.Context, path);
+            ImageLoadInformation info = ImageLoadInformation.FromDefaults();
+            if (!this.domips)
+            {
+                info.MipLevels = 1;
+            }
+
+            this.Resource = DX11Texture2D.FromFile(this.Context, path,info);
         }
     }
 
