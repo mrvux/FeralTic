@@ -24,7 +24,7 @@ namespace FeralTic.DX11.Resources
                 Dimension = RenderTargetViewDimension.Texture2DArray,
                 Format = texture.Format,
                 MipSlice = 0,
-                FirstArraySlice = sliceindex
+                FirstArraySlice = sliceindex,
             };
 
             this.RTV = new RenderTargetView(context.Device, this.parent.Resource, rtd);
@@ -34,7 +34,9 @@ namespace FeralTic.DX11.Resources
                 ArraySize = 1,
                 Dimension = ShaderResourceViewDimension.Texture2DArray,
                 Format = texture.Format,
-                FirstArraySlice = sliceindex
+                FirstArraySlice = sliceindex,
+                MipLevels = 1,
+                MostDetailedMip = 0
             };
 
             this.SRV = new ShaderResourceView(context.Device, this.parent.Resource, srvd);
