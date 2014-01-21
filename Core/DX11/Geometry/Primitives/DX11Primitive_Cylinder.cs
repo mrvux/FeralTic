@@ -45,7 +45,7 @@ namespace FeralTic.DX11.Geometry
 
                     Pos4Norm3Tex2Vertex v = new Pos4Norm3Tex2Vertex();
                     v.Position = new Vector4(x, y, z, 1.0f);
-                    v.Normals = new Vector3(x, 0.0f, y);
+                    v.Normals = new Vector3(x, 0.0f, z);
                     v.Normals.Normalize();
 
                     verts.Add(v);
