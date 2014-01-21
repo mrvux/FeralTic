@@ -39,6 +39,7 @@ namespace FeralTic.DX11
             this.CreateAddivite();
             this.CreateBlend();
             this.CreateMultiply();
+            this.CreateAlphaAdd();
         }
 
         private void CreateNoBlend()
@@ -130,17 +131,43 @@ namespace FeralTic.DX11
                 bs.RenderTargets[i] = new RenderTargetBlendDescription()
                 {
                     BlendEnable = true,
-                    BlendOperation = SlimDX.Direct3D11.BlendOperation.Minimum,
+                    BlendOperation = SlimDX.Direct3D11.BlendOperation.Add,
                     BlendOperationAlpha = SlimDX.Direct3D11.BlendOperation.Add,
-                    DestinationBlend = BlendOption.InverseSourceAlpha,
-                    DestinationBlendAlpha = BlendOption.One,
+                    DestinationBlend = BlendOption.Zero,
+                    DestinationBlendAlpha = BlendOption.Zero,
                     RenderTargetWriteMask = ColorWriteMaskFlags.All,
-                    SourceBlend = BlendOption.One,
-                    SourceBlendAlpha = BlendOption.One
+                    SourceBlend = BlendOption.DestinationColor,
+                    SourceBlendAlpha = BlendOption.DestinationAlpha
                 };
             }
 
             this.AddState("Multiply", bs);
         }
+
+        private void CreateAlphaAdd()
+        {
+            BlendStateDescription bs = new BlendStateDescription()
+            {
+                AlphaToCoverageEnable = false,
+                IndependentBlendEnable = false,
+            };
+            for (int i = 0; i < 8; i++)
+            {
+                bs.RenderTargets[i] = new RenderTargetBlendDescription()
+                {
+                    BlendEnable = true,
+                    BlendOperation = SlimDX.Direct3D11.BlendOperation.Add,
+                    BlendOperationAlpha = SlimDX.Direct3D11.BlendOperation.Add,
+                    DestinationBlend = BlendOption.One,
+                    DestinationBlendAlpha = BlendOption.Zero,
+                    RenderTargetWriteMask = ColorWriteMaskFlags.All,
+                    SourceBlend = BlendOption.SourceAlpha,
+                    SourceBlendAlpha = BlendOption.Zero
+                };
+            }
+
+            this.AddState("AlphaAdd", bs);
+        }
+
     }
 }

@@ -112,15 +112,51 @@ namespace FeralTic.DX11.Resources
             }
         }
 
-        public static DX11Texture2D FromFile(DX11RenderContext context, string path)
+        public static DX11Texture2D FromStream(DX11RenderContext context, Stream s, int size)
         {
             try
             {
-                //ImageLoadInformation inf = new ImageLoadInformation();
-                //inf.
-                //res.Resource = Texture2D.FromFile(context.Device, path);
+                Texture2D tex = Texture2D.FromStream(context.Device, s, size);
 
-                Texture2D tex = Texture2D.FromFile(context.Device, path);
+                if (tex.Description.ArraySize == 1)
+                {
+                    DX11Texture2D res = new DX11Texture2D();
+                    res.context = context;
+                    res.Resource = tex;
+                    res.SRV = new ShaderResourceView(context.Device, res.Resource);
+                    res.desc = res.Resource.Description;
+                    res.isowner = true;
+                    return res;
+                }
+                else
+                {
+                    if (tex.Description.OptionFlags.HasFlag(ResourceOptionFlags.TextureCube))
+                    {
+                        return new DX11TextureCube(context, tex);
+                    }
+                    else
+                    {
+                        return new DX11TextureArray2D(context, tex);
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+
+        public static DX11Texture2D FromFile(DX11RenderContext context, string path)
+        {
+            return DX11Texture2D.FromFile(context, path, ImageLoadInformation.FromDefaults());
+        }
+
+        public static DX11Texture2D FromFile(DX11RenderContext context, string path, ImageLoadInformation loadinfo)
+        {
+            try
+            {
+                Texture2D tex = Texture2D.FromFile(context.Device, path, loadinfo);
 
                 if (tex.Description.ArraySize == 1)
                 {

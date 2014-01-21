@@ -11,20 +11,9 @@ namespace FeralTic.DX11.Resources
 {
     public class DX11CubeRenderTarget : DX11Texture2D, IDX11RenderTargetView
     {
-        public RenderTargetView[] FaceRTVs { get; protected set; }
-
-        public ShaderResourceView[] FaceSRVs { get; protected set; }
+        public DX11SliceRenderTarget[] SliceRTV { get; protected set; }
 
         public RenderTargetView RTV { get; protected set; }
-
-        //Sets face index for rendering
-        public int FaceIndex
-        {
-            set
-            {
-                this.RTV = this.FaceRTVs[value % 6];
-            }
-        }
 
         public DX11CubeRenderTarget(DX11RenderContext context, int size, SampleDescription sd, Format format, bool genMipMaps, int mmLevels)
         {
@@ -59,8 +48,7 @@ namespace FeralTic.DX11.Resources
             this.desc = texBufferDesc;
 
             //Create faces SRV/RTV
-            this.FaceRTVs = new RenderTargetView[6];
-            this.FaceSRVs = new ShaderResourceView[6];
+            this.SliceRTV = new DX11SliceRenderTarget[6];
 
             ShaderResourceViewDescription svd = new ShaderResourceViewDescription()
             {
@@ -71,36 +59,22 @@ namespace FeralTic.DX11.Resources
                 First2DArrayFace = 0
             };
 
-            this.SRV = new ShaderResourceView(context.Device, this.Resource, svd);
-
-            this.CreateSliceViews(context.Device, format);
-        }
-
-        private void CreateSliceViews(Device device, Format format)
-        {
-            RenderTargetViewDescription rtd = new RenderTargetViewDescription()
+            RenderTargetViewDescription rtvd = new RenderTargetViewDescription()
             {
-                ArraySize = 1,
+                ArraySize= 6,
                 Dimension = RenderTargetViewDimension.Texture2DArray,
-                Format = format
+                FirstArraySlice = 0,
+                Format = format,
+                MipSlice = 0
             };
 
-            ShaderResourceViewDescription srvd = new ShaderResourceViewDescription()
-            {
-                ArraySize = 1,
-                Dimension = ShaderResourceViewDimension.Texture2DArray,
-                Format = format,
-                MipLevels = 1,
-                MostDetailedMip = 0
-            };
+            this.RTV = new RenderTargetView(context.Device, this.Resource, rtvd);
+
+            this.SRV = new ShaderResourceView(context.Device, this.Resource, svd);
 
             for (int i = 0; i < 6; i++)
             {
-                rtd.FirstArraySlice = i;
-                srvd.FirstArraySlice = i;
-
-                this.FaceRTVs[i] = new RenderTargetView(device, this.Resource, rtd);
-                this.FaceSRVs[i] = new ShaderResourceView(device, this.Resource, srvd);
+                this.SliceRTV[i] = new DX11SliceRenderTarget(context, this, i);
             }
         }
 
@@ -108,8 +82,7 @@ namespace FeralTic.DX11.Resources
         {
             for (int i = 0; i < 6; i++)
             {
-                this.FaceRTVs[i].Dispose();
-                this.FaceSRVs[i].Dispose();
+                this.SliceRTV[i].Dispose();
             }
             base.Dispose();
         }

@@ -12,9 +12,17 @@ namespace FeralTic.DX11.Geometry
 {
     public partial class DX11PrimitivesManager
     {
-        public DX11IndexedGeometry Segment(float phase, float cycles, float inner, int res, bool flat)
+        public DX11IndexedGeometry Segment(Segment settings)
         {
+            float phase = settings.Phase;
+            float cycles = settings.Cycles; 
+            float inner = settings.InnerRadius; 
+            int res = settings.Resolution;
+            bool flat = settings.Flat;
+
             DX11IndexedGeometry geom = new DX11IndexedGeometry(context);
+            geom.Tag = settings;
+            geom.PrimitiveType = settings.PrimitiveType;
             int vcount = res * 2;
             int icount = (res - 1) * 6;
 
@@ -67,6 +75,20 @@ namespace FeralTic.DX11.Geometry
                 phi += inc;
             }
 
+            float minx = float.MaxValue, miny = float.MaxValue, minz = float.MaxValue;
+            float maxx = float.MinValue, maxy = float.MinValue, maxz = float.MinValue;
+
+            foreach (Pos4Norm3Tex2Vertex v in vertices)
+            {
+                minx = v.Position.X < minx ? v.Position.X : minx;
+                miny = v.Position.Y < miny ? v.Position.Y : miny;
+                minz = v.Position.Z < minz ? v.Position.Z : minz;
+
+                maxx = v.Position.X > maxx ? v.Position.X : maxx;
+                maxy = v.Position.Y > maxy ? v.Position.Y : maxy;
+                maxz = v.Position.Z > maxz ? v.Position.Z : maxz;
+            }
+
             ds.WriteRange(vertices);
 
             ds.Position = 0;
@@ -111,7 +133,8 @@ namespace FeralTic.DX11.Geometry
             geom.VerticesCount = vcount;
             geom.VertexSize = Pos4Norm3Tex2Vertex.VertexSize;
 
-            geom.HasBoundingBox = false;
+            geom.BoundingBox = new BoundingBox(new Vector3(minx, miny, minz), new Vector3(maxx, maxy, maxz));
+            geom.HasBoundingBox = true;
 
             return geom;
         }

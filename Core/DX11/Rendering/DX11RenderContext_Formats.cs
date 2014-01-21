@@ -22,6 +22,20 @@ namespace FeralTic.DX11
             return usageformats[format];
         }
 
+        public int GetSampleCount(Format format, int samplecount)
+        {
+            int levels = this.Device.CheckMultisampleQualityLevels(format, samplecount);
+
+            while (levels == 0 || samplecount > 1)
+            {
+                samplecount /= 2;
+                levels = this.Device.CheckMultisampleQualityLevels(format, samplecount);
+            }
+
+            return samplecount;
+
+        }
+
         #region Build Formats Sampling
         private void BuildFormatSampling()
         {

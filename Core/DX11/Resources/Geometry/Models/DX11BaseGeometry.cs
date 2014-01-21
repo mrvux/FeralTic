@@ -26,7 +26,7 @@ namespace FeralTic.DX11.Resources
         /// <summary>
         /// Vertex Input Layout
         /// </summary>
-        public InputElement[] InputLayout { get; set; }
+        public virtual InputElement[] InputLayout { get; set; }
 
 
         public PrimitiveTopology Topology
@@ -54,10 +54,18 @@ namespace FeralTic.DX11.Resources
 
         public abstract void Draw();
 
+        public abstract void Draw(DeviceContext ctx);
+
         public abstract void Bind(InputLayout layout);
+
+        public abstract void Bind(DeviceContext ctx, InputLayout layout);
 
         public abstract void Dispose();
 
         public abstract IDX11Geometry ShallowCopy();
+
+        public object Tag { get; set; }
+
+        public string PrimitiveType { get; set; }
     }
 }

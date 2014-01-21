@@ -40,7 +40,7 @@ namespace FeralTic.DX11.Resources
                 BindFlags = BindFlags.ConstantBuffer,
                 CpuAccessFlags = CpuAccessFlags.Write,
                 OptionFlags = ResourceOptionFlags.None,
-                SizeInBytes = size,
+                SizeInBytes = Math.Max(size,16),
                 Usage = ResourceUsage.Dynamic
             };
 
@@ -55,6 +55,13 @@ namespace FeralTic.DX11.Resources
                 db.Data.Write<T>(value);
                 context.CurrentDeviceContext.UnmapSubresource(this.Buffer, 0);
             }
+        }
+
+        public void Update(DeviceContext ctx,ref T value)
+        {
+            DataBox db = ctx.MapSubresource(this.Buffer, MapMode.WriteDiscard, MapFlags.None);
+            db.Data.Write<T>(value);
+            ctx.UnmapSubresource(this.Buffer, 0);
         }
 
         public SlimDX.Direct3D11.Buffer Buffer { get; protected set; }

@@ -10,8 +10,17 @@ namespace FeralTic.DX11.Geometry
 {
     public partial class DX11PrimitivesManager
     {
-        public DX11IndexedGeometry Torus(int resX, int resY, float radius, float thick, float phasey,float phasex,float rot, float cy)
+        public DX11IndexedGeometry Torus(Torus settings)
         {
+            int resX = settings.ResolutionX;
+            int resY = settings.ResolutionY;
+            float radius = settings.Radius;
+            float thick = settings.Thickness;
+            float phasey = settings.PhaseY;
+            float phasex = settings.PhaseX; 
+            float rot = settings.Rotation;
+            float cy = settings.CY;
+
             List<Pos4Norm3Tex2Vertex> vertices = new List<Pos4Norm3Tex2Vertex>();
             List<int> indices = new List<int>();
 
@@ -67,6 +76,8 @@ namespace FeralTic.DX11.Geometry
             }
 
             DX11IndexedGeometry geom = DX11IndexedGeometry.CreateFrom<Pos4Norm3Tex2Vertex>(context, vertices.ToArray(), indices.ToArray(), Pos4Norm3Tex2Vertex.Layout);
+            geom.Tag = settings;
+            geom.PrimitiveType = settings.PrimitiveType;
             geom.HasBoundingBox = false;
             geom.BoundingBox = new BoundingBox(new Vector3(-radius), new Vector3(radius));
 

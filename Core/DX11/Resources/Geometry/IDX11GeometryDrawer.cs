@@ -29,11 +29,5 @@ namespace FeralTic.DX11.Resources
         /// <param name="ctx">Device Context</param>
         /// <param name="layout">Input Layout</param>
         void PrepareInputAssembler(DeviceContext ctx, InputLayout layout);
-
-        /// <summary>
-        /// Draws geometry
-        /// </summary>
-        /// <param name="ctx">Device context</param>
-        void Draw(DeviceContext ctx);
     }
 }

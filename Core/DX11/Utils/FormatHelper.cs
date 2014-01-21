@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SlimDX.Direct3D11;
+using SlimDX.DXGI;
+
+using Device = SlimDX.Direct3D11.Device;
 
 namespace FeralTic.DX11.Utils
 {
@@ -23,6 +27,44 @@ namespace FeralTic.DX11.Utils
                 return instance;
             }
         }
+
+
+        #region Is Supported
+        /// <summary>
+        /// Checks if a format is supported for a specific usage
+        /// </summary>
+        /// <param name="dev">Device to check</param>
+        /// <param name="usage">Desired format usage</param>
+        /// <param name="format">Desired format</param>
+        /// <returns>true if format supported, false otherwise</returns>
+        public bool IsSupported(Device dev, FormatSupport usage, Format format)
+        {
+            FormatSupport support = dev.CheckFormatSupport(format);
+            return (support | usage) == support;
+        }
+        #endregion
+
+        #region Supported Formats
+        /// <summary>
+        /// Lists supported DXGI formats for a given usage
+        /// </summary>
+        /// <param name="dev">Device to check format support for</param>
+        /// <param name="usage">Requested Usage</param>
+        /// <returns>List of Supported formats</returns>
+        public List<string> SupportedFormats(Device dev, FormatSupport usage)
+        {
+            List<string> result = new List<string>();
+            foreach (string s in Enum.GetNames(typeof(Format)))
+            {
+                if (IsSupported(dev, usage, (Format)Enum.Parse(typeof(Format), s)))
+                {
+                    result.Add(s);
+                }
+            }
+            return result;
+        }
+        #endregion
+
 
         public int GetSize(SlimDX.DXGI.Format format)
         {
@@ -185,6 +227,6 @@ namespace FeralTic.DX11.Utils
             this.formatsize.Add(SlimDX.DXGI.Format.X24_Typeless_G8_UInt, 4);
             this.formatsize.Add(SlimDX.DXGI.Format.X32_Typeless_G8X24_UInt, 8);
         }
-        
+
     }
 }

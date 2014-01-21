@@ -24,6 +24,15 @@ namespace FeralTic.DX11
             this.SetDefaultBlend();
         }
 
+        public DX11RenderState Clone()
+        {
+            DX11RenderState result = new DX11RenderState();
+            result.Blend = this.Blend;
+            result.DepthStencil = this.DepthStencil;
+            result.Rasterizer = this.Rasterizer;
+            return result;
+        }
+
         public void SetDefaultRasterizer()
         {
             this.Rasterizer = new RasterizerStateDescription()
@@ -33,7 +42,7 @@ namespace FeralTic.DX11
                 DepthBiasClamp = 0.0f,
                 FillMode = FillMode.Solid,
                 IsAntialiasedLineEnabled = false,
-                IsDepthClipEnabled = false,
+                IsDepthClipEnabled = true,
                 IsFrontCounterclockwise = false,
                 IsMultisampleEnabled = false,
                 IsScissorEnabled = false,

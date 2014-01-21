@@ -29,12 +29,21 @@ namespace FeralTic.DX11.Resources
 
         void Draw();
 
+        void Draw(DeviceContext ctx);
+
         void Bind(InputLayout layout);
+
+        void Bind(DeviceContext ctx, InputLayout layout);
+
 
         BoundingBox BoundingBox { get; set; }
 
         bool HasBoundingBox { get; set; }
 
         IDX11Geometry ShallowCopy();
+
+        string PrimitiveType { get; set; }
+
+        object Tag { get; set; }
     }
 }

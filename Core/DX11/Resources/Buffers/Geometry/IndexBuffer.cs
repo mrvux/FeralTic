@@ -31,7 +31,6 @@ namespace FeralTic.DX11.Resources
             this.context = context;
             format = SlimDX.DXGI.Format.R32_UInt;
             this.Buffer = SlimDX.Direct3D11.Buffer.FromPointer(ptr);
-            //this.Buffer.Dispose();
             this.IndicesCount = indicescount;
         }
 
@@ -127,9 +126,14 @@ namespace FeralTic.DX11.Resources
             }
         }
 
+        public void Bind(DeviceContext ctx)
+        {
+            ctx.InputAssembler.SetIndexBuffer(this.Buffer, this.format, 0);
+        }
+
         public void Bind()
         {
-            context.CurrentDeviceContext.InputAssembler.SetIndexBuffer(this.Buffer, this.format, 0);
+            Bind(this.context.CurrentDeviceContext);
         }
 
         public void Dispose()

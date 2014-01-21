@@ -68,6 +68,7 @@ namespace FeralTic.DX11.Resources
         {
             this.Size = cnt;
             this.Buffer = buffer;
+            this.Stride = buffer.Description.StructureByteStride;
             this.SRV = new ShaderResourceView(dev, this.Buffer);
         }
 
@@ -191,6 +192,7 @@ namespace FeralTic.DX11.Resources
         {
             this.Size = elementcount * stride;
             this.ElementCount = elementcount;
+            this.Stride = stride;
 
             BufferDescription bd = new BufferDescription()
             {
