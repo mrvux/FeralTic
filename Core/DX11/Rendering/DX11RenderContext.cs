@@ -64,14 +64,14 @@ namespace FeralTic.DX11
             this.CurrentDeviceContext = this.immediatecontext;
         }
 
-        public void Initialize()
+        public void Initialize(int schedulerthreadcount = 1)
         {
             this.ResourcePool = new DX11ResourcePoolManager(this);
             this.RenderTargetStack = new DX11RenderTargetStack(this);
             this.DefaultTextures = new DefaultTextures(this);
             this.Primitives = new DX11PrimitivesManager(this);
             this.RenderStateStack = new DX11RenderStateStack(this);
-            this.ResourceScheduler = new DX11ResourceScheduler(this);
+            this.ResourceScheduler = new DX11ResourceScheduler(this, schedulerthreadcount);
             this.ResourceScheduler.Initialize();
 
             this.CheckBufferSupport();
