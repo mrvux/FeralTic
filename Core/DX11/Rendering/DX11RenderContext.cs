@@ -109,12 +109,12 @@ namespace FeralTic.DX11
 
         public void CleanUp()
         {
-            this.immediatecontext.ComputeShader.SetShaderResources(nullsrvs, 0, 128);
             this.immediatecontext.PixelShader.SetShaderResources(nullsrvs, 0, 128);
             this.immediatecontext.DomainShader.SetShaderResources(nullsrvs, 0, 128);
             this.immediatecontext.HullShader.SetShaderResources(nullsrvs, 0, 128);
             this.immediatecontext.GeometryShader.SetShaderResources(nullsrvs, 0, 128);
             this.immediatecontext.VertexShader.SetShaderResources(nullsrvs, 0, 128);
+            this.CleanUpCS();
         }
 
         public void CleanUpPS()
@@ -125,7 +125,15 @@ namespace FeralTic.DX11
         public void CleanUpCS()
         {
             this.immediatecontext.ComputeShader.SetShaderResources(nullsrvs, 0, 128);
-            this.immediatecontext.ComputeShader.SetUnorderedAccessViews(nulluavs, 0, 8);
+
+            if (this.IsFeatureLevel11)
+            {
+                this.CurrentDeviceContext.ComputeShader.SetUnorderedAccessViews(nulluavs, 0, 8);
+            }
+            else
+            {
+                this.CurrentDeviceContext.ComputeShader.SetUnorderedAccessViews(nulluavs, 0, 1);
+            }
         }
 
         public void CleanShaderStages()
