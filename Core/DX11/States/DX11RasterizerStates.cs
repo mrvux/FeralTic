@@ -37,6 +37,7 @@ namespace FeralTic.DX11
             this.CreateBackCullSimple();
             this.CreateFrontCullSimple();
             this.CreateNoCullSimple();
+            this.CreateLine();
         }
 
         private void CreateNoCullSimple()
@@ -100,6 +101,27 @@ namespace FeralTic.DX11
 
             rsd.FillMode = FillMode.Wireframe;
             this.AddState("FrontCullWireframe", rsd);
+        }
+
+        private void CreateLine()
+        {
+            RasterizerStateDescription rsd = new RasterizerStateDescription()
+            {
+                CullMode = CullMode.None,
+                DepthBias = 0,
+                DepthBiasClamp = 0.0f,
+                FillMode = FillMode.Solid,
+                IsAntialiasedLineEnabled = true,
+                IsDepthClipEnabled = true,
+                IsFrontCounterclockwise = false,
+                IsScissorEnabled = false,
+                SlopeScaledDepthBias = 0.0f
+            };
+
+            this.AddState("LineAlpha", rsd);
+
+            rsd.IsMultisampleEnabled = true;
+            this.AddState("LineQuadrilateral", rsd);
         }
     }
 }
