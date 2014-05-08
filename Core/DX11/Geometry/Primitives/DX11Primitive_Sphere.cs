@@ -57,7 +57,7 @@ namespace FeralTic.DX11.Geometry
                     Pos4Norm3Tex2Vertex vertex = new Pos4Norm3Tex2Vertex();
                     vertex.Position = new Vector4(dx * radius, dy * radius, dz * radius, 1.0f);
                     vertex.Normals = Vector3.Normalize(new Vector3(vertex.Position.X, vertex.Position.Y, vertex.Position.Z));
-                    vertex.TexCoords = new Vector2(u,v);
+                    vertex.TexCoords = new Vector2(1.0f-u,v);
 
                     vertices.Add(vertex);
                 }
