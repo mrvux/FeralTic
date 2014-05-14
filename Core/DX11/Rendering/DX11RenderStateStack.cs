@@ -49,5 +49,11 @@ namespace FeralTic.DX11
                 defaultstate.Apply(context);
             }
         }
+
+        public void Reset()
+        {
+            stack.Clear();
+            defaultstate.Apply(context);
+        }
     }
 }
