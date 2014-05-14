@@ -15,10 +15,16 @@ namespace FeralTic.DX11.Resources
         private UnorderedAccessView uav;
         private bool allowuav;
         private bool genmm;
+        private int requestedMipsLevel;
 
         public bool GenMipMaps
         {
             get { return this.genmm; }
+        }
+
+        public int RequestedMipLevels
+        {
+            get { return this.requestedMipsLevel; }
         }
 
         public UnorderedAccessView UAV
@@ -65,6 +71,8 @@ namespace FeralTic.DX11.Resources
                 SampleDescription = sd,
                 Usage = ResourceUsage.Default,
             };
+
+            this.requestedMipsLevel = mmLevels;
 
             if (sd.Count == 1 && allowUAV && context.IsFeatureLevel11)
             { 

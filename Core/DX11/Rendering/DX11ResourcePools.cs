@@ -61,7 +61,7 @@ namespace FeralTic.DX11
                 if (!entry.IsLocked && tr.Width == w && tr.Format == format && tr.Height == h
                     && tr.Resource.Description.SampleDescription.Count == sd.Count
                     && tr.Resource.Description.SampleDescription.Quality == sd.Quality
-                    && tr.GenMipMaps == genMM)
+                    && tr.GenMipMaps == genMM && tr.RequestedMipLevels == mmLevels)
                 {
                     entry.Lock();
                     return entry;
