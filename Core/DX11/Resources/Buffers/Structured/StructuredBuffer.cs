@@ -124,10 +124,7 @@ namespace FeralTic.DX11.Resources
 
         public void WriteData(T[] data)
         {
-            DeviceContext ctx = this.context.CurrentDeviceContext;
-            DataBox db = ctx.MapSubresource(this.Buffer, MapMode.WriteDiscard, MapFlags.None);
-            db.Data.WriteRange(data);
-            ctx.UnmapSubresource(this.Buffer, 0);      
+            WriteData(data, 0, data.Length);    
         }
 
         public void WriteData(T[] data, int offset, int count)
