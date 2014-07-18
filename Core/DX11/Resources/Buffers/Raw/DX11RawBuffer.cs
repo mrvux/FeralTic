@@ -8,6 +8,12 @@ using SlimDX;
 
 namespace FeralTic.DX11.Resources
 {
+    public struct DX11RawBufferFlags
+    {
+        public bool AllowIndexBuffer { get; set; }
+        public bool AllowVertexBuffer { get; set; }
+    }
+
     public class DX11RawBuffer:  IDX11RWResource
     {
         public UnorderedAccessView UAV { get; protected set; }
@@ -33,7 +39,7 @@ namespace FeralTic.DX11.Resources
             this.SRV = new ShaderResourceView(context.Device, this.Buffer, srvd);
         }
 
-        public DX11RawBuffer(Device dev, int size)
+        public DX11RawBuffer(Device dev, int size, DX11RawBufferFlags flags= new DX11RawBufferFlags())
         {
             this.Size = size;
 

@@ -51,6 +51,7 @@ namespace FeralTic.DX11.Resources
             };
 
             RenderTargetViewDescription rtvd = new RenderTargetViewDescription();
+            rtvd.Format = format;
             rtvd.Dimension = RenderTargetViewDimension.Texture3D;
             rtvd.MipSlice = 0;
             rtvd.FirstDepthSlice = 0;
