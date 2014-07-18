@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>VVVV.FeralTic</id>
+    <title>FeralTic</title>
+    <version>1.0.1</version>
+    <authors>smakhtin</authors>
+    <owners>vux</owners>
+    <projectUrl>https://github.com/mrvux/FeralTic</projectUrl>
+    <iconUrl>http://img2.wikia.nocookie.net/__cb20140515184924/warframe/images/a/a2/DEKubrow.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Small utilities wrapper for SlimDX / Direct3D11</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <tags>dx11 slimdx vvvv</tags>
+    <dependencies>
+      <dependency id="VVVV.SlimDX" version="1.0.1" />
+    </dependencies>
+  </metadata>
+</package>
