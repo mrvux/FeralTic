@@ -18,7 +18,7 @@ namespace FeralTic.DX11.Resources
 
         public DX11SliceRenderTarget[] SliceRTV { get; protected set; }
 
-        public DX11RenderTextureArray(DX11RenderContext context, int w, int h, int elemcnt, Format format, bool buildslices = true)
+        public DX11RenderTextureArray(DX11RenderContext context, int w, int h, int elemcnt, Format format, bool buildslices = true, int miplevels = 0)
         {
             this.context = context;
 
@@ -30,9 +30,10 @@ namespace FeralTic.DX11.Resources
                 Format = format,
                 Height = h,
                 Width = w,
-                OptionFlags = ResourceOptionFlags.None,
+                OptionFlags = miplevels == 0 ? ResourceOptionFlags.GenerateMipMaps : ResourceOptionFlags.None,
                 SampleDescription = new SampleDescription(1,0),
                 Usage = ResourceUsage.Default,
+                MipLevels= miplevels
             };
 
             this.Resource = new Texture2D(context.Device, texBufferDesc);
@@ -51,7 +52,7 @@ namespace FeralTic.DX11.Resources
                 FirstArraySlice = 0,
                 Dimension = ShaderResourceViewDimension.Texture2DArray,
                 Format = format,
-                MipLevels = 1,
+                MipLevels = this.Resource.Description.MipLevels,
                 MostDetailedMip = 0
             };
 

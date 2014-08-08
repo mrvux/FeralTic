@@ -35,7 +35,7 @@ namespace FeralTic.DX11.Resources
                 Dimension = ShaderResourceViewDimension.Texture2DArray,
                 Format = texture.Format,
                 FirstArraySlice = sliceindex,
-                MipLevels = 1,
+                MipLevels = texture.Resource.Description.MipLevels,
                 MostDetailedMip = 0
             };
 
