@@ -7,7 +7,7 @@ using SlimDX.Direct3D11;
 
 namespace FeralTic.DX11.Resources
 {
-    public class DX11MipSliceRenderTarget : IDX11RenderTargetView, IDisposable, IDX11RWResource
+    public class DX11MipSliceRenderTarget : IDX11RenderTargetView, IDisposable
     {
         private DX11RenderContext context;
 
@@ -45,7 +45,8 @@ namespace FeralTic.DX11.Resources
             {
                 Dimension = RenderTargetViewDimension.Texture3D,
                 Format = texture.Format,
-                MipSlice = mipindex
+                MipSlice = mipindex,
+                DepthSliceCount = d           
             };
 
             ShaderResourceViewDescription srvd = new ShaderResourceViewDescription();
@@ -54,17 +55,8 @@ namespace FeralTic.DX11.Resources
             srvd.MostDetailedMip = mipindex;
             srvd.Format = texture.Format;
 
-            UnorderedAccessViewDescription uavd = new UnorderedAccessViewDescription()
-            {
-                Dimension = UnorderedAccessViewDimension.Texture3D,
-                MipSlice = mipindex,
-                FirstDepthSlice = 0,
-                DepthSliceCount = d
-            };
-
             this.RTV = new RenderTargetView(context.Device, texture.Resource, rtd);
             this.SRV = new ShaderResourceView(context.Device, texture.Resource, srvd);
-            this.UAV = new UnorderedAccessView(context.Device, texture.Resource, uavd);
 
             this.Width = w;
             this.Height = h;
@@ -73,7 +65,6 @@ namespace FeralTic.DX11.Resources
 
         public RenderTargetView RTV { get; protected set; }
         public ShaderResourceView SRV { get; protected set; }
-        public UnorderedAccessView UAV { get; protected set; }
 
         public int Width { get; protected set; }
         public int Height { get; protected set; }

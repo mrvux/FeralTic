@@ -96,6 +96,38 @@ namespace FeralTic.DX11.Resources
             ctx.UnmapSubresource(this.Buffer, 0);
         }
     }
+
+
+    public class DX11ImmutableStructuredBuffer : DX11StructuredBuffer, IDX11ReadableStructureBuffer
+    {
+        public ShaderResourceView SRV { get; protected set; }
+
+        public DX11ImmutableStructuredBuffer(Device dev, int cnt, int stride, DataStream initial)
+        {
+            this.Stride = stride;
+            this.Size = cnt * stride;
+            this.ElementCount = cnt;
+
+            BufferDescription bd = new BufferDescription()
+            {
+                BindFlags = BindFlags.ShaderResource,
+                CpuAccessFlags = CpuAccessFlags.None,
+                OptionFlags = ResourceOptionFlags.StructuredBuffer,
+                SizeInBytes = this.Size,
+                StructureByteStride = this.Stride,
+                Usage = ResourceUsage.Immutable
+            };
+
+            this.Buffer = new Buffer(dev,initial, bd);
+            this.SRV = new ShaderResourceView(dev, this.Buffer);
+        }
+
+        protected override void OnDispose()
+        {
+            if (this.SRV != null) { this.SRV.Dispose(); }
+            base.OnDispose();
+        }
+    }
     
     public class DX11RWStructuredBuffer : DX11StructuredBuffer, IDX11RWStructureBuffer
     {

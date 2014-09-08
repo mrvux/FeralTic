@@ -95,11 +95,11 @@ namespace FeralTic.DX11.Resources
 
             BufferDescription bd = new BufferDescription()
             {
-                BindFlags = BindFlags.ShaderResource | BindFlags.UnorderedAccess,
-                CpuAccessFlags = CpuAccessFlags.None,
+                BindFlags = BindFlags.ShaderResource,
+                CpuAccessFlags = CpuAccessFlags.Write,
                 OptionFlags = ResourceOptionFlags.RawBuffer,
                 SizeInBytes = this.Size,
-                Usage = ResourceUsage.Default,
+                Usage = ResourceUsage.Dynamic,
             };
             this.Buffer = new Buffer(dev, bd);
 
