@@ -39,9 +39,9 @@ namespace FeralTic.DX11
             return this.targetpool.Lock(w, h, format, new SampleDescription(1, 0), genMM, mmLevels, singleframe);
         }
 
-        public DX11ResourcePoolEntry<DX11RenderTarget2D> LockRenderTarget(int w, int h, Format format, SampleDescription sd, bool genMM = false, int mmLevels = 1)
+        public DX11ResourcePoolEntry<DX11RenderTarget2D> LockRenderTarget(int w, int h, Format format, SampleDescription sd, bool genMM = false, int mmLevels = 1, bool shared=false)
         {
-            return this.targetpool.Lock(w, h, format, sd, genMM, mmLevels);
+            return this.targetpool.Lock(w, h, format, sd, genMM, mmLevels, true, shared);
         }
 
         public DX11ResourcePoolEntry<IDX11RWStructureBuffer> LockStructuredBuffer(int stride, int numelements, eDX11BufferMode mode = eDX11BufferMode.Default, bool oneframe = false)
