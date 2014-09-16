@@ -52,7 +52,7 @@ namespace FeralTic.DX11
 
         }
 
-        public DX11ResourcePoolEntry<DX11RenderTarget2D> Lock(int w, int h, Format format, SampleDescription sd, bool genMM = false, int mmLevels = 1, bool oneframe = true)
+        public DX11ResourcePoolEntry<DX11RenderTarget2D> Lock(int w, int h, Format format, SampleDescription sd, bool genMM = false, int mmLevels = 1, bool oneframe = true, bool shared = false)
         {
             foreach (DX11ResourcePoolEntry<DX11RenderTarget2D> entry in this.pool)
             {
@@ -61,14 +61,14 @@ namespace FeralTic.DX11
                 if (!entry.IsLocked && tr.Width == w && tr.Format == format && tr.Height == h
                     && tr.Resource.Description.SampleDescription.Count == sd.Count
                     && tr.Resource.Description.SampleDescription.Quality == sd.Quality
-                    && tr.GenMipMaps == genMM && tr.RequestedMipLevels == mmLevels)
+                    && tr.GenMipMaps == genMM && tr.RequestedMipLevels == mmLevels && tr.Shared == shared)
                 {
                     entry.Lock();
                     return entry;
                 }
             }
 
-            DX11RenderTarget2D res = new DX11RenderTarget2D(this.context, w, h,sd, format, genMM, mmLevels);
+            DX11RenderTarget2D res = new DX11RenderTarget2D(this.context, w, h,sd, format, genMM, mmLevels, false, shared);
 
             DX11ResourcePoolEntry<DX11RenderTarget2D> newentry = new DX11ResourcePoolEntry<DX11RenderTarget2D>(res);
 

@@ -15,6 +15,7 @@ namespace FeralTic.DX11.Resources
         private UnorderedAccessView uav;
         private bool allowuav;
         private bool genmm;
+        private bool shared;
         private int requestedMipsLevel;
 
         public bool GenMipMaps
@@ -25,6 +26,11 @@ namespace FeralTic.DX11.Resources
         public int RequestedMipLevels
         {
             get { return this.requestedMipsLevel; }
+        }
+
+        public bool Shared
+        {
+            get { return this.shared; }
         }
 
         public UnorderedAccessView UAV
@@ -59,6 +65,7 @@ namespace FeralTic.DX11.Resources
         public DX11RenderTarget2D(DX11RenderContext context, int w, int h, SampleDescription sd, Format format, bool genMipMaps, int mmLevels, bool allowUAV, bool allowShare)
         {
             this.context = context;
+            this.shared = allowShare;
             var texBufferDesc = new Texture2DDescription
             {
                 ArraySize = 1,
@@ -82,7 +89,7 @@ namespace FeralTic.DX11.Resources
 
             if (sd.Count == 1 && genMipMaps == false && allowShare)
             {
-                texBufferDesc.OptionFlags = ResourceOptionFlags.KeyedMutex;
+                texBufferDesc.OptionFlags = /*ResourceOptionFlags.KeyedMutex |*/ ResourceOptionFlags.Shared;
             }
 
             if (genMipMaps && sd.Count == 1)
