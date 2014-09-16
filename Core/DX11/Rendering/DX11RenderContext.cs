@@ -19,6 +19,7 @@ namespace FeralTic.DX11
         public DeviceContext CurrentDeviceContext { get; private set; }
 
         public Factory1 Factory { get; private set; }
+        public Adapter1 Adapter { get; private set; }
         public DXGIScreen Screen { get; private set; }
 
         private DeviceContext immediatecontext;
@@ -52,6 +53,8 @@ namespace FeralTic.DX11
         public DX11RenderContext(Adapter1 adapter, DeviceCreationFlags flags = DeviceCreationFlags.None)
         {
             this.Device = new Device(adapter, flags);
+            this.Adapter = adapter;
+            this.Factory = this.Device.Factory as Factory1;
             this.immediatecontext = this.Device.ImmediateContext;
             this.CurrentDeviceContext = this.immediatecontext;
         }
@@ -59,8 +62,8 @@ namespace FeralTic.DX11
         public DX11RenderContext(Device device)
         {
             this.Device = device;
+            this.Factory = this.Device.Factory as Factory1;
             this.immediatecontext = this.Device.ImmediateContext;
-            this.immediatecontext.Dispose(); //Remove ref
             this.CurrentDeviceContext = this.immediatecontext;
         }
 
