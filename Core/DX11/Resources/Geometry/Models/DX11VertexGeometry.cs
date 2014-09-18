@@ -40,7 +40,9 @@ namespace FeralTic.DX11.Resources
             this.Topology = owner.Topology;
             this.VertexBuffer = owner.VertexBuffer;
             this.VertexSize = owner.VertexSize;
-            this.VerticesCount = owner.VerticesCount; 
+            this.VerticesCount = owner.VerticesCount;
+            this.HasBoundingBox = owner.HasBoundingBox;
+            this.BoundingBox = owner.BoundingBox;
         }
 
 

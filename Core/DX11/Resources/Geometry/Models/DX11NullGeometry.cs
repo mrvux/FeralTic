@@ -57,6 +57,8 @@ namespace FeralTic.DX11.Resources
             this.drawer = owner.drawer;
             this.InputLayout = owner.InputLayout;
             this.Topology = owner.Topology;
+            this.HasBoundingBox = owner.HasBoundingBox;
+            this.BoundingBox = owner.BoundingBox;
         }
 
         public void AssignDrawer(IDX11GeometryDrawer<DX11NullGeometry> drawer)

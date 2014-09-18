@@ -112,6 +112,8 @@ namespace FeralTic.DX11.Resources
             this.VertexBuffer = owner.VertexBuffer;
             this.VertexSize = owner.VertexSize;
             this.VerticesCount = owner.VerticesCount;
+            this.HasBoundingBox = owner.HasBoundingBox;
+            this.BoundingBox = owner.BoundingBox;
         }
 
         public override void Draw()
