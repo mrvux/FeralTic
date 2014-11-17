@@ -68,7 +68,7 @@ namespace FeralTic.DX11
                 }
             }
 
-            DX11RenderTarget2D res = new DX11RenderTarget2D(this.context, w, h,sd, format, genMM, mmLevels, false, shared);
+            DX11RenderTarget2D res = new DX11RenderTarget2D(this.context, w, h,sd, format, genMM, mmLevels, true, shared);
 
             DX11ResourcePoolEntry<DX11RenderTarget2D> newentry = new DX11ResourcePoolEntry<DX11RenderTarget2D>(res);
 
