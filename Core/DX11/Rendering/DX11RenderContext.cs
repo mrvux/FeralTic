@@ -151,13 +151,14 @@ namespace FeralTic.DX11
 
         public void Dispose()
         {
+            this.immediatecontext.ClearState();
+
             this.ResourcePool.Dispose();
             this.DefaultTextures.Dispose();
             this.Primitives.Dispose();
             this.ResourceScheduler.Dispose();
 
-            this.immediatecontext.Dispose();
-            
+            this.immediatecontext.Dispose(); 
             this.Device.Dispose();
         }
 

@@ -40,6 +40,7 @@ namespace FeralTic.DX11.Geometry
         public int ResolutionX { get; set; }
         public int ResolutionY { get; set; }
         public bool Caps { get; set; }
+        public bool CenterY { get; set; }
 
         public override string PrimitiveType { get { return "Cylinder"; } }
 
@@ -52,6 +53,7 @@ namespace FeralTic.DX11.Geometry
             this.ResolutionX = (int)properties["ResolutionX"];
             this.ResolutionY = (int)properties["ResolutionY"];
             this.Caps = (bool)properties["Caps"];
+            this.CenterY = (bool)properties["CenterY"];
         }
 
         public override IDX11Geometry GetGeometry(DX11RenderContext context)

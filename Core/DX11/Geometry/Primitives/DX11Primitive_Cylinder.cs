@@ -38,7 +38,7 @@ namespace FeralTic.DX11.Geometry
                 icount += (resX * 6);
             }
 
-            float lenstart = -length * 0.5f; //Start at half bottom
+            float lenstart = settings.CenterY ? -length * 0.5f : 0.0f; //Start at half bottom if centered
             float lenstep = (float)length / (float)resY;
 
             float y = lenstart;

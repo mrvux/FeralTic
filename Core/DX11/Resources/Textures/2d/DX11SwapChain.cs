@@ -23,7 +23,10 @@ namespace FeralTic.DX11.Resources
 
         public IntPtr Handle { get { return this.handle; } }
 
-
+        public SwapChain SwapChain
+        {
+            get { return this.swapchain; }
+        }
 
         public DX11SwapChain(DX11RenderContext context, IntPtr handle, Format format, SampleDescription sampledesc,int rate = 60)
         {

@@ -7,12 +7,35 @@ using SlimDX.D3DCompiler;
 using System.IO;
 using SlimDX;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace FeralTic.DX11
 {
     public class FolderIncludeHandler : Include
     {
         public string BaseShaderPath { get; set; }
+
+        private string sysincludepath;
+
+        public FolderIncludeHandler()
+        {
+            bool fallback = false;
+            try
+            {
+                string path = System.Configuration.ConfigurationManager.AppSettings["SysIncludePath"];
+                fallback = Directory.Exists(path) == false;
+                this.sysincludepath = path;
+            }
+            catch
+            {
+                fallback = true;
+            }
+
+            if (fallback)
+            {
+                this.sysincludepath = Path.GetDirectoryName(Application.ExecutablePath);
+            }
+        }
 
         public void Close(Stream stream)
         {
@@ -43,7 +66,20 @@ namespace FeralTic.DX11
             }
             else
             {
-                stream = null;
+                string path = Path.Combine(this.sysincludepath, fileName);
+                if (File.Exists(path))
+                {
+                    string content = File.ReadAllText(path);
+                    stream = new MemoryStream();
+                    StreamWriter writer = new StreamWriter(stream);
+                    writer.Write(content);
+                    writer.Flush();
+                    stream.Position = 0;
+                }
+                else
+                {
+                    stream = null;
+                }
             }
         }
     }
