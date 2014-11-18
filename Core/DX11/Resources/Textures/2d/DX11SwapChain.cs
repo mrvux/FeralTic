@@ -28,14 +28,14 @@ namespace FeralTic.DX11.Resources
             get { return this.swapchain; }
         }
 
-        public DX11SwapChain(DX11RenderContext context, IntPtr handle, Format format, SampleDescription sampledesc,int rate = 60)
+        public DX11SwapChain(DX11RenderContext context, IntPtr handle, Format format, SampleDescription sampledesc,int rate,int bufferCount)
         {
             this.context = context;
             this.handle = handle;
 
             SwapChainDescription sd = new SwapChainDescription()
             {
-                BufferCount = 1,
+                BufferCount = bufferCount,
                 ModeDescription = new ModeDescription(0, 0, new Rational(rate, 1), format),
                 IsWindowed = true,
                 OutputHandle = handle,
