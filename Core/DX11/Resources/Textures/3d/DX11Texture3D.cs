@@ -12,7 +12,7 @@ namespace FeralTic.DX11.Resources
     {
         protected DX11RenderContext context;
 
-        internal DX11Texture3D(DX11RenderContext context)
+        public DX11Texture3D(DX11RenderContext context)
         {
             this.context = context;
         }

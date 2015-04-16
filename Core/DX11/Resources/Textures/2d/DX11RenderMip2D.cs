@@ -10,7 +10,7 @@ namespace FeralTic.DX11.Resources
 {
     public class DX11RenderMip2D : DX11Texture2D
     {
-        public DX11MipSliceRenderTarget[] Slices { get; protected set; }
+        public DX11MipSliceRenderTarget2D[] Slices { get; protected set; }
 
         private int CountMipLevels(int w,int h)
         {
@@ -46,14 +46,14 @@ namespace FeralTic.DX11.Resources
 
             this.SRV = new ShaderResourceView(context.Device, this.Resource);
 
-            this.Slices = new DX11MipSliceRenderTarget[levels];
+            this.Slices = new DX11MipSliceRenderTarget2D[levels];
 
             int sw = w;
             int sh = h;
 
             for (int i = 0; i < levels; i++)
             {
-                this.Slices[i] = new DX11MipSliceRenderTarget(this.context, this, i, w, h);
+                this.Slices[i] = new DX11MipSliceRenderTarget2D(this.context, this, i, w, h);
                 w /= 2; h /= 2;
             }
         }
@@ -62,7 +62,7 @@ namespace FeralTic.DX11.Resources
         {
             if (this.SRV != null) { this.SRV.Dispose(); }
             if (this.Resource != null) { this.Resource.Dispose(); }
-            foreach (DX11MipSliceRenderTarget slice in this.Slices)
+            foreach (DX11MipSliceRenderTarget2D slice in this.Slices)
             {
                 slice.Dispose();
             }

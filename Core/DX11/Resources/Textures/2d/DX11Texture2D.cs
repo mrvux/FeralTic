@@ -43,6 +43,16 @@ namespace FeralTic.DX11.Resources
             return res;
         }
 
+        public static Texture2D CreateStaging(DX11RenderContext context, Texture2D texture)
+        {
+            Texture2DDescription td = texture.Description;
+            td.BindFlags = BindFlags.None;
+            td.CpuAccessFlags = CpuAccessFlags.Read;
+            td.Usage = ResourceUsage.Staging;
+
+            return new Texture2D(context.Device, td);
+        }
+
         public static DX11Texture2D FromResource(DX11RenderContext context, Assembly assembly, string path)
         {
             try

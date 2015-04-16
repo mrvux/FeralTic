@@ -14,7 +14,7 @@ namespace FeralTic.DX11.Resources
         public bool AllowVertexBuffer { get; set; }
     }
 
-    public class DX11RawBuffer:  IDX11RWResource
+    public class DX11RawBuffer:  IDX11RWResource, IDX11Buffer
     {
         public UnorderedAccessView UAV { get; protected set; }
 

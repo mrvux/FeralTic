@@ -14,9 +14,8 @@ namespace FeralTic.DX11.Resources
 {
     public enum eDX11BufferMode { Default = 0, Append = 2, Counter = 4 }
 
-    public interface IDX11StructuredBuffer : IDX11Resource 
+    public interface IDX11StructuredBuffer : IDX11Buffer
     {
-        Buffer Buffer { get; }
         int ElementCount { get; }
         int Stride { get; }
     }

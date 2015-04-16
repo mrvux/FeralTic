@@ -143,9 +143,10 @@
     <Compile Include="DX11\Queries\IDX11Query.cs" />
     <Compile Include="DX11\Devices\NullRenderDevice.cs" />
     <Compile Include="DX11\Resources\Geometry\Drawers\DX11NullIndirectDrawer.cs" />
+    <Compile Include="DX11\Resources\Textures\3d\DX11MipSliceRenderTarget2D.cs" />
     <Compile Include="DX11\Resources\Textures\3d\DX11RenderMip3D.cs" />
     <Compile Include="DX11\Resources\Textures\2d\DX11CubeDepthStencil.cs" />
-    <Compile Include="DX11\Resources\Textures\3d\DX11MipSliceRenderTarget.cs" />
+    <Compile Include="DX11\Resources\Textures\3d\DX11MipSliceRenderTarget3D.cs" />
     <Compile Include="DX11\Resources\Textures\2d\DX11RenderMip2D.cs" />
     <Compile Include="DX11\Resources\Textures\2d\DX11SliceDepthStencil.cs" />
     <Compile Include="DX11\Resources\Textures\2d\DX11SliceRenderTarget.cs" />

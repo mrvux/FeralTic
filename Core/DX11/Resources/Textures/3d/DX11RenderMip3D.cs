@@ -10,7 +10,7 @@ namespace FeralTic.DX11.Resources
 {
     public class DX11RenderMip3D : DX11Texture3D
     {
-        public DX11MipSliceRenderTarget[] Slices { get; protected set; }
+        public DX11MipSliceRenderTarget3D[] Slices { get; protected set; }
 
         private int CountMipLevels(int w,int h,int d)
         {
@@ -27,7 +27,7 @@ namespace FeralTic.DX11.Resources
             int levels = this.CountMipLevels(w,h,d);
             var texBufferDesc = new Texture3DDescription
             {
-                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource | BindFlags.UnorderedAccess,
                 CpuAccessFlags = CpuAccessFlags.None,
                 Format = format,
                 Height = h,
@@ -45,7 +45,7 @@ namespace FeralTic.DX11.Resources
 
             this.SRV = new ShaderResourceView(context.Device, this.Resource);
 
-            this.Slices = new DX11MipSliceRenderTarget[levels];
+            this.Slices = new DX11MipSliceRenderTarget3D[levels];
 
             int sw = w;
             int sh = h;
@@ -53,7 +53,7 @@ namespace FeralTic.DX11.Resources
 
             for (int i = 0; i < levels; i++)
             {
-                this.Slices[i] = new DX11MipSliceRenderTarget(this.context, this, i, w, h,d);
+                this.Slices[i] = new DX11MipSliceRenderTarget3D(this.context, this, i, w, h, d);
                 w /= 2; h /= 2; d /= 2;
             }
         }
@@ -62,7 +62,7 @@ namespace FeralTic.DX11.Resources
         {
             if (this.SRV != null) { this.SRV.Dispose(); }
             if (this.Resource != null) { this.Resource.Dispose(); }
-            foreach (DX11MipSliceRenderTarget slice in this.Slices)
+            foreach (DX11MipSliceRenderTarget3D slice in this.Slices)
             {
                 slice.Dispose();
             }

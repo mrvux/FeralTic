@@ -10,6 +10,11 @@ namespace FeralTic.DX11.Resources
     {
     }
 
+    public interface IDX11Buffer : IDX11Resource
+    {
+        SlimDX.Direct3D11.Buffer Buffer { get; }
+    }
+
     /// <summary>
     /// Read resources are readable via shaders, so they need an SRV
     /// </summary>
