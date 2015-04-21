@@ -12,6 +12,7 @@ namespace FeralTic.DX11.Resources
     {
         public bool AllowIndexBuffer { get; set; }
         public bool AllowVertexBuffer { get; set; }
+        public bool AllowArgumentBuffer { get; set; }
     }
 
     public class DX11RawBuffer:  IDX11RWResource, IDX11Buffer
@@ -51,6 +52,23 @@ namespace FeralTic.DX11.Resources
                 SizeInBytes = this.Size,
                 Usage = ResourceUsage.Default,
             };
+
+            if (flags.AllowIndexBuffer)
+            {
+                bd.BindFlags |= BindFlags.IndexBuffer;
+            }
+
+            if (flags.AllowVertexBuffer)
+            {
+                bd.BindFlags |= BindFlags.VertexBuffer;
+            }
+
+            if (flags.AllowArgumentBuffer)
+            {
+                bd.OptionFlags |= ResourceOptionFlags.DrawIndirect;
+            }
+
+
             this.Buffer = new Buffer(dev, bd);
 
             ShaderResourceViewDescription srvd = new ShaderResourceViewDescription()

@@ -56,6 +56,27 @@ namespace FeralTic.DX11.Utils
             return vertices;
         }
 
+        public static Buffer CreateImmutableVertexBuffer(DX11RenderContext context, DataStream ds, bool alloraw = false, bool dispose = false)
+        {
+            ds.Position = 0;
+
+            var vertices = new SlimDX.Direct3D11.Buffer(context.Device, ds, new BufferDescription()
+            {
+                BindFlags = BindFlags.VertexBuffer | BindFlags.ShaderResource,
+                CpuAccessFlags = CpuAccessFlags.None,
+                OptionFlags = ResourceOptionFlags.None,
+                SizeInBytes = (int)ds.Length,
+                Usage = ResourceUsage.Immutable
+            });
+
+            if (dispose)
+            {
+                ds.Dispose();
+            }
+
+            return vertices;
+        }
+
         public static Buffer CreateDynamicVertexBuffer(DX11RenderContext context, DataStream ds, bool dispose = false)
         {
             ds.Position = 0;
