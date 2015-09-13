@@ -16,11 +16,11 @@ namespace FeralTic.DX11.Resources
             {
                 ArraySize = arraySize,
                 BindFlags = BindFlags.ShaderResource | BindFlags.UnorderedAccess,
-                CpuAccessFlags = CpuAccessFlags.Write,
+                CpuAccessFlags = CpuAccessFlags.None,
                 Format = format,
                 MipLevels = 1,
                 OptionFlags = ResourceOptionFlags.None,
-                Usage = ResourceUsage.Dynamic,
+                Usage = ResourceUsage.Default,
                 Width = width,
             };
 
