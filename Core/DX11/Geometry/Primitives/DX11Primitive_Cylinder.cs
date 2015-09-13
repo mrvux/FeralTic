@@ -51,6 +51,8 @@ namespace FeralTic.DX11.Geometry
 
             float fres = Convert.ToSingle(resY);
 
+            float fy = resY;
+
             #region Add Vertices tube
             for (int i = 0; i < resY + 1; i++)
             {
@@ -68,6 +70,7 @@ namespace FeralTic.DX11.Geometry
                     v.Position = new Vector4(x, y, z, 1.0f);
                     v.Normals = new Vector3(x, 0.0f, z);
                     v.Normals.Normalize();
+                    v.TexCoords = new Vector2((float)j / (float)resX, 1.0f - (float)i / fy);
 
                     verts.Add(v);
 
