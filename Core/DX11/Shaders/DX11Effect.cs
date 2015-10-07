@@ -51,19 +51,16 @@ namespace FeralTic.DX11
 
             if (type == IncludeType.Local)
             {
-                string ppath = this.BaseShaderPath;
                 FileStream ps = parentStream as FileStream;
 
-                if( ps != null ){
-                    ppath = ppath = Path.GetDirectoryName(ps.Name);
-                }
-
                 // Attempt to include relative to current file
-                path = Path.Combine(ppath, fileName);
-                if (File.Exists(path))
-                {
-                    stream = new FileStream(path, FileMode.Open, FileAccess.Read);
-                    return;
+                if( ps != null ){
+                    path = Path.Combine(Path.GetDirectoryName(ps.Name), fileName);
+                    if (File.Exists(path))
+                    {
+                        stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+                        return;
+                    }
                 }
                 
                 // Attempt to include relative to origin file
