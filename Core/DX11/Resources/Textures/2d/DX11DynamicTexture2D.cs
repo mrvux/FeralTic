@@ -218,6 +218,19 @@ namespace FeralTic.DX11.Resources
             ctx.UnmapSubresource(this.Resource, 0);
         }
 
+        public IntPtr MapForWrite()
+        {
+            DeviceContext ctx = this.context.CurrentDeviceContext;
+            DataBox db = ctx.MapSubresource(this.Resource, 0, 0, MapMode.WriteDiscard, SlimDX.Direct3D11.MapFlags.None);
+            return db.Data.DataPointer;
+        }
+
+        public void UnMap()
+        {
+            DeviceContext ctx = this.context.CurrentDeviceContext;
+            ctx.UnmapSubresource(this.Resource, 0);
+        }
+
         public void WriteData(byte[] data)
         {
             DeviceContext ctx = this.context.CurrentDeviceContext;
