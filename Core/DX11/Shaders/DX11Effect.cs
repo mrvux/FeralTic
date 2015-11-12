@@ -47,39 +47,40 @@ namespace FeralTic.DX11
 
         public void Open(IncludeType type, string fileName, Stream parentStream, out Stream stream)
         {
+            string path;
+
             if (type == IncludeType.Local)
             {
-                string path = this.BaseShaderPath + "\\" + fileName;
+                FileStream ps = parentStream as FileStream;
+
+                // Attempt to include relative to current file
+                if( ps != null ){
+                    path = Path.Combine(Path.GetDirectoryName(ps.Name), fileName);
+                    if (File.Exists(path))
+                    {
+                        stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+                        return;
+                    }
+                }
+                
+                // Attempt to include relative to origin file
+                path = Path.Combine(this.BaseShaderPath, fileName);
                 if (File.Exists(path))
                 {
-                    string content = File.ReadAllText(path);
-                    stream = new MemoryStream();
-                    StreamWriter writer = new StreamWriter(stream);
-                    writer.Write(content);
-                    writer.Flush();
-                    stream.Position = 0;
+                    stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+                    return;
                 }
-                else
-                {
-                    stream = null;
-                }
+            }
+
+            // If system type include or if the file was not found for a local include
+            path = Path.Combine(this.sysincludepath, fileName);
+            if (File.Exists(path))
+            {
+                stream = new FileStream(path, FileMode.Open, FileAccess.Read);
             }
             else
             {
-                string path = Path.Combine(this.sysincludepath, fileName);
-                if (File.Exists(path))
-                {
-                    string content = File.ReadAllText(path);
-                    stream = new MemoryStream();
-                    StreamWriter writer = new StreamWriter(stream);
-                    writer.Write(content);
-                    writer.Flush();
-                    stream.Position = 0;
-                }
-                else
-                {
-                    stream = null;
-                }
+                stream = null;
             }
         }
     }
