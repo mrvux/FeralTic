@@ -124,13 +124,13 @@ namespace FeralTic.DX11
         {
             foreach (CounterResetUAV ru in this.resetuavs)
             {
-                
+
                 int i = 0;
                 bool found = false;
 
                 //Get currently bound UAVs
                 UnorderedAccessView[] uavs = this.context.CurrentDeviceContext.ComputeShader.GetUnorderedAccessViews(0, 8);
-                
+
                 //Search for uav slot, if found, reapply with counter value
                 for (i = 0; i < 8 && !found; i++)
                 {
@@ -141,7 +141,26 @@ namespace FeralTic.DX11
                 }
                 if (found)
                 {
-                    this.context.CurrentDeviceContext.ComputeShader.SetUnorderedAccessView(ru.UAV, i-1, ru.Counter);
+                    this.context.CurrentDeviceContext.ComputeShader.SetUnorderedAccessView(ru.UAV, i - 1, ru.Counter);
+                }
+                else
+                {
+                    //Search in OM stage
+                    UnorderedAccessView[] uav2 = this.context.CurrentDeviceContext.OutputMerger.GetUnorderedAccessViews(0, 8);
+                    int idx = 0;
+                    for (i = 0; i < 8 && !found; i++)
+                    {
+                        if (uav2[i] == ru.UAV)
+                        {
+                            idx = i;
+                            found = true;
+                        }
+                    }
+                    if (found)
+                    {
+                        UnorderedAccessView[] uav = new UnorderedAccessView[] { ru.UAV };
+                        this.context.CurrentDeviceContext.OutputMerger.SetTargets(idx, uav, new int[] { ru.Counter });
+                    }
                 }
             }
             this.resetuavs.Clear();
