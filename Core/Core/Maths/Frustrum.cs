@@ -70,9 +70,21 @@ namespace FeralTic.Core.Maths
         {
             boundingBox.Maximum = Vector3.TransformCoordinate(boundingBox.Maximum, worldMatrix);
             boundingBox.Minimum = Vector3.TransformCoordinate(boundingBox.Minimum, worldMatrix);
+
+            BoundingBox box;
+            box.Minimum.X = boundingBox.Minimum.X < boundingBox.Maximum.X ? boundingBox.Minimum.X : boundingBox.Maximum.X;
+            box.Minimum.Y = boundingBox.Minimum.Y < boundingBox.Maximum.Y ? boundingBox.Minimum.Y : boundingBox.Maximum.Y;
+            box.Minimum.Z = boundingBox.Minimum.Z < boundingBox.Maximum.Z ? boundingBox.Minimum.Z : boundingBox.Maximum.Z;
+
+            box.Maximum.X = boundingBox.Minimum.X > boundingBox.Maximum.X ? boundingBox.Minimum.X : boundingBox.Maximum.X;
+            box.Maximum.Y = boundingBox.Minimum.Y > boundingBox.Maximum.Y ? boundingBox.Minimum.Y : boundingBox.Maximum.Y;
+            box.Maximum.Z = boundingBox.Minimum.Z > boundingBox.Maximum.Z ? boundingBox.Minimum.Z : boundingBox.Maximum.Z;
+
+
+
             foreach (Plane plane in planes)
             {
-                switch (Plane.Intersects(plane, boundingBox))
+                switch (Plane.Intersects(plane, box))
                 {
                     case PlaneIntersectionType.Front:
                         return false;
