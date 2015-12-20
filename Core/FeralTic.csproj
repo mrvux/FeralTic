@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FeralTic</RootNamespace>
     <AssemblyName>FeralTic</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -119,6 +119,14 @@
       <HintPath>..\Dependencies\$(Platform)\SlimDX.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>..\Dependencies\anyCPU\SharpDX.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpDX.D3DCompiler">
+      <HintPath>..\Dependencies\anyCPU\SharpDX.D3DCompiler.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Maths\Frustrum.cs" />
@@ -156,6 +164,9 @@
     <Compile Include="DX11\Resources\Textures\2d\DX11SliceRenderTarget.cs" />
     <Compile Include="DX11\Resources\Textures\2d\DX11StagingTexture2D.cs" />
     <Compile Include="DX11\Scheduler\Textures\FileTextureLoadTask.cs" />
+    <Compile Include="DX11\Shaders\ShaderCompilerErrorParser.cs" />
+    <Compile Include="DX11\Shaders\ShaderMacroExtensionMethods.cs" />
+    <Compile Include="DX11\Shaders\SharpDXIncludeWrapper.cs" />
     <Compile Include="DX11\Utils\FormatHelper.cs" />
     <Compile Include="Utils\DXGIScreen.cs" />
     <Compile Include="DX11\Geometry\Primitives\DX11Primitive_Isocahedron.cs" />

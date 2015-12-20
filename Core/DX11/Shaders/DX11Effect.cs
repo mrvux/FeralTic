@@ -85,6 +85,7 @@ namespace FeralTic.DX11
         }
     }
 
+
     /// <summary>
     /// Effect Compiler
     /// Compiles effect against a null device, so reflection can be kept even
@@ -129,30 +130,49 @@ namespace FeralTic.DX11
         #endregion
 
         #region Compile (from string)
-        private static DX11Effect Compile(string content, bool isfile, Include include, ShaderMacro[] defines)
+        private static DX11Effect Compile(string content, bool isfile, Include include, ShaderMacro[] defines, bool library = false)
         {
             DX11Effect shader = new DX11Effect();
+
+            var profile = library ? "lib_5_0" : "fx_5_0";
+
+            SharpDX.D3DCompiler.Include sdxInclude = include != null ? new SharpDXIncludeWrapper(include) : null;
+            var sdxDefines = defines != null ? defines.AsSharpDXMacro() : null;
 
             string errors;
             try
             {
-                ShaderFlags flags = ShaderFlags.OptimizationLevel1;
+                SharpDX.D3DCompiler.ShaderFlags flags = SharpDX.D3DCompiler.ShaderFlags.OptimizationLevel1;
 
                 if (isfile)
                 {
-                    shader.ByteCode = ShaderBytecode.CompileFromFile(content, "fx_5_0", flags, EffectFlags.None, defines, include, out errors);
+                    SharpDX.D3DCompiler.CompilationResult result = SharpDX.D3DCompiler.ShaderBytecode.CompileFromFile(content, profile, flags, SharpDX.D3DCompiler.EffectFlags.None, sdxDefines, sdxInclude);
+
+                    if (result.Bytecode != null)
+                    {
+                        SlimDX.DataStream ds = new SlimDX.DataStream(result.Bytecode, true, true);
+                        shader.ByteCode = new ShaderBytecode(ds);
+                        shader.Preprocess();
+                    }
+                    errors = result.Message;
                 }
                 else
                 {
-                    shader.ByteCode = ShaderBytecode.Compile(content, "fx_5_0", flags, EffectFlags.None, defines, include, out errors);
+                    //shader.ByteCode = ShaderBytecode.Compile(content, "fx_5_0", flags, EffectFlags.None, defines, include, out errors);
+                    SharpDX.D3DCompiler.CompilationResult result = SharpDX.D3DCompiler.ShaderBytecode.Compile(content, profile, flags, SharpDX.D3DCompiler.EffectFlags.None, sdxDefines, sdxInclude);
+
+                    if (result.Bytecode != null)
+                    {
+                        SlimDX.DataStream ds = new SlimDX.DataStream(result.Bytecode, true, true);
+                        shader.ByteCode = new ShaderBytecode(ds);
+                        shader.Preprocess();
+                    }
+                    errors = result.Message;
                 }
 
                 //Compilation worked, but we can still have warning
-                shader.IsCompiled = true;
+                shader.IsCompiled = shader.ByteCode != null;
                 shader.ErrorMessage = errors;
-
-                shader.Preprocess();
-
             }
             catch (Exception ex)
             {
@@ -175,9 +195,9 @@ namespace FeralTic.DX11
             return Compile(code, false, include, null);
         }
 
-        public static DX11Effect FromString(string code, Include include, ShaderMacro[] defines)
+        public static DX11Effect FromString(string code, Include include, ShaderMacro[] defines, bool asLibrary = false)
         {
-            return Compile(code, false, include, defines);
+            return Compile(code, false, include, defines, asLibrary);
         }
 
 
