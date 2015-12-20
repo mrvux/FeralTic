@@ -34,9 +34,17 @@ namespace FeralTic.DX11
         private ShaderResourceView[] nullsrvs = new ShaderResourceView[128];
         private UnorderedAccessView[] nulluavs = new UnorderedAccessView[8];
 
+        private FeatureLevel[] baseLevels = new FeatureLevel[]
+        {
+            (FeatureLevel)MagicNumberUtils.FeatureLevel11_1,
+            FeatureLevel.Level_11_0,
+            FeatureLevel.Level_10_1,
+            FeatureLevel.Level_10_0
+        };
+
         public DX11RenderContext(DeviceCreationFlags flags = DeviceCreationFlags.None)
         {
-            this.Device = new Device(DriverType.Hardware,flags);
+            this.Device = new Device(DriverType.Hardware,flags, baseLevels);
             this.immediatecontext = this.Device.ImmediateContext;
             this.CurrentDeviceContext = this.immediatecontext;
         }
@@ -45,14 +53,14 @@ namespace FeralTic.DX11
         {
             this.Factory = factory;
             this.Screen = screen;
-            this.Device = new Device(screen.Adapter, flags);
+            this.Device = new Device(screen.Adapter, flags, baseLevels);
             this.immediatecontext = this.Device.ImmediateContext;
             this.CurrentDeviceContext = this.immediatecontext;
         }
 
         public DX11RenderContext(Adapter1 adapter, DeviceCreationFlags flags = DeviceCreationFlags.None)
         {
-            this.Device = new Device(adapter, flags);
+            this.Device = new Device(adapter, flags, baseLevels);
             this.Adapter = adapter;
             this.Factory = this.Device.Factory as Factory1;
             this.immediatecontext = this.Device.ImmediateContext;
