@@ -120,8 +120,15 @@ namespace FeralTic.DX11.Shaders
                         var errCode = elements[1].Split(" ".ToCharArray());
                         ce.IsWarning = errCode[0] == "warning";
                         ce.ErrorNumber = errCode[1];
-
                         ce.ErrorText = elements[2];
+                    }
+                    //Case when include open fails , or ":" in error message
+                    if (elements.Length == 4)
+                    {
+                        var errCode = elements[1].Split(" ".ToCharArray());
+                        ce.IsWarning = errCode[0] == "warning";
+                        ce.ErrorNumber = errCode[1];
+                        ce.ErrorText = elements[2] + ":" + elements[3];
                     }
                 }
                 catch { }
