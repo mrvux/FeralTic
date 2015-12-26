@@ -12,7 +12,7 @@ namespace FeralTic.DX11.Shaders
     {
         private const string IGNORE_DEPRECATE = "warning X4717: Effects deprecated for D3DCompiler_47";
 
-        public static CompilerResults ParseCompilerResult(string ErrorMessage, string shaderName = "")
+        public static CompilerResults ParseCompilerResult(string ErrorMessage,string localPath, string shaderName)
         {
             CompilerResults compilerResults = new CompilerResults(null);
 
@@ -24,7 +24,7 @@ namespace FeralTic.DX11.Shaders
                     string s = s2;
                     if (s.Length > 0 && s != IGNORE_DEPRECATE)
                     {
-                        var error = ParseLine(s, shaderName);
+                        var error = ParseLine(s,localPath, shaderName);
                         if (error != null)
                         {
                             compilerResults.Errors.Add(error);
@@ -36,8 +36,8 @@ namespace FeralTic.DX11.Shaders
 
             return compilerResults;
         }
-
-        private static CompilerError ParseLine(string line, string shaderName = "")
+         
+        private static CompilerError ParseLine(string line, string localPath, string shaderName)
         {
             CompilerError ce = new CompilerError();
             ce.ErrorText = "";
@@ -48,21 +48,37 @@ namespace FeralTic.DX11.Shaders
             //First items contains filename + line/char
             var fileLine = elements[0].Split("(".ToCharArray());
 
-            if (shaderName.Length == 0)
+            if (fileLine[0].Length > 0)
             {
-                try
+                string filePath = Path.Combine(Path.GetDirectoryName(localPath), fileLine[0]);
+                if (File.Exists(filePath))
                 {
-                    ce.FileName = Path.GetFileName(fileLine[0]);
+                    ce.FileName = filePath;
                 }
-                catch
+                else
                 {
-                    ce.FileName = fileLine[0];
+                    ce.FileName = shaderName;
                 }
             }
             else
             {
-                ce.FileName = shaderName;
+                if (shaderName.Length == 0)
+                {
+                    try
+                    {
+                        ce.FileName = Path.GetFileName(fileLine[0]);
+                    }
+                    catch
+                    {
+                        ce.FileName = fileLine[0];
+                    }
+                }
+                else
+                {
+                    ce.FileName = shaderName;
+                }
             }
+
 
 
             try
@@ -73,7 +89,7 @@ namespace FeralTic.DX11.Shaders
                 if (lineChar[1].Contains("-"))
                 {
                     var startEnd = lineChar[1].Split('-');
-                    ce.Column = int.Parse(startEnd[1]);
+                    ce.Column = int.Parse(startEnd[0]);
                 }
                 else
                 {
