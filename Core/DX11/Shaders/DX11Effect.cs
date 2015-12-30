@@ -8,6 +8,7 @@ using System.IO;
 using SlimDX;
 using System.Reflection;
 using System.Windows.Forms;
+using FeralTic.Utils;
 
 namespace FeralTic.DX11
 {
@@ -130,7 +131,19 @@ namespace FeralTic.DX11
         #endregion
 
         #region Compile (from string)
-        private static DX11Effect Compile(string content, bool isfile, Include include, ShaderMacro[] defines, bool library = false)
+        public static DX11Effect Compile(string content, bool isfile, Include include, ShaderMacro[] defines, bool library = false)
+        {
+            if (OSUtils.IsCompiler47Available)
+            {
+                return CompileSharpDX(content, isfile, include, defines, library);
+            }
+            else
+            {
+                return CompileSlimDX(content, isfile, include, defines);
+            }
+        }
+
+        private static DX11Effect CompileSharpDX(string content, bool isfile, Include include, ShaderMacro[] defines, bool library = false)
         {
             DX11Effect shader = new DX11Effect();
 
@@ -182,6 +195,42 @@ namespace FeralTic.DX11
             }
             return shader;
         }
+
+        #region Compile (from string)
+        private static DX11Effect CompileSlimDX(string content, bool isfile, Include include, ShaderMacro[] defines)
+        {
+            DX11Effect shader = new DX11Effect();
+
+            string errors;
+            try
+            {
+                ShaderFlags flags = ShaderFlags.OptimizationLevel1;
+
+                if (isfile)
+                {
+                    shader.ByteCode = ShaderBytecode.CompileFromFile(content, "fx_5_0", flags, EffectFlags.None, defines, include, out errors);
+                }
+                else
+                {
+                    shader.ByteCode = ShaderBytecode.Compile(content, "fx_5_0", flags, EffectFlags.None, defines, include, out errors);
+                }
+
+                //Compilation worked, but we can still have warning
+                shader.IsCompiled = true;
+                shader.ErrorMessage = errors;
+
+                shader.Preprocess();
+
+            }
+            catch (Exception ex)
+            {
+                shader.IsCompiled = false;
+                shader.ErrorMessage = ex.Message;
+                shader.DefaultEffect = null;
+            }
+            return shader;
+        }
+        #endregion
         #endregion
 
         #region Overload utils
