@@ -44,6 +44,14 @@ namespace FeralTic.DX11.Shaders
 
             var elements = line.Split(new string[1] { ": " }, StringSplitOptions.None);
 
+            if (elements.Length == 3 && elements[0] == "D3DEffectCompiler")
+            {
+                ce.Line = 0;
+                ce.Column = 0;
+                ce.ErrorText = elements[2];
+                ce.FileName = shaderName;
+                return ce;
+            }
 
             //First items contains filename + line/char
             var fileLine = elements[0].Split("(".ToCharArray());
