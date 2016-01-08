@@ -36,6 +36,7 @@ namespace FeralTic.DX11.Resources
         public void Dispose()
         {
             if (this.Buffer != null) { this.Buffer.Dispose(); }
+            this.OnDispose();
         }
     }
 

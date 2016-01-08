@@ -147,6 +147,7 @@ namespace FeralTic.DX11
                 {
                     //Search in OM stage
                     UnorderedAccessView[] uav2 = this.context.CurrentDeviceContext.OutputMerger.GetUnorderedAccessViews(0, 8);
+                    int[] counters = new int[] { -1, -1, -1, -1, -1, -1, -1, -1 };
                     int idx = 0;
                     for (i = 0; i < 8 && !found; i++)
                     {
@@ -154,12 +155,14 @@ namespace FeralTic.DX11
                         {
                             idx = i;
                             found = true;
+                            counters[i] = ru.Counter;
                         }
                     }
                     if (found)
                     {
-                        UnorderedAccessView[] uav = new UnorderedAccessView[] { ru.UAV };
-                        this.context.CurrentDeviceContext.OutputMerger.SetTargets(idx, uav, new int[] { ru.Counter });
+                        var uavf = uav2.Where(u => u != null).ToArray();
+                        var depth = this.context.CurrentDeviceContext.OutputMerger.GetDepthStencilView();
+                        this.context.CurrentDeviceContext.OutputMerger.SetTargets(depth,idx, uavf, counters);
                     }
                 }
             }
