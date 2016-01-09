@@ -17,19 +17,26 @@ namespace FeralTic.DX11.Resources
             int level = 1;
             while (w > 1 && h > 1)
             {
-                w /= 2; h /= 2; level++;
+                w /= 2; h /= 2; level++; 
             }
             return level;
         }
 
-        public DX11RenderMip2D(DX11RenderContext context, int w, int h, Format format)
+        public DX11RenderMip2D(DX11RenderContext context, int w, int h, Format format, bool allowUAV = false)
         {
             this.context = context;
             int levels = this.CountMipLevels(w,h);
+
+            BindFlags flags = BindFlags.RenderTarget | BindFlags.ShaderResource;
+            if (allowUAV)
+            {
+                flags |= BindFlags.UnorderedAccess;
+            }
+
             var texBufferDesc = new Texture2DDescription
             {
                 ArraySize = 1,
-                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                BindFlags = flags,
                 CpuAccessFlags = CpuAccessFlags.None,
                 Format = format,
                 Height = h,

@@ -18,15 +18,23 @@ namespace FeralTic.DX11.Resources
             {
                 Dimension = RenderTargetViewDimension.Texture2D,
                 Format = texture.Format,
-                MipSlice = mipindex
+                MipSlice = mipindex 
             };
 
-            UnorderedAccessViewDescription uavd = new UnorderedAccessViewDescription()
+            this.RTV = new RenderTargetView(context.Device, this.Resource, rtd);
+
+            if (this.Resource.Description.BindFlags.HasFlag(BindFlags.UnorderedAccess))
             {
-                Dimension = UnorderedAccessViewDimension.Texture2D,
-                Format = texture.Format,
-                MipSlice = mipindex,
-            };
+                UnorderedAccessViewDescription uavd = new UnorderedAccessViewDescription()
+                {
+                    Dimension = UnorderedAccessViewDimension.Texture2D,
+                    Format = texture.Format,
+                    MipSlice = mipindex,
+                };
+
+                this.UAV = new UnorderedAccessView(context.Device, this.Resource, uavd);
+            }
+
 
             ShaderResourceViewDescription srvd = new ShaderResourceViewDescription();
             srvd.Dimension = ShaderResourceViewDimension.Texture2D;
@@ -44,7 +52,11 @@ namespace FeralTic.DX11.Resources
         {
             this.RTV.Dispose();
             this.SRV.Dispose();
-            this.UAV.Dispose();
+
+            if (this.UAV != null)
+            {
+                this.UAV.Dispose();
+            }
         }
     }
 }
