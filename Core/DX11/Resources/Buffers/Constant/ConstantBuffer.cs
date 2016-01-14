@@ -13,7 +13,7 @@ namespace FeralTic.DX11.Resources
     /// Generic implementation for constant buffer
     /// </summary>
     /// <typeparam name="T">Buffer structure type</typeparam>
-    public class DX11ConstantBuffer<T> where T :struct
+    public class DX11ConstantBuffer<T> : IDX11Buffer where T :struct
     {
         private DX11RenderContext context;
 
