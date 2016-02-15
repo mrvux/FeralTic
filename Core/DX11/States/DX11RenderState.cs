@@ -16,6 +16,9 @@ namespace FeralTic.DX11
 
         public BlendStateDescription Blend;
 
+        public Color4 BlendFactor;
+        public int DepthStencilReference;
+
 
         public DX11RenderState()
         {
@@ -30,6 +33,8 @@ namespace FeralTic.DX11
             result.Blend = this.Blend;
             result.DepthStencil = this.DepthStencil;
             result.Rasterizer = this.Rasterizer;
+            result.BlendFactor = this.BlendFactor;
+            result.DepthStencilReference = this.DepthStencilReference;
             return result;
         }
 
@@ -56,8 +61,6 @@ namespace FeralTic.DX11
             {
                 AlphaToCoverageEnable = false,
                 IndependentBlendEnable = false,
-                //RenderTargets 
-                //RenderTargets = this.SetDefaultRenderBlend()
             };
             this.Blend.RenderTargets[0] = this.SetDefaultRenderBlend();
             this.Blend.RenderTargets[1] = this.SetDefaultRenderBlend();
@@ -108,9 +111,9 @@ namespace FeralTic.DX11
 
             ctx.Rasterizer.State = rs;
             ctx.OutputMerger.DepthStencilState = ds;
-            ctx.OutputMerger.DepthStencilReference = 0;
+            ctx.OutputMerger.DepthStencilReference = this.DepthStencilReference;
             ctx.OutputMerger.BlendState = bs;
-            ctx.OutputMerger.BlendFactor = new Color4(0, 0, 0, 0);
+            ctx.OutputMerger.BlendFactor = this.BlendFactor;
             ctx.OutputMerger.BlendSampleMask = int.MaxValue;
         }
     }
