@@ -36,10 +36,12 @@ namespace FeralTic.DX11
             this.CreateLinearWrap();
             this.CreateLinearBorder();
             this.CreateLinearClamp();
+            this.CreateLinearMirror();
 
             this.CreatePointBorder();
             this.CreatePointClamp();
             this.CreatePointWrap();
+            this.CreatePointMirror();
         }
 
         private void CreateLinearWrap()
@@ -82,6 +84,20 @@ namespace FeralTic.DX11
             this.AddState("LinearBorder", sd);
         }
 
+        private void CreateLinearMirror()
+        {
+            SamplerDescription sd = new SamplerDescription()
+            {
+                AddressU = TextureAddressMode.Mirror,
+                AddressV = TextureAddressMode.Mirror,
+                AddressW = TextureAddressMode.Mirror,
+                ComparisonFunction = Comparison.Always,
+                Filter = SlimDX.Direct3D11.Filter.MinMagMipLinear,
+                BorderColor = new SlimDX.Color4(1, 0, 0, 0)
+            };
+            this.AddState("LinearMirror", sd);
+        }
+
         private void CreatePointWrap()
         {
             SamplerDescription sd = new SamplerDescription()
@@ -120,6 +136,19 @@ namespace FeralTic.DX11
                 BorderColor = new SlimDX.Color4(1, 0, 0, 0)
             };
             this.AddState("PointBorder", sd);
+        }
+
+        private void CreatePointMirror()
+        {
+            SamplerDescription sd = new SamplerDescription()
+            {
+                AddressU = TextureAddressMode.Mirror,
+                AddressV = TextureAddressMode.Mirror,
+                AddressW = TextureAddressMode.Mirror,
+                ComparisonFunction = Comparison.Always,
+                Filter = SlimDX.Direct3D11.Filter.MinMagMipPoint
+            };
+            this.AddState("PointMirror", sd);
         }
     }
 }
