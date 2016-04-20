@@ -45,6 +45,7 @@ namespace FeralTic.DX11
             this.CreateStencilIncrement();
             this.CreateStencilInvert();
             this.CreateLessStencilZero();
+            this.CreateStencilReplace();
 
         }
 
@@ -298,6 +299,35 @@ namespace FeralTic.DX11
             };
 
             this.AddState("StencilInvert", ds);
+        }
+
+        private void CreateStencilReplace()
+        {
+            DepthStencilStateDescription ds = new DepthStencilStateDescription()
+            {
+                IsDepthEnabled = false,
+                IsStencilEnabled = true,
+                DepthWriteMask = DepthWriteMask.Zero,
+                DepthComparison = Comparison.Always,
+                StencilReadMask = 255,
+                StencilWriteMask = 255,
+                FrontFace = new DepthStencilOperationDescription()
+                {
+                    Comparison = Comparison.Always,
+                    DepthFailOperation = StencilOperation.Keep,
+                    FailOperation = StencilOperation.Keep,
+                    PassOperation = StencilOperation.Replace
+                },
+                BackFace = new DepthStencilOperationDescription()
+                {
+                    Comparison = Comparison.Always,
+                    DepthFailOperation = StencilOperation.Keep,
+                    FailOperation = StencilOperation.Keep,
+                    PassOperation = StencilOperation.Replace
+                }
+            };
+
+            this.AddState("StencilReplace", ds);
         }
     }
 }
