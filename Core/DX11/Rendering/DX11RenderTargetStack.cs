@@ -21,6 +21,11 @@ namespace FeralTic.DX11
         public int StackCount { get { return this.stack.Count; } }
         public int ViewPortStackCount { get { return this.viewportstack.Count; } }
 
+        public RenderTargetStackElement Current
+        {
+            get { return this.stack.Peek(); }
+        }
+
         public DX11RenderTargetStack(DX11RenderContext context)
         {
             this.context = context;
@@ -97,7 +102,5 @@ namespace FeralTic.DX11
                 ctx.OutputMerger.SetTargets(null, zero);
             }
         }
-
-
     }
 }
