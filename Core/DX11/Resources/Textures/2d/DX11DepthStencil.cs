@@ -58,12 +58,12 @@ namespace FeralTic.DX11.Resources
             this.SRV = new ShaderResourceView(context.Device, this.Resource, srvd);
 
 
-            if (format == Format.D24_UNorm_S8_UInt)
+            if (format == Format.D24_UNorm_S8_UInt || format == Format.D32_Float_S8X24_UInt)
             {
                 ShaderResourceViewDescription stencild = new ShaderResourceViewDescription()
                 {
                     ArraySize = 1,
-                    Format = SlimDX.DXGI.Format.X24_Typeless_G8_UInt,
+                    Format = format == Format.D24_UNorm_S8_UInt ? SlimDX.DXGI.Format.X24_Typeless_G8_UInt : Format.X32_Typeless_G8X24_UInt,
                     Dimension = sd.Count == 1 ? ShaderResourceViewDimension.Texture2D : ShaderResourceViewDimension.Texture2DMultisampled,
                     MipLevels = 1,
                     MostDetailedMip = 0
@@ -95,7 +95,7 @@ namespace FeralTic.DX11.Resources
             if (context.IsFeatureLevel11)
             {
                 dsvd.Flags = DepthStencilViewFlags.ReadOnlyDepth;
-                if (format == Format.D24_UNorm_S8_UInt) { dsvd.Flags |= DepthStencilViewFlags.ReadOnlyStencil; }
+                if (format == Format.D24_UNorm_S8_UInt || format == Format.D32_Float_S8X24_UInt) { dsvd.Flags |= DepthStencilViewFlags.ReadOnlyStencil; }
 
                 this.ReadOnlyDSV = new DepthStencilView(context.Device, this.Resource, dsvd);
             }

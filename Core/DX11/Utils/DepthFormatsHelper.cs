@@ -28,7 +28,7 @@ namespace FeralTic.DX11.Utils
                 case Format.D16_UNorm:
                     return Format.R16_Typeless;
                 case Format.D32_Float_S8X24_UInt:
-                    return Format.R32_Float_X8X24_Typeless;
+                    return Format.R32G8X24_Typeless;
                 default:
                     return Format.R32_Typeless; //Defaults as R32
             }
