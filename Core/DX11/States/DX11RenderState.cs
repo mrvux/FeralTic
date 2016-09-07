@@ -18,7 +18,7 @@ namespace FeralTic.DX11
 
         public Color4 BlendFactor;
         public int DepthStencilReference;
-
+        public object Tag;
 
         public DX11RenderState()
         {
@@ -35,6 +35,7 @@ namespace FeralTic.DX11
             result.Rasterizer = this.Rasterizer;
             result.BlendFactor = this.BlendFactor;
             result.DepthStencilReference = this.DepthStencilReference;
+            result.Tag = this.Tag;
             return result;
         }
 
