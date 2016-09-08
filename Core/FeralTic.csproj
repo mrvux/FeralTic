@@ -107,9 +107,12 @@
   <ItemGroup>
     <Reference Include="SharpDX.Direct2D1">
       <HintPath>..\..\Dependencies\mixed\SharpDX.Direct2D1.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="SharpDX.Mathematics">
+    <Reference Include="SharpDX.Mathematics, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependencies\mixed\SharpDX.Mathematics.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -127,11 +130,11 @@
     </Reference>
     <Reference Include="SharpDX">
       <HintPath>..\Dependencies\anyCPU\SharpDX.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SharpDX.D3DCompiler">
       <HintPath>..\Dependencies\anyCPU\SharpDX.D3DCompiler.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
