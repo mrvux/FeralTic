@@ -53,18 +53,20 @@ namespace FeralTic.DX11.Geometry
 
             float fy = resY;
 
+            float resMax = (float)resY;
+
             #region Add Vertices tube
             for (int i = 0; i < resY + 1; i++)
             {
 
-                float ystep = (float)i / fres;
+                float ystep = (float)i / (fres+1.0f);
 
-                float radius = Map(ystep, 0, 1, radius1, radius2);
+                float radius = Map((float)i, 0.0f ,resMax , radius1, radius2);
 
                 for (int j = 0; j < resX; j++)
                 {
-                    float x = Convert.ToSingle(radius1 * Math.Cos(phi)) * radius;
-                    float z = Convert.ToSingle(radius1 * Math.Sin(phi)) * radius;
+                    float x = Convert.ToSingle(Math.Cos(phi)) * radius;
+                    float z = Convert.ToSingle(Math.Sin(phi)) * radius;
 
                     Pos4Norm3Tex2Vertex v = new Pos4Norm3Tex2Vertex();
                     v.Position = new Vector4(x, y, z, 1.0f);
@@ -112,7 +114,7 @@ namespace FeralTic.DX11.Geometry
             if (caps)
             {
                 indstart = verts.Count;
-                y = -length * 0.5f;
+                y = lenstart;
 
                 Pos4Norm3Tex2Vertex v = new Pos4Norm3Tex2Vertex();
                 v.Position = new Vector4(0, y, 0, 1.0f);
@@ -124,8 +126,8 @@ namespace FeralTic.DX11.Geometry
 
                 for (int j = 0; j < resX; j++)
                 {
-                    float x = Convert.ToSingle(radius1 * Math.Cos(phi)) * radius1;
-                    float z = Convert.ToSingle(radius1 * Math.Sin(phi)) * radius1;
+                    float x = Convert.ToSingle(Math.Cos(phi)) * radius1;
+                    float z = Convert.ToSingle(Math.Sin(phi)) * radius1;
 
                     v.Position = new Vector4(x, y, z, 1.0f);
                     verts.Add(v);
@@ -149,7 +151,7 @@ namespace FeralTic.DX11.Geometry
                 }
 
                 indstart += (resX + 1);
-                y = length * 0.5f;
+                y = lenstart + length;
 
                 v = new Pos4Norm3Tex2Vertex();
                 v.Position = new Vector4(0, y, 0, 1.0f);
@@ -161,8 +163,8 @@ namespace FeralTic.DX11.Geometry
 
                 for (int j = 0; j < resX; j++)
                 {
-                    float x = Convert.ToSingle(radius1 * Math.Cos(phi)) * radius2;
-                    float z = Convert.ToSingle(radius1 * Math.Sin(phi)) * radius2;
+                    float x = Convert.ToSingle(Math.Cos(phi)) * radius2;
+                    float z = Convert.ToSingle(Math.Sin(phi)) * radius2;
 
                     v.Position = new Vector4(x, y, z, 1.0f);
                     verts.Add(v);
