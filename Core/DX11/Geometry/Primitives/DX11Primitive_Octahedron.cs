@@ -28,15 +28,29 @@ namespace FeralTic.DX11.Geometry
 
             Pos3Norm3Tex2Vertex v = new Pos3Norm3Tex2Vertex();
 
-            Vector3 size = settings.Size;
+            v.Position = Vector3.Normalize(new Vector3(1.0f,0,0)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0);
+            v.Position *= settings.Radius;
+            ds.Write<Pos3Norm3Tex2Vertex>(v);
 
-            v.Position = Vector3.Normalize(new Vector3(1.0f,0,0)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
-            v.Position = Vector3.Normalize(new Vector3(-1.0f,0,0)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
-            v.Position = Vector3.Normalize(new Vector3(0,1.0f,0)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
-            v.Position = Vector3.Normalize(new Vector3(0,-1.0f,0)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
+            v.Position = Vector3.Normalize(new Vector3(-1.0f,0,0)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0);
+            v.Position *= settings.Radius;
+            ds.Write<Pos3Norm3Tex2Vertex>(v);
 
-            v.Position = Vector3.Normalize(new Vector3(0,0,-1.0f)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
-            v.Position = Vector3.Normalize(new Vector3(0,0, 1.0f)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0); ds.Write<Pos3Norm3Tex2Vertex>(v);
+            v.Position = Vector3.Normalize(new Vector3(0,1.0f,0)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0);
+            v.Position *= settings.Radius;
+            ds.Write<Pos3Norm3Tex2Vertex>(v);
+
+            v.Position = Vector3.Normalize(new Vector3(0,-1.0f,0)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0);
+            v.Position *= settings.Radius;
+            ds.Write<Pos3Norm3Tex2Vertex>(v);
+
+            v.Position = Vector3.Normalize(new Vector3(0,0,-1.0f)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0);
+            v.Position *= settings.Radius;
+            ds.Write<Pos3Norm3Tex2Vertex>(v);
+
+            v.Position = Vector3.Normalize(new Vector3(0,0, 1.0f)) * 0.5f; v.Normals = v.Position * 2.0f; v.TexCoords = new Vector2(0, 0);
+            v.Position *= settings.Radius;
+            ds.Write<Pos3Norm3Tex2Vertex>(v);
 
             
 
