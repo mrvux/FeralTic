@@ -28,10 +28,15 @@ namespace FeralTic.DX11.Resources
             get { return this.swapchain; }
         }
 
-        public DX11SwapChain(DX11RenderContext context, IntPtr handle, Format format, SampleDescription sampledesc,int rate,int bufferCount)
+        public DX11SwapChain(DX11RenderContext context, IntPtr handle, Format format, SampleDescription sampledesc,int rate,int bufferCount, bool flipSequential)
         {
             this.context = context;
             this.handle = handle;
+
+            if (flipSequential)
+            {
+                bufferCount = Math.Max(bufferCount, 2);
+            }
 
             SwapChainDescription sd = new SwapChainDescription()
             {
@@ -40,7 +45,7 @@ namespace FeralTic.DX11.Resources
                 IsWindowed = true,
                 OutputHandle = handle,
                 SampleDescription = sampledesc,
-                SwapEffect = SwapEffect.Discard,
+                SwapEffect = flipSequential ? (SwapEffect)3 : SwapEffect.Discard,
                 Usage = Usage.RenderTargetOutput | Usage.ShaderInput,
                 Flags = SwapChainFlags.None
             };
