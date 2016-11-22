@@ -19,7 +19,6 @@ namespace FeralTic.DX11.Geometry
             int resX = grid.ResolutionX;
             int resY = grid.ResolutionY;
 
-            float fdispx = -0.5f;
             float fdispy = (float)Math.Sqrt(0.75);
             List<Pos4Norm3Tex2Vertex> verts = new List<Pos4Norm3Tex2Vertex>();
 

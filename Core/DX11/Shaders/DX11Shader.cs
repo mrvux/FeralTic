@@ -34,7 +34,7 @@ namespace FeralTic.DX11
                 }
 
             }
-            catch (Exception ex)
+            catch
             {
                 return null;
             }
