@@ -189,6 +189,7 @@
     <Compile Include="DX11\Scheduler\DX11SchedulerThread.cs" />
     <Compile Include="DX11\Scheduler\Tasks\IDX11ScheduledTask.cs" />
     <Compile Include="Utils\MagicNumberUtils.cs" />
+    <Compile Include="Utils\AspectUtils.cs" />
     <Compile Include="Utils\OSUtils.cs" />
     <EmbeddedResource Include="Effects\DefaultVS.fx" />
     <Compile Include="DX11\ExtensionMethods.cs" />
