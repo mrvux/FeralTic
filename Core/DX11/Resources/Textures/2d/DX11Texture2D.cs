@@ -90,9 +90,14 @@ namespace FeralTic.DX11.Resources
 
         public static DX11Texture2D FromMemory(DX11RenderContext context, byte[] data)
         {
+            return FromMemory(context, data, ImageLoadInformation.FromDefaults());
+        }
+
+        public static DX11Texture2D FromMemory(DX11RenderContext context, byte[] data, ImageLoadInformation loadinfo)
+        {
             try
             {
-                Texture2D tex = Texture2D.FromMemory(context.Device, data);
+                Texture2D tex = Texture2D.FromMemory(context.Device, data, loadinfo);
 
                 if (tex.Description.ArraySize == 1)
                 {
