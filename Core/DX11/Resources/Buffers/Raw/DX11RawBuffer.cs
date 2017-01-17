@@ -101,14 +101,17 @@ namespace FeralTic.DX11.Resources
 
     public class DX11DynamicRawBuffer : IDX11ReadableResource
     {
+        private DX11RenderContext renderContext;
+
         public ShaderResourceView SRV { get; protected set; }
 
         public Buffer Buffer { get; protected set; }
 
         public int Size { get; protected set; }
 
-        public DX11DynamicRawBuffer(Device dev, int size)
+        public DX11DynamicRawBuffer(DX11RenderContext renderContext, int size)
         {
+            this.renderContext = renderContext;
             this.Size = size;
 
             BufferDescription bd = new BufferDescription()
@@ -119,7 +122,7 @@ namespace FeralTic.DX11.Resources
                 SizeInBytes = this.Size,
                 Usage = ResourceUsage.Dynamic,
             };
-            this.Buffer = new Buffer(dev, bd);
+            this.Buffer = new Buffer(this.renderContext.Device, bd);
 
             ShaderResourceViewDescription srvd = new ShaderResourceViewDescription()
             {
@@ -128,7 +131,15 @@ namespace FeralTic.DX11.Resources
                 Flags = ShaderResourceViewExtendedBufferFlags.RawData,
                 ElementCount = size / 4
             };
-            this.SRV = new ShaderResourceView(dev, this.Buffer, srvd);
+            this.SRV = new ShaderResourceView(this.renderContext.Device, this.Buffer, srvd);
+        }
+
+        public void WriteData(IntPtr ptr, int size)
+        {
+            DeviceContext ctx = this.renderContext.CurrentDeviceContext;
+            DataBox db = ctx.MapSubresource(this.Buffer, MapMode.WriteDiscard, MapFlags.None);
+            db.Data.WriteRange(ptr, size);
+            ctx.UnmapSubresource(this.Buffer, 0);
         }
 
         public void Dispose()
