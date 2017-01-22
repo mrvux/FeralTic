@@ -149,6 +149,49 @@ namespace FeralTic.DX11.Resources
         }
     }
 
+    public class DX11ImmutableRawBuffer : IDX11ReadableResource
+    {
+        private DX11RenderContext renderContext;
+
+        public ShaderResourceView SRV { get; protected set; }
+
+        public Buffer Buffer { get; protected set; }
+
+        public int Size { get; protected set; }
+
+        public DX11ImmutableRawBuffer(DX11RenderContext renderContext, DataStream data, int size)
+        {
+            this.renderContext = renderContext;
+            this.Size = size;
+
+            BufferDescription bd = new BufferDescription()
+            {
+                BindFlags = BindFlags.ShaderResource,
+                CpuAccessFlags = CpuAccessFlags.None,
+                OptionFlags = ResourceOptionFlags.RawBuffer,
+                SizeInBytes = this.Size,
+                Usage = ResourceUsage.Immutable,
+            };
+            this.Buffer = new Buffer(this.renderContext.Device,data, bd);
+
+            ShaderResourceViewDescription srvd = new ShaderResourceViewDescription()
+            {
+                Format = SlimDX.DXGI.Format.R32_Typeless,
+                Dimension = ShaderResourceViewDimension.ExtendedBuffer,
+                Flags = ShaderResourceViewExtendedBufferFlags.RawData,
+                ElementCount = size / 4
+            };
+            this.SRV = new ShaderResourceView(this.renderContext.Device, this.Buffer, srvd);
+        }
+
+        public void Dispose()
+        {
+            if (this.SRV != null) { this.SRV.Dispose(); }
+            if (this.Buffer != null) { this.Buffer.Dispose(); }
+        }
+    }
+
+
     public class DX11StagingRawBuffer : IDX11ReadableResource
     {
         public ShaderResourceView SRV { get; protected set; }
