@@ -11,8 +11,14 @@ namespace FeralTic.DX11.Utils
 {
     public class FormatHelper
     {
-        private Dictionary<SlimDX.DXGI.Format, int> formatsize = new Dictionary<SlimDX.DXGI.Format, int>();
-        private Dictionary<string, SlimDX.DXGI.Format> semantic = new Dictionary<string, SlimDX.DXGI.Format>();
+        private readonly Dictionary<SlimDX.DXGI.Format, int> formatsize = new Dictionary<SlimDX.DXGI.Format, int>();
+        private readonly Dictionary<string, SlimDX.DXGI.Format> semantic = new Dictionary<string, SlimDX.DXGI.Format>();
+
+        private FormatHelper()
+        {
+            this.InitializeSize();
+        }
+
         private static FormatHelper instance;
 
         public static FormatHelper Instance
@@ -22,7 +28,6 @@ namespace FeralTic.DX11.Utils
                 if (instance == null)
                 {
                     instance = new FormatHelper();
-                    instance.InitializeSize();
                 }
                 return instance;
             }

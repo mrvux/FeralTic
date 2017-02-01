@@ -211,7 +211,13 @@ namespace FeralTic.DX11.Resources
         {
             if (isowner)
             {
-                this.SRV.Dispose();
+                if (this.SRV != null)
+                {
+                    this.SRV.Dispose();
+                    this.SRV = null;
+                }
+               
+
                 this.Resource.Dispose();
             }
         }

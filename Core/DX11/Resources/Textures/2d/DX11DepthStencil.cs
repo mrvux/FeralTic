@@ -89,8 +89,6 @@ namespace FeralTic.DX11.Resources
 
             this.DSV = new DepthStencilView(context.Device, this.Resource, dsvd);
 
-
-
             //Read only dsv only supported in dx11 minimum
             if (context.IsFeatureLevel11)
             {
@@ -99,9 +97,6 @@ namespace FeralTic.DX11.Resources
 
                 this.ReadOnlyDSV = new DepthStencilView(context.Device, this.Resource, dsvd);
             }
-
-
-
 
             this.desc = depthBufferDesc;
             this.isowner = true;

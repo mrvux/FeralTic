@@ -165,6 +165,7 @@
     <Compile Include="DX11\Resources\Geometry\Models\DX11RawBufferGeometry.cs" />
     <Compile Include="DX11\Resources\Textures\1d\DX11WriteableTexture1d.cs" />
     <Compile Include="DX11\Resources\Textures\1d\DX11WriteableTexture1dArray.cs" />
+    <Compile Include="DX11\Resources\Textures\2d\DX11WriteOnlyDepthStencil.cs" />
     <Compile Include="DX11\Resources\Textures\3d\DX11MipSliceRenderTarget2D.cs" />
     <Compile Include="DX11\Resources\Textures\3d\DX11RenderMip3D.cs" />
     <Compile Include="DX11\Resources\Textures\2d\DX11CubeDepthStencil.cs" />
