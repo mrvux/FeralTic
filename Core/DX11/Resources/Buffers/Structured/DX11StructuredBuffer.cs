@@ -12,7 +12,7 @@ using Buffer = SlimDX.Direct3D11.Buffer;
 
 namespace FeralTic.DX11.Resources
 {
-    public enum DX11BufferUploadType { Dynamic = 0, Default = 1 }
+    public enum DX11BufferUploadType { Dynamic = 0, Default = 1, Immutable = 3 }
 
     public enum eDX11BufferMode { Default = 0, Append = 2, Counter = 4 }
 

@@ -163,6 +163,7 @@
     <Compile Include="DX11\Devices\NullRenderDevice.cs" />
     <Compile Include="DX11\Resources\Buffers\Structured\DX11CopyDestStructuredBuffer.cs" />
     <Compile Include="DX11\Resources\Buffers\Structured\DX11DynamicStructuredBuffer.cs" />
+    <Compile Include="DX11\Resources\Buffers\Structured\DX11ImmutableStructuredBuffer.cs" />
     <Compile Include="DX11\Resources\Buffers\Structured\DX11RWStructuredBuffer.cs" />
     <Compile Include="DX11\Resources\Buffers\Structured\DX11StagingStructuredBuffer.cs" />
     <Compile Include="DX11\Resources\Geometry\Drawers\DX11BufferDispatcher.cs" />
