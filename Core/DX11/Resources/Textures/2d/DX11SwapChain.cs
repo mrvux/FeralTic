@@ -107,7 +107,7 @@ namespace FeralTic.DX11.Resources
 
             this.Resource.Dispose();
 
-            this.swapchain.ResizeBuffers(1,w, h, SlimDX.DXGI.Format.Unknown, SwapChainFlags.AllowModeSwitch);
+            this.swapchain.ResizeBuffers(0,w, h, SlimDX.DXGI.Format.Unknown, SwapChainFlags.AllowModeSwitch);
 
             this.Resource = Texture2D.FromSwapChain<Texture2D>(this.swapchain, 0);
             this.RTV = new RenderTargetView(context.Device, this.Resource);
