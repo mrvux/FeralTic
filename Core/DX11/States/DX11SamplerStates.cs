@@ -79,7 +79,7 @@ namespace FeralTic.DX11
                 AddressW = TextureAddressMode.Border,
                 ComparisonFunction = Comparison.Always,
                 Filter = SlimDX.Direct3D11.Filter.MinMagMipLinear,
-                BorderColor=new SlimDX.Color4(1,0,0,0)
+                BorderColor=new SlimDX.Color4(0,0,0,1)
             };
             this.AddState("LinearBorder", sd);
         }
@@ -93,7 +93,7 @@ namespace FeralTic.DX11
                 AddressW = TextureAddressMode.Mirror,
                 ComparisonFunction = Comparison.Always,
                 Filter = SlimDX.Direct3D11.Filter.MinMagMipLinear,
-                BorderColor = new SlimDX.Color4(1, 0, 0, 0)
+                BorderColor = new SlimDX.Color4(0, 0, 0, 1)
             };
             this.AddState("LinearMirror", sd);
         }
@@ -133,7 +133,7 @@ namespace FeralTic.DX11
                 AddressW = TextureAddressMode.Border,
                 ComparisonFunction = Comparison.Always,
                 Filter = SlimDX.Direct3D11.Filter.MinMagMipPoint,
-                BorderColor = new SlimDX.Color4(1, 0, 0, 0)
+                BorderColor = new SlimDX.Color4(0, 0, 0, 1)
             };
             this.AddState("PointBorder", sd);
         }
