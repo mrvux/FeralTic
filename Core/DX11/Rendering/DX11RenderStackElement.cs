@@ -23,6 +23,20 @@ namespace FeralTic.DX11
         private bool hasscissor;
         private bool rodsv = false;
 
+        public IDX11RenderTargetView[] RenderTargets
+        {
+            get { return this.rendertargets; }
+        }
+
+        public IDX11DepthStencil DepthStencil
+        {
+            get { return this.depth; }
+        }
+
+        public bool ReadonlyDepth
+        {
+            get { return this.rodsv; }
+        }
 
         public RenderTargetStackElement(Viewport vp, Rectangle scissor, IDX11DepthStencil dsv, bool rodsv = false, params IDX11RenderTargetView[] rts)
         {
