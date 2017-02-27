@@ -99,7 +99,7 @@ namespace FeralTic.DX11.Resources
         }
     }
 
-    public class DX11DynamicRawBuffer : IDX11ReadableResource
+    public class DX11DynamicRawBuffer : IDX11ReadableResource, IDX11Buffer
     {
         private DX11RenderContext renderContext;
 
