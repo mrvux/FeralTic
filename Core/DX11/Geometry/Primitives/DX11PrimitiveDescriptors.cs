@@ -38,6 +38,18 @@ namespace FeralTic.DX11.Geometry
 
     public class Cylinder : AbstractPrimitiveDescriptor
     {
+        public Cylinder()
+        {
+            this.Radius1 = 0.5f;
+            this.Radius2 = 0.5f;
+            this.Cycles = 1.0f;
+            this.Length = 1.0f;
+            this.ResolutionX = 16;
+            this.ResolutionY = 2;
+            this.Caps = true;
+            this.CenterY = true;
+        }
+
         public float Radius1 { get; set; }
         public float Radius2 { get; set; }
         public float Cycles { get; set; }
