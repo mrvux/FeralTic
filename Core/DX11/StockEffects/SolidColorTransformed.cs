@@ -34,7 +34,7 @@ namespace FeralTic.DX11.StockEffects
 
                 this.viewProjVariable = this.effect.GetVariableByName("tVP").AsMatrix();
                 this.worldVariable = this.effect.GetVariableByName("tW").AsMatrix();
-                this.colorVariable = this.effect.GetVariableByName("color").AsVector();
+                this.colorVariable = this.effect.GetVariableByName("objectColor").AsVector();
             }
         }
 

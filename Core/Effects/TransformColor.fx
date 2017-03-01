@@ -9,9 +9,9 @@ cbuffer cbObject : register(b1)
     float4x4 tW : WORLD;
 };
 
-cbuffer cbObject : register(b0)
+cbuffer cbColor : register(b0)
 {
-    float4 color;
+    float4 objectColor;
 };
 
 void VS(float4 posObject : POSITION, out float4 posScreen : SV_Position)
@@ -22,7 +22,7 @@ void VS(float4 posObject : POSITION, out float4 posScreen : SV_Position)
 
 float4 PS(float4 posScreen : SV_Position) : SV_Target
 {
-    return color;
+    return objectColor;
 }
 
 technique10 Render

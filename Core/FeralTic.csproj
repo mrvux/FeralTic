@@ -188,6 +188,7 @@
     <Compile Include="DX11\Shaders\SharpDXIncludeWrapper.cs" />
     <Compile Include="DX11\StockEffects\SolidColorTransformed.cs" />
     <Compile Include="DX11\Utils\FormatHelper.cs" />
+    <Compile Include="DX11\Utils\UpAxis.cs" />
     <Compile Include="DX11\Utils\VertexLayoutsHelpers.cs" />
     <Compile Include="DXGI\DisplayModeUtils.cs" />
     <Compile Include="Utils\DXGIScreen.cs" />
