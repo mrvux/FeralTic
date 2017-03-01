@@ -16,6 +16,11 @@ namespace FeralTic.DX11.Geometry
 
     public class Box : AbstractPrimitiveDescriptor
     {
+        public Box()
+        {
+            this.Size = new Vector3(1.0f, 1.0f, 1.0f);
+        }
+
         public Vector3 Size { get; set; }
 
         public override string PrimitiveType { get { return "Box"; } }
@@ -268,6 +273,16 @@ namespace FeralTic.DX11.Geometry
 
     public class Sphere : AbstractPrimitiveDescriptor
     {
+        public Sphere()
+        {
+            this.Radius = 0.5f;
+            this.ResX = 16;
+            this.ResY = 16;
+            this.CyclesX = 1.0f;
+            this.CyclesY = 1.0f;
+        }
+
+
         public float Radius { get; set; }
         public int ResX { get; set; }
         public int ResY { get; set; }
