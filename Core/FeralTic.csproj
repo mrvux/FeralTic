@@ -154,6 +154,7 @@
     <Compile Include="DX11\Geometry\VertexLayouts\Pos2Tex2Vertex.cs" />
     <Compile Include="DX11\Geometry\VertexLayouts\Pos3Norm3Col4Vertex.cs" />
     <Compile Include="DX11\Geometry\VertexLayouts\Pos4Norm3Vertex.cs" />
+    <Compile Include="DX11\Geometry\VertexLayouts\Pos3Vertex.cs" />
     <Compile Include="DX11\Geometry\VertexLayouts\Pos4Vertex.cs" />
     <Compile Include="DX11\Queries\DX11OcclusionQuery.cs" />
     <Compile Include="DX11\Queries\DX11PipelineQuery.cs" />
@@ -185,6 +186,7 @@
     <Compile Include="DX11\Shaders\ShaderCompilerErrorParser.cs" />
     <Compile Include="DX11\Shaders\ShaderMacroExtensionMethods.cs" />
     <Compile Include="DX11\Shaders\SharpDXIncludeWrapper.cs" />
+    <Compile Include="DX11\StockEffects\SolidColorTransformed.cs" />
     <Compile Include="DX11\Utils\FormatHelper.cs" />
     <Compile Include="DX11\Utils\VertexLayoutsHelpers.cs" />
     <Compile Include="DXGI\DisplayModeUtils.cs" />
@@ -291,6 +293,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Effects\VSFullTri.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Effects\TransformColor.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
