@@ -81,14 +81,20 @@ namespace FeralTic.DX11.Resources
 
         public void WriteData(T[] data, int offset, int count)
         {
-            DataBox db = new DataBox(0, 0, new DataStream(data, true, true));
-            this.context.CurrentDeviceContext.UpdateSubresource(db, this.Buffer, 0);
+            using (var ds = new DataStream(data, true, true))
+            {
+                DataBox db = new DataBox(0, 0, ds);
+                this.context.CurrentDeviceContext.UpdateSubresource(db, this.Buffer, 0);
+            }
         }
 
         public void WriteData(IntPtr ptr, int length)
         {
-            DataBox db = new DataBox(0, 0, new DataStream(ptr,length, true, true));
-            this.context.CurrentDeviceContext.UpdateSubresource(db, this.Buffer, 0);
+            using (var ds = new DataStream(ptr, length, true, true))
+            {
+                DataBox db = new DataBox(0, 0, ds);
+                this.context.CurrentDeviceContext.UpdateSubresource(db, this.Buffer, 0); 
+            }
         }
 
         protected override void OnDispose()
