@@ -12,34 +12,76 @@ namespace FeralTic.DX11.Geometry
 {
     public partial class DX11PrimitivesManager
     {
-        public DX11VertexGeometry LineStrip3d(List<Vector3> points, bool loop)
+        public DX11VertexGeometry LineStrip3d(List<Vector3> points, bool loop, bool buildAdjacency = false)
         {
+            if (points.Count == 0)
+            {
+                //Build zero line
+                points = new List<Vector3>(2);
+                points.Add(Vector3.Zero);
+                points.Add(Vector3.Zero);
+            }
+            else if (points.Count == 1)
+            {
+                var oldPoints = points;
+                //Build zero line using current vertex
+                points = new List<Vector3>(2);
+                points.Add(oldPoints[0]);
+                points.Add(oldPoints[0]);
+            }
+
             DX11VertexGeometry geom = new DX11VertexGeometry(context);
 
-            int vcount = loop ? points.Count + 1 : points.Count;
+            //Line has N vertex count, we add 1 in case of loop to close, and we add 2 more in case of adjacency
+            int lineVertexCount = loop ? points.Count + 1 : points.Count;
+            int totalVertexCount = buildAdjacency ? lineVertexCount + 2 : lineVertexCount;
+            int startWriteIndex = buildAdjacency ? 1 : 0;
 
-            Pos3Tex2Vertex[] verts = new Pos3Tex2Vertex[vcount];
+            Pos3Tex2Vertex[] verts = new Pos3Tex2Vertex[totalVertexCount];
 
-            float inc = loop ? 1.0f / (float)vcount : 1.0f / ((float)vcount + 1.0f);
-
-            float curr = 0.0f;
+            float uvStep = loop ? 1.0f / (float)totalVertexCount : 1.0f / ((float)totalVertexCount + 1.0f);
+            float currentUv = 0.0f;
             
-                
             for (int i = 0; i < points.Count; i++)
             {
-                verts[i].Position = points[i];
-                verts[i].TexCoords.X = curr;
-                curr += inc;
+                verts[startWriteIndex+i].Position = points[i];
+                verts[startWriteIndex+i].TexCoords.X = currentUv;
+                currentUv += uvStep;
             }
 
+            //Add first point to close the loop
             if (loop)
             {
-                verts[points.Count].Position = points[0];
-                verts[points.Count].TexCoords.X = 1.0f;
+                verts[startWriteIndex+points.Count].Position = points[0];
+                verts[startWriteIndex+points.Count].TexCoords.X = 1.0f;
+            }
+
+            if (buildAdjacency)
+            {
+                if (loop)
+                {
+                    //Add last point from the line as first vertex
+                    verts[0] = verts[lineVertexCount - 1];
+
+                    //Add second point as loop = last point
+                    verts[0] = verts[1];
+                }
+                else
+                {
+                    //In that case, we just extend the lines from beginning and end, first point we reverse that dir
+                    Vector3 originDir = points[1] - points[0];
+                    verts[0].Position = points[0] - originDir;
+                    verts[0].TexCoords = new Vector2(0.0f, 0.0f);
+
+                    //Last point to previous
+                    Vector3 destDir = points[points.Count-1] - points[points.Count-2];
+                    verts[verts.Length - 1].Position = points[points.Count - 1] + destDir;
+                    verts[verts.Length - 1].TexCoords = new Vector2(1.0f, 0.0f);
+                }
             }
 
 
-            DataStream ds = new DataStream(vcount * Pos3Tex2Vertex.VertexSize, true, true);
+            DataStream ds = new DataStream(totalVertexCount * Pos3Tex2Vertex.VertexSize, true, true);
             ds.Position = 0;
             ds.WriteRange(verts);
             ds.Position = 0;
@@ -57,10 +99,9 @@ namespace FeralTic.DX11.Geometry
 
             geom.VertexBuffer = vbuffer;
             geom.InputLayout = Pos3Tex2Vertex.Layout;
-            geom.Topology = PrimitiveTopology.LineStrip;
-            geom.VerticesCount = vcount;
+            geom.Topology = buildAdjacency ? PrimitiveTopology.LineStripWithAdjacency : PrimitiveTopology.LineStrip;
+            geom.VerticesCount = totalVertexCount;
             geom.VertexSize = Pos3Tex2Vertex.VertexSize;
-
             geom.HasBoundingBox = false;
 
             return geom;
