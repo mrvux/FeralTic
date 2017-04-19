@@ -139,7 +139,7 @@ namespace FeralTic.DX11.Geometry
             }
 
 
-            DataStream ds = new DataStream(vcount * Pos3Tex2Vertex.VertexSize, true, true);
+            DataStream ds = new DataStream(vcount * Pos3Norm3Tex2Vertex.VertexSize, true, true);
             ds.Position = 0;
             ds.WriteRange(verts);
             ds.Position = 0;
