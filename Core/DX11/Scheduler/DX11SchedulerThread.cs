@@ -35,6 +35,12 @@ namespace FeralTic.DX11
         public void Stop()
         {
             this.running = false;
+            if (this.thr != null)
+            {
+                // Wait for the thread to terminate. Prevents a ExecutionEngineException after generating the nodelist.xml
+                if (this.thr.Join(1000))
+                    this.thr = null;
+            }
         }
 
         private void Run()
