@@ -30,6 +30,21 @@ namespace FeralTic.DX11.Resources
             return res;
         }
 
+        public static DX11Texture2D FromSharedHandle(DX11RenderContext context, IntPtr sharedHandle)
+        {
+            Texture2D tex = context.Device.OpenSharedResource<Texture2D>(sharedHandle);
+            ShaderResourceView srv = new ShaderResourceView(context.Device, tex);
+
+            DX11Texture2D result = new DX11Texture2D();
+            result.context = context;
+            result.Resource = tex;
+            result.SRV = srv;
+            result.desc = tex.Description;
+
+            result.isowner = true;
+            return result;
+        }
+
         public static DX11Texture2D FromTextureAndSRV(DX11RenderContext context, Texture2D tex,ShaderResourceView srv)
         {
             Texture2DDescription desc = tex.Description;
