@@ -171,6 +171,7 @@
     <Compile Include="DX11\Resources\Geometry\Drawers\DX11NullIndirectDrawer.cs" />
     <Compile Include="DX11\Resources\Geometry\Models\DX11InvalidGeometry.cs" />
     <Compile Include="DX11\Resources\Geometry\Models\DX11RawBufferGeometry.cs" />
+    <Compile Include="DX11\Resources\Misc\StreamOutputBufferWithRawSupport.cs" />
     <Compile Include="DX11\Resources\Textures\1d\DX11WriteableTexture1d.cs" />
     <Compile Include="DX11\Resources\Textures\1d\DX11WriteableTexture1dArray.cs" />
     <Compile Include="DX11\Resources\Textures\2d\DX11WriteOnlyDepthStencil.cs" />
