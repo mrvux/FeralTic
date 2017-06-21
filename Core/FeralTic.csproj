@@ -153,6 +153,8 @@
     <Compile Include="DX11\Geometry\VertexLayouts\Pos2Norm2Tex2Vertex.cs" />
     <Compile Include="DX11\Geometry\VertexLayouts\Pos2Tex2Vertex.cs" />
     <Compile Include="DX11\Geometry\VertexLayouts\Pos3Norm3Col4Vertex.cs" />
+    <Compile Include="DX11\Geometry\VertexLayouts\Quad3Vertex.cs" />
+    <Compile Include="DX11\Geometry\VertexLayouts\Triangle3Vertex.cs" />
     <Compile Include="DX11\Geometry\VertexLayouts\Pos4Norm3Vertex.cs" />
     <Compile Include="DX11\Geometry\VertexLayouts\Pos3Vertex.cs" />
     <Compile Include="DX11\Geometry\VertexLayouts\Pos4Vertex.cs" />

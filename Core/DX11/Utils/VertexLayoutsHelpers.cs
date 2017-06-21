@@ -42,6 +42,9 @@ namespace FeralTic.DX11.Utils
             data.Add("Pos3Tex2", Pos3Tex2Vertex.Layout);
             data.Add("Pos4Tex2", Pos4Tex2Vertex.Layout);
 
+            data.Add("Indices3", Triangle3Vertex.Layout);
+            data.Add("Quad3", Quad3Vertex.Layout);
+
             elements = data;
             enumEntries = data.Keys.ToArray();
         }

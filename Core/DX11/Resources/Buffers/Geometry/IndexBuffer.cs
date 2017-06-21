@@ -11,6 +11,7 @@ namespace FeralTic.DX11.Resources
 {
     public class DX11IndexBuffer : IDisposable, IDX11RWResource
     {
+        private bool isOwner = true;
         private DX11RenderContext context;
 
         public Buffer Buffer { get; protected set; }
@@ -26,12 +27,28 @@ namespace FeralTic.DX11.Resources
 
         private SlimDX.DXGI.Format format;
 
+        private DX11IndexBuffer(DX11RenderContext context)
+        {
+            this.context = context;
+            format = SlimDX.DXGI.Format.R32_UInt;
+        }
+
         public DX11IndexBuffer(DX11RenderContext context, IntPtr ptr, int indicescount)
         {
             this.context = context;
             format = SlimDX.DXGI.Format.R32_UInt;
             this.Buffer = SlimDX.Direct3D11.Buffer.FromPointer(ptr);
             this.IndicesCount = indicescount;
+        }
+
+
+        public static DX11IndexBuffer FromReference(DX11RenderContext context, SlimDX.Direct3D11.Buffer bufferRef, int elementCount)
+        {
+             DX11IndexBuffer ibo = new DX11IndexBuffer(context);
+             ibo.Buffer = bufferRef;
+             ibo.IndicesCount = elementCount;
+            ibo.isOwner = false;
+            return ibo;
         }
 
         public DX11IndexBuffer(DX11RenderContext context, DataStream initial,bool dynamic, bool dispose)
@@ -138,9 +155,12 @@ namespace FeralTic.DX11.Resources
 
         public void Dispose()
         {
-            if (this.uav != null) { this.uav.Dispose(); }
-            if (this.srv != null) { this.srv.Dispose(); }
-            if (this.Buffer != null) { this.Buffer.Dispose(); }  
+            if (this.isOwner)
+            {
+                if (this.uav != null) { this.uav.Dispose(); }
+                if (this.srv != null) { this.srv.Dispose(); }
+                if (this.Buffer != null) { this.Buffer.Dispose(); }
+            }
         }
     }
 }
