@@ -19,8 +19,7 @@ namespace FeralTic.DX11
 
         private Viewport vp;
 
-        private Rectangle scissor;
-        private bool hasscissor;
+        private Rectangle? scissor;
         private bool rodsv = false;
 
         public IDX11RenderTargetView[] RenderTargets
@@ -38,31 +37,22 @@ namespace FeralTic.DX11
             get { return this.rodsv; }
         }
 
-        public RenderTargetStackElement(Viewport vp, Rectangle scissor, IDX11DepthStencil dsv, bool rodsv = false, params IDX11RenderTargetView[] rts)
+        public RenderTargetStackElement(Viewport vp, Rectangle? scissorRectangle, IDX11DepthStencil dsv, bool rodsv = false, params IDX11RenderTargetView[] rts)
         {
             this.depth = dsv;
             this.rendertargets = rts;
             this.rodsv = rodsv;
 
             this.vp = vp;
-            this.scissor = scissor;
-            this.hasscissor = true;
+            this.scissor = scissorRectangle;
 
             rtvs = new RenderTargetView[rts.Length];
             for (int i = 0; i < rts.Length; i++) { rtvs[i] = rts[i].RTV; }
         }
 
-        public RenderTargetStackElement(Viewport vp, IDX11DepthStencil dsv, bool rodsv = false, params IDX11RenderTargetView[] rts)
+        public RenderTargetStackElement(Viewport vp, IDX11DepthStencil dsv, bool rodsv = false, params IDX11RenderTargetView[] rts) : 
+            this (vp, null, dsv, rodsv, rts)
         {
-            this.depth = dsv;
-            this.rendertargets = rts;
-            this.rodsv = rodsv;
-
-            this.vp = vp;
-            this.hasscissor = false;
-
-            rtvs = new RenderTargetView[rts.Length];
-            for (int i = 0; i < rts.Length; i++) { rtvs[i] = rts[i].RTV; }
         }
 
         public RenderTargetStackElement(IDX11DepthStencil dsv, bool rodsv = false, params IDX11RenderTargetView[] rts)
@@ -76,7 +66,7 @@ namespace FeralTic.DX11
             this.vp.MinZ = 0.0f;
             this.vp.MaxZ = 1.0f;
 
-            this.hasscissor = false;
+            this.scissor = null;
 
             if (this.depth != null)
             {
@@ -111,8 +101,18 @@ namespace FeralTic.DX11
                 ctx.OutputMerger.SetTargets(this.rtvs);
             }
             ctx.Rasterizer.SetViewports(vp);
-            if (this.hasscissor) { ctx.Rasterizer.SetScissorRectangles(scissor); }
+            if (this.scissor.HasValue) { ctx.Rasterizer.SetScissorRectangles(scissor.Value); }
             else { ctx.Rasterizer.SetScissorRectangles(null); }
+        }
+
+        public RenderTargetStackElement WithViewport(Viewport viewport)
+        {
+            return new RenderTargetStackElement(viewport, this.scissor, this.depth, this.rodsv, this.rendertargets);
+        }
+
+        public RenderTargetStackElement WithViewportAndScissor(Viewport viewport,Rectangle scissor)
+        {
+            return new RenderTargetStackElement(viewport, scissor, this.depth, this.rodsv, this.rendertargets);
         }
 
     }

@@ -16,10 +16,7 @@ namespace FeralTic.DX11
 
         private Stack<RenderTargetStackElement> stack;
 
-        private DX11ViewportStack viewportstack;
-
         public int StackCount { get { return this.stack.Count; } }
-        public int ViewPortStackCount { get { return this.viewportstack.Count; } }
 
         public RenderTargetStackElement Current
         {
@@ -29,56 +26,43 @@ namespace FeralTic.DX11
         public DX11RenderTargetStack(DX11RenderContext context)
         {
             this.context = context;
-            this.viewportstack = new DX11ViewportStack(context);
-
             stack = new Stack<RenderTargetStackElement>();
         }
 
-        public void Push(Viewport vp, IDX11DepthStencil dsv, bool rodsv = false, params IDX11RenderTargetView[] rts)
+        public void Push(RenderTargetStackElement stackElement)
         {
-            RenderTargetStackElement elem = new RenderTargetStackElement(vp, dsv, rodsv, rts);
-            stack.Push(elem);
-            this.Apply();
-        }
-
-        public void Push(Viewport vp, Rectangle scissor, IDX11DepthStencil dsv, bool rodsv = false, params IDX11RenderTargetView[] rts)
-        {
-            RenderTargetStackElement elem = new RenderTargetStackElement(vp,scissor, dsv, rodsv, rts);
-            stack.Push(elem);
+            stack.Push(stackElement);
             this.Apply();
         }
 
         public void Push(IDX11DepthStencil dsv, bool rodsv = false, params IDX11RenderTargetView[] rts)
         {
             RenderTargetStackElement elem = new RenderTargetStackElement(dsv, rodsv, rts);
-            stack.Push(elem);
-            this.Apply();
+            Push(elem);
         }
 
         public void Push(params IDX11RenderTargetView[] rts)
         {
             RenderTargetStackElement elem = new RenderTargetStackElement(null, false, rts);
-            stack.Push(elem);
-            this.Apply();
+            Push(elem);
         }
 
-        public void PushViewport(Viewport vp)
+        public void Push(Viewport vp, IDX11DepthStencil dsv, bool rodsv = false, params IDX11RenderTargetView[] rts)
         {
-            //context.CurrentDeviceContext.Rasterizer.SetViewports(new Viewport(0, 0, 50, 50, 0, 1));
-            this.viewportstack.Push(vp);
+            RenderTargetStackElement elem = new RenderTargetStackElement(vp, dsv, rodsv, rts);
+            Push(elem);
         }
 
-        public void PushViewPort(Viewport vp, Rectangle scissor)
+        public void PushViewport(Viewport viewport)
         {
-            this.viewportstack.Push(vp, scissor);
+            Push(this.stack.Peek().WithViewport(viewport));
         }
 
-        public void PopViewport()
+        public void PushViewPort(Viewport viewport, Rectangle scissor)
         {
-            this.viewportstack.Pop();
+            Push(this.stack.Peek().WithViewportAndScissor(viewport, scissor));
         }
 
-        
         public void Pop()
         {
             stack.Pop();
