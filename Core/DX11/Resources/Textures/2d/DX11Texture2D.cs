@@ -45,16 +45,45 @@ namespace FeralTic.DX11.Resources
             return result;
         }
 
-        public static DX11Texture2D FromTextureAndSRV(DX11RenderContext context, Texture2D tex,ShaderResourceView srv)
+        /// <summary>
+        /// Creates a reference resource from texture and view.
+        /// This does not take ownership on the resource, so dispose will do nothing on this
+        /// </summary>
+        /// <param name="context">Context</param>
+        /// <param name="texture">A valid Direc3D11 texture</param>
+        /// <param name="shaderView">A valid Direct3D11 view (that should match the texture).</param>
+        /// <returns>Packed Texture object</returns>
+        public static DX11Texture2D FromTextureAndSRV(DX11RenderContext context, Texture2D texture, ShaderResourceView shaderView)
         {
-            Texture2DDescription desc = tex.Description;
+            Texture2DDescription desc = texture.Description;
 
             DX11Texture2D res = new DX11Texture2D();
             res.context = context;
-            res.Resource = tex;
-            res.SRV = srv;
+            res.Resource = texture;
+            res.SRV = shaderView;
             res.desc = desc;
             res.isowner = false;
+            return res;
+        }
+
+        /// <summary>
+        /// Creates a reference resource from texture and view.
+        /// This does take ownership over the resource. Calling dispose on the object will effectively release ressources
+        /// </summary>
+        /// <param name="context">Context</param>
+        /// <param name="texture">A valid Direc3D11 texture</param>
+        /// <param name="shaderView">A valid Direct3D11 view (that should match the texture).</param>
+        /// <returns>Packed Texture object</returns>
+        public static DX11Texture2D TakeOwnership(DX11RenderContext context, Texture2D texture, ShaderResourceView shaderView)
+        {
+            Texture2DDescription desc = texture.Description;
+
+            DX11Texture2D res = new DX11Texture2D();
+            res.context = context;
+            res.Resource = texture;
+            res.SRV = shaderView;
+            res.desc = desc;
+            res.isowner = true;
             return res;
         }
 
@@ -66,6 +95,43 @@ namespace FeralTic.DX11.Resources
             td.Usage = ResourceUsage.Staging;
 
             return new Texture2D(context.Device, td);
+        }
+
+        public static DX11Texture2D CreateImmutable(DX11RenderContext context, int width, int height, SlimDX.DXGI.Format format, int pitch, IntPtr initialData)
+        {
+            var dataStream = new SlimDX.DataStream(initialData, pitch * height, true, false);
+            return CreateImmutable(context, width, height, format, pitch, dataStream);
+        }
+
+        public static DX11Texture2D CreateImmutable(DX11RenderContext context, int width, int height, SlimDX.DXGI.Format format, int pitch, SlimDX.DataStream initialData)
+        {
+            Texture2DDescription desc = new Texture2DDescription()
+            {
+                ArraySize = 1,
+                BindFlags = BindFlags.ShaderResource,
+                CpuAccessFlags = CpuAccessFlags.None,
+                Format = format,
+                Height = height,
+                MipLevels = 1,
+                OptionFlags = ResourceOptionFlags.None,
+                SampleDescription = new SampleDescription(1, 0),
+                Usage = ResourceUsage.Immutable,
+                Width = width
+            };
+
+            SlimDX.DataRectangle dataRectangle = new SlimDX.DataRectangle(pitch, initialData);
+            Texture2D texture = new Texture2D(context.Device, desc, dataRectangle);
+
+            try
+            {
+                ShaderResourceView shaderView = new ShaderResourceView(context.Device, texture);
+                return TakeOwnership(context, texture, shaderView);
+            }
+            catch
+            {
+                texture.Dispose(); //Avoid partial leak in case of failure, that should be really rare but could happen
+                throw;
+            }
         }
 
         public static DX11Texture2D FromResource(DX11RenderContext context, Assembly assembly, string path)
