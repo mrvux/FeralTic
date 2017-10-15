@@ -10,7 +10,7 @@ using Device = SlimDX.Direct3D11.Device;
 
 namespace FeralTic.DX11.Resources
 {
-    public class DX11RenderTextureArray : DX11Texture2D, IDX11RenderTargetView
+    public class DX11RenderTextureArray : DX11Texture2D, IDX11RenderTargetView, IDX11RWResource
     {
         public RenderTargetView RTV { get; protected set; }
 
@@ -18,14 +18,21 @@ namespace FeralTic.DX11.Resources
 
         public DX11SliceRenderTarget[] SliceRTV { get; protected set; }
 
-        public DX11RenderTextureArray(DX11RenderContext context, int w, int h, int elemcnt, Format format, bool buildslices = true, int miplevels = 0)
+        public UnorderedAccessView UAV { get; protected set; }
+
+        public DX11RenderTextureArray(DX11RenderContext context, int w, int h, int elemcnt, Format format, bool buildslices = true, int miplevels = 0, bool allowUAV = false)
         {
             this.context = context;
+
+            BindFlags bindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource;
+
+            if (allowUAV)
+                bindFlags |= BindFlags.UnorderedAccess;
 
             var texBufferDesc = new Texture2DDescription
             {
                 ArraySize = elemcnt,
-                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                BindFlags = bindFlags,
                 CpuAccessFlags = CpuAccessFlags.None,
                 Format = format,
                 Height = h,
@@ -56,8 +63,21 @@ namespace FeralTic.DX11.Resources
                 MostDetailedMip = 0
             };
 
+            UnorderedAccessViewDescription uavd = new UnorderedAccessViewDescription()
+            {
+                ArraySize = elemcnt,
+                FirstArraySlice = 0,
+                Dimension = UnorderedAccessViewDimension.Texture2DArray,
+                Format = format
+            };
+
             this.SRV = new ShaderResourceView(context.Device, this.Resource, srvd);
             this.RTV = new RenderTargetView(context.Device, this.Resource, rtd);
+
+            if (allowUAV)
+            {
+                this.UAV = new UnorderedAccessView(context.Device, this.Resource, uavd);
+            }
 
             this.desc = texBufferDesc;
 
@@ -103,6 +123,11 @@ namespace FeralTic.DX11.Resources
             foreach (DX11SliceRenderTarget slice in this.SliceRTV)
             {
                  if (slice != null) { slice.Dispose(); }
+            }
+
+            if (this.UAV != null)
+            {
+                this.UAV.Dispose();
             }
 
             this.RTV.Dispose();
