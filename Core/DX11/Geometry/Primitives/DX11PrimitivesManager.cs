@@ -17,6 +17,9 @@ namespace FeralTic.DX11.Geometry
         private DX11NullGeometry fulltri;
         private Effect fulltrivs;
 
+        private Effect fulltrivsposition;
+        private EffectPass fulltrivspositionpass;
+
         private EffectPass vsonlypass;
         private EffectPass fullscreenpass;
 
@@ -30,6 +33,10 @@ namespace FeralTic.DX11.Geometry
             this.context = context;
             this.InitializeDelegates();
             Effect e = this.FullTriVS;
+
+            DX11Effect shader = DX11Effect.FromResource(Assembly.GetExecutingAssembly(), "FeralTic.Effects.VSFullTriPosOnly.fx");
+            this.fulltrivsposition = new Effect(context.Device, shader.ByteCode);
+            this.fulltrivspositionpass = this.fulltrivs.GetTechniqueByIndex(0).GetPassByIndex(0);
         }
 
         private float Map(float Input, float InMin, float InMax, float OutMin, float OutMax)
@@ -116,7 +123,12 @@ namespace FeralTic.DX11.Geometry
             }
         }
 
-                
+             
+        public void ApplyFullTriVSPosition()
+        {
+            this.FullScreenTriangle.Bind(null);
+
+        }
 
 
         public void ApplyFullTriVS()
@@ -134,6 +146,7 @@ namespace FeralTic.DX11.Geometry
         public void Dispose()
         {
             if (this.fulltrivs != null) { this.fulltrivs.Dispose(); }
+            if (this.fulltrivsposition != null) { this.fulltrivsposition.Dispose(); }
         }
 
     }
