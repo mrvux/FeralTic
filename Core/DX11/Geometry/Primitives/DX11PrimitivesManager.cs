@@ -7,6 +7,7 @@ using System.Reflection;
 using SlimDX.Direct3D11;
 
 using FeralTic.DX11.Resources;
+using SlimDX;
 
 namespace FeralTic.DX11.Geometry
 {
@@ -19,6 +20,11 @@ namespace FeralTic.DX11.Geometry
 
         private Effect fulltrivsposition;
         private EffectPass fulltrivspositionpass;
+
+
+        private Effect fulltrivstextransform;
+        private EffectPass fulltrivstextransformpass;
+        private EffectMatrixVariable fulltrivstextransformmat;
 
         private EffectPass vsonlypass;
         private EffectPass fullscreenpass;
@@ -37,6 +43,11 @@ namespace FeralTic.DX11.Geometry
             DX11Effect shader = DX11Effect.FromResource(Assembly.GetExecutingAssembly(), "FeralTic.Effects.VSFullTriPosOnly.fx");
             this.fulltrivsposition = new Effect(context.Device, shader.ByteCode);
             this.fulltrivspositionpass = this.fulltrivs.GetTechniqueByIndex(0).GetPassByIndex(0);
+
+            shader = DX11Effect.FromResource(Assembly.GetExecutingAssembly(), "FeralTic.Effects.VSFullTriTexTransform.fx");
+            this.fulltrivstextransform = new Effect(context.Device, shader.ByteCode);
+            this.fulltrivstextransformpass = this.fulltrivstextransform.GetTechniqueByIndex(0).GetPassByIndex(0);
+            this.fulltrivstextransformmat = this.fulltrivstextransform.GetVariableByName("tTex").AsMatrix();
         }
 
         private float Map(float Input, float InMin, float InMax, float OutMin, float OutMax)
@@ -127,7 +138,14 @@ namespace FeralTic.DX11.Geometry
         public void ApplyFullTriVSPosition()
         {
             this.FullScreenTriangle.Bind(null);
+            this.fulltrivspositionpass.Apply(this.context.CurrentDeviceContext);
+        }
 
+        public void ApplyFullTriVSTexTransform(Matrix baseTransform)
+        {
+            this.FullScreenTriangle.Bind(null);
+            this.fulltrivstextransformpass.Apply(this.context.CurrentDeviceContext);
+            this.fulltrivstextransformmat.SetMatrix(baseTransform.AsTextureTransform());
         }
 
 
@@ -147,6 +165,7 @@ namespace FeralTic.DX11.Geometry
         {
             if (this.fulltrivs != null) { this.fulltrivs.Dispose(); }
             if (this.fulltrivsposition != null) { this.fulltrivsposition.Dispose(); }
+            if (this.fulltrivstextransform != null) { this.fulltrivstextransform.Dispose(); }
         }
 
     }

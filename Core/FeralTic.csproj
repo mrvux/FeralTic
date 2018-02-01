@@ -206,6 +206,7 @@
     <Compile Include="DX11\Scheduler\Tasks\IDX11ScheduledTask.cs" />
     <Compile Include="Utils\MagicNumberUtils.cs" />
     <Compile Include="Utils\AspectUtils.cs" />
+    <Compile Include="Utils\MatrixUtils.cs" />
     <Compile Include="Utils\OSUtils.cs" />
     <EmbeddedResource Include="Effects\DefaultVS.fx" />
     <Compile Include="DX11\ExtensionMethods.cs" />
@@ -303,6 +304,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Effects\VSFullTriPosOnly.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Effects\VSFullTriTexTransform.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
