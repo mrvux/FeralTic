@@ -81,6 +81,16 @@ namespace FeralTic.DX11.Resources
             return res;
         }
 
+
+        public static DX11Texture3D FromDescription(DX11RenderContext context, Texture3DDescription desc)
+        {
+            DX11OwnedTexture3D res = new DX11OwnedTexture3D(context);
+            res.context = context;
+            res.Resource = new Texture3D(context.Device, desc);
+            res.SRV = new ShaderResourceView(context.Device, res.Resource);
+            return res;
+        }
+
         public static DX11Texture3D FromResource(DX11RenderContext context, Texture3D tex, ShaderResourceView srv)
         {
             DX11Texture3D res = new DX11Texture3D(context);
