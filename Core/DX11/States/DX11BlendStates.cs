@@ -42,6 +42,7 @@ namespace FeralTic.DX11
             this.CreateAlphaAdd();
             this.CreateTextDefault();
             this.CreateKeep();
+            this.CreateConstantFactor();
         }
 
         private void CreateNoBlend()
@@ -221,6 +222,31 @@ namespace FeralTic.DX11
             }
 
             this.AddState("Keep", bs);
+        }
+
+        private void CreateConstantFactor()
+        {
+            BlendStateDescription bs = new BlendStateDescription()
+            {
+                AlphaToCoverageEnable = false,
+                IndependentBlendEnable = false,
+            };
+            for (int i = 0; i < 8; i++)
+            {
+                bs.RenderTargets[i] = new RenderTargetBlendDescription()
+                {
+                    BlendEnable = true,
+                    BlendOperation = SlimDX.Direct3D11.BlendOperation.Add,
+                    BlendOperationAlpha = SlimDX.Direct3D11.BlendOperation.Add,
+                    DestinationBlend = BlendOption.InverseBlendFactor,
+                    DestinationBlendAlpha = BlendOption.Zero,
+                    RenderTargetWriteMask = ColorWriteMaskFlags.All,
+                    SourceBlend = BlendOption.BlendFactor,
+                    SourceBlendAlpha = BlendOption.One
+                };
+            }
+
+            this.AddState("ConstantFactor", bs);
         }
     }
 }
