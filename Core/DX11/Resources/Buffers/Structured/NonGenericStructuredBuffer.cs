@@ -129,7 +129,28 @@ namespace FeralTic.DX11.Resources
             base.OnDispose();
         }
     }
-    
+
+    public class DX11CopyDestStructuredBuffer : DX11StructuredBuffer, IDX11ReadableStructureBuffer
+    {
+        public ShaderResourceView SRV { get; protected set; }
+
+        public DX11CopyDestStructuredBuffer(Device dev, BufferDescription desc)
+        {
+            this.Stride = desc.StructureByteStride;
+            this.Size = desc.SizeInBytes;
+            this.ElementCount = this.Size / this.Stride;
+
+            this.Buffer = new Buffer(dev, desc);
+            this.SRV = new ShaderResourceView(dev, this.Buffer);
+        }
+
+        protected override void OnDispose()
+        {
+            if (this.SRV != null) { this.SRV.Dispose(); }
+            base.OnDispose();
+        }
+    }
+
     public class DX11RWStructuredBuffer : DX11StructuredBuffer, IDX11RWStructureBuffer
     {
         public eDX11BufferMode BufferType { get; protected set; }
