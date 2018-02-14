@@ -7,17 +7,17 @@ using SlimDX;
 
 namespace FeralTic.Core.Maths
 {
-    public class Frustrum
+    public class Frustum
     {
         public Plane[] planes;
 
-        public Frustrum()
+        public Frustum()
         {
             planes = new Plane[6];
             this.Initialize(Matrix.Identity, Matrix.Identity);
         }
 
-        public Frustrum(Matrix viewMatrix, Matrix projectionMatrix)
+        public Frustum(Matrix viewMatrix, Matrix projectionMatrix)
         {
             planes = new Plane[6];
             this.Initialize(viewMatrix, projectionMatrix);
