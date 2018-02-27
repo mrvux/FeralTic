@@ -165,10 +165,15 @@
     <Compile Include="DX11\Queries\IDX11Query.cs" />
     <Compile Include="DX11\Devices\NullRenderDevice.cs" />
     <Compile Include="DX11\Resources\Buffers\Structured\DX11CopyDestStructuredBuffer.cs" />
+    <Compile Include="DX11\Resources\Buffers\Structured\DX11CopyDestStructuredBuffer%271.cs" />
     <Compile Include="DX11\Resources\Buffers\Structured\DX11DynamicStructuredBuffer.cs" />
+    <Compile Include="DX11\Resources\Buffers\Structured\DX11DynamicStructuredBuffer%271.cs" />
     <Compile Include="DX11\Resources\Buffers\Structured\DX11ImmutableStructuredBuffer.cs" />
+    <Compile Include="DX11\Resources\Buffers\Structured\DX11ImmutableStructuredBuffer%271.cs" />
     <Compile Include="DX11\Resources\Buffers\Structured\DX11RWStructuredBuffer.cs" />
+    <Compile Include="DX11\Resources\Buffers\Structured\DX11RWStructuredBuffer%271.cs" />
     <Compile Include="DX11\Resources\Buffers\Structured\DX11StagingStructuredBuffer.cs" />
+    <Compile Include="DX11\Resources\Buffers\Structured\DX11StagingStructuredBuffer%271.cs" />
     <Compile Include="DX11\Resources\Geometry\Drawers\DX11BufferDispatcher.cs" />
     <Compile Include="DX11\Resources\Geometry\Drawers\DX11NullIndirectDrawer.cs" />
     <Compile Include="DX11\Resources\Geometry\Models\DX11InvalidGeometry.cs" />
@@ -250,8 +255,8 @@
     <Compile Include="DX11\Resources\Buffers\Indirect\IndexedIndirectBuffer.cs" />
     <Compile Include="DX11\Resources\Buffers\Indirect\InstancedIndirectBuffer.cs" />
     <Compile Include="DX11\Resources\Buffers\Raw\DX11RawBuffer.cs" />
-    <Compile Include="DX11\Resources\Buffers\Structured\NonGenericStructuredBuffer.cs" />
     <Compile Include="DX11\Resources\Buffers\Structured\DX11StructuredBuffer.cs" />
+    <Compile Include="DX11\Resources\Buffers\Structured\DX11StructuredBuffer%271.cs" />
     <Compile Include="DX11\Resources\DX11DeviceResource.cs" />
     <Compile Include="DX11\Resources\Geometry\Drawers\DX11DefaultIndexedDrawer.cs" />
     <Compile Include="DX11\Resources\Geometry\Drawers\DX11DefaultVertexDrawer.cs" />
