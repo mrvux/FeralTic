@@ -11,15 +11,16 @@ using Buffer = SlimDX.Direct3D11.Buffer;
 
 namespace FeralTic.DX11.Resources
 {
-    public class DX11ImmutableStructuredBuffer : DX11StructuredBuffer, IDX11ReadableStructureBuffer
+
+    public class DX11ImmutableStructuredBuffer<T> : DX11StructuredBuffer<T>, IDX11ReadableStructureBuffer where T : struct 
     {
         public ShaderResourceView SRV { get; protected set; }
 
-        public DX11ImmutableStructuredBuffer(Device dev, int cnt, int stride, DataStream initial)
+        public DX11ImmutableStructuredBuffer(Device dev, T[] initialData, int elementCount)
         {
-            this.Stride = stride;
-            this.Size = cnt * stride;
-            this.ElementCount = cnt;
+            this.Stride = Marshal.SizeOf(typeof(T));
+            this.Size = elementCount * this.Stride;
+            this.ElementCount = elementCount;
 
             BufferDescription bd = new BufferDescription()
             {
@@ -31,14 +32,15 @@ namespace FeralTic.DX11.Resources
                 Usage = ResourceUsage.Immutable
             };
 
-            this.Buffer = new Buffer(dev, initial, bd);
+            DataStream ds = new DataStream(initialData, true, true);
+
+            this.Buffer = new Buffer(dev, ds, bd);
             this.SRV = new ShaderResourceView(dev, this.Buffer);
         }
 
         protected override void OnDispose()
         {
             if (this.SRV != null) { this.SRV.Dispose(); }
-            base.OnDispose();
         }
     }
 }

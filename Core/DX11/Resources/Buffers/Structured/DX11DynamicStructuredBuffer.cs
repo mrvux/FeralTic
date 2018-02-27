@@ -13,19 +13,15 @@ using Buffer = SlimDX.Direct3D11.Buffer;
 
 namespace FeralTic.DX11.Resources
 {
-    public class DX11DynamicStructuredBuffer<T> : DX11StructuredBuffer<T>, IDX11ReadableStructureBuffer where T : struct
+    public class DX11DynamicStructuredBuffer : DX11StructuredBuffer, IDX11ReadableStructureBuffer
     {
         public ShaderResourceView SRV { get; protected set; }
 
-        private DX11RenderContext context;
-
-
-        public DX11DynamicStructuredBuffer(DX11RenderContext context, int cnt)
+        public DX11DynamicStructuredBuffer(Device dev, int cnt, int stride)
         {
-            this.context = context;
-            this.Size = cnt * Marshal.SizeOf(typeof(T));
+            this.Stride = stride;
+            this.Size = cnt * stride;
             this.ElementCount = cnt;
-            this.Stride = Marshal.SizeOf(typeof(T));
 
             BufferDescription bd = new BufferDescription()
             {
@@ -33,71 +29,44 @@ namespace FeralTic.DX11.Resources
                 CpuAccessFlags = CpuAccessFlags.Write,
                 OptionFlags = ResourceOptionFlags.StructuredBuffer,
                 SizeInBytes = this.Size,
-                StructureByteStride = Marshal.SizeOf(typeof(T)),
+                StructureByteStride = this.Stride,
                 Usage = ResourceUsage.Dynamic
             };
 
-            this.Buffer = new Buffer(context.Device, bd);
-            this.SRV = new ShaderResourceView(context.Device, this.Buffer);
+            this.Buffer = new Buffer(dev, bd);
+            this.SRV = new ShaderResourceView(dev, this.Buffer);
         }
 
-        public DX11DynamicStructuredBuffer(DX11RenderContext context, Buffer buffer, int cnt) //Dynamic default buffer
+        public DX11DynamicStructuredBuffer(Device dev, Buffer buffer, int cnt) //Dynamic default buffer
         {
-            this.context = context;
             this.Size = cnt;
             this.Buffer = buffer;
-            this.SRV = new ShaderResourceView(context.Device, this.Buffer);
-            this.Stride = Marshal.SizeOf(typeof(T));
-        }
-
-        public DX11DynamicStructuredBuffer(DX11RenderContext context, IntPtr initial, int cnt) //Dynamic default buffer
-        {
-            this.context = context;
-            this.Size = cnt * Marshal.SizeOf(typeof(T));
-            this.ElementCount = cnt;
-            this.Stride = Marshal.SizeOf(typeof(T));
-
-            BufferDescription bd = new BufferDescription()
-            {
-                BindFlags = BindFlags.ShaderResource,
-                CpuAccessFlags = CpuAccessFlags.None,
-                OptionFlags = ResourceOptionFlags.StructuredBuffer,
-                SizeInBytes = this.Size,
-                StructureByteStride = Marshal.SizeOf(typeof(T)),
-                Usage = ResourceUsage.Immutable
-            };
-
-            DataStream ds = new DataStream(initial, this.Size, true, false);
-            ds.Position = 0;
-
-            this.Buffer = new Buffer(context.Device, ds, bd);
-            this.SRV = new ShaderResourceView(context.Device, this.Buffer);
-        }
-
-        public void WriteData(T[] data)
-        {
-            WriteData(data, 0, data.Length);
-        }
-
-        public void WriteData(T[] data, int offset, int count)
-        {
-            DeviceContext ctx = this.context.CurrentDeviceContext;
-            DataBox db = ctx.MapSubresource(this.Buffer, MapMode.WriteDiscard, MapFlags.None);
-            db.Data.WriteRange(data, offset, count);
-            ctx.UnmapSubresource(this.Buffer, 0);
-        }
-
-        public void WriteData(IntPtr ptr)
-        {
-            DeviceContext ctx = this.context.CurrentDeviceContext;
-            DataBox db = ctx.MapSubresource(this.Buffer, MapMode.WriteDiscard, MapFlags.None);
-            db.Data.WriteRange(ptr, this.Size);
-            ctx.UnmapSubresource(this.Buffer, 0);
+            this.Stride = buffer.Description.StructureByteStride;
+            this.SRV = new ShaderResourceView(dev, this.Buffer);
         }
 
         protected override void OnDispose()
         {
             if (this.SRV != null) { this.SRV.Dispose(); }
+            base.OnDispose();
+        }
+
+        public void WriteData(IntPtr ptr)
+        {
+            DeviceContext ctx = this.Buffer.Device.ImmediateContext;
+            DataBox db = ctx.MapSubresource(this.Buffer, MapMode.WriteDiscard, MapFlags.None);
+            db.Data.WriteRange(ptr, this.Size);
+            ctx.UnmapSubresource(this.Buffer, 0);
+        }
+
+        public DataStream MapForWrite(DeviceContext ctx)
+        {
+            return ctx.MapSubresource(this.Buffer, MapMode.WriteDiscard, MapFlags.None).Data;
+        }
+
+        public void UnMap(DeviceContext ctx)
+        {
+            ctx.UnmapSubresource(this.Buffer, 0);
         }
     }
 }

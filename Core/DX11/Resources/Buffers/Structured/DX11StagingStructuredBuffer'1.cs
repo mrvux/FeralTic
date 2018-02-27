@@ -13,13 +13,13 @@ using Buffer = SlimDX.Direct3D11.Buffer;
 
 namespace FeralTic.DX11.Resources
 {
-    public class DX11StagingStructuredBuffer : DX11StructuredBuffer
+    public class DX11StagingStructuredBuffer<T> : DX11StructuredBuffer<T> where T : struct
     {
-        public DX11StagingStructuredBuffer(Device dev, int elementcount, int stride)
+        public DX11StagingStructuredBuffer(Device dev, int elementcount)
         {
-            this.Size = elementcount * stride;
+            this.Size = elementcount * Marshal.SizeOf(typeof(T));
             this.ElementCount = elementcount;
-            this.Stride = stride;
+            this.Stride = Marshal.SizeOf(typeof(T));
 
             BufferDescription bd = new BufferDescription()
             {
@@ -27,7 +27,7 @@ namespace FeralTic.DX11.Resources
                 CpuAccessFlags = CpuAccessFlags.Read | CpuAccessFlags.Write,
                 OptionFlags = ResourceOptionFlags.StructuredBuffer,
                 SizeInBytes = this.Size,
-                StructureByteStride = stride,
+                StructureByteStride = Marshal.SizeOf(typeof(T)),
                 Usage = ResourceUsage.Staging,
             };
             this.Buffer = new Buffer(dev, bd);
@@ -35,7 +35,7 @@ namespace FeralTic.DX11.Resources
 
         protected override void OnDispose()
         {
-            base.OnDispose();
+
         }
 
         public DataStream MapForRead(DeviceContext ctx)

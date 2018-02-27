@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Runtime.InteropServices;
-
-using SlimDX;
 using SlimDX.Direct3D11;
-
 using Buffer = SlimDX.Direct3D11.Buffer;
-
+using System.Runtime.InteropServices;
+using SlimDX;
 
 namespace FeralTic.DX11.Resources
 {
@@ -24,25 +21,25 @@ namespace FeralTic.DX11.Resources
 
     public interface IDX11ReadableStructureBuffer : IDX11ReadableResource, IDX11StructuredBuffer { }
 
-    public interface IDX11RWStructureBuffer : IDX11RWResource, IDX11StructuredBuffer, IDX11ReadableStructureBuffer 
+    public interface IDX11RWStructureBuffer : IDX11RWResource, IDX11StructuredBuffer, IDX11ReadableStructureBuffer
     {
         eDX11BufferMode BufferType { get; }
         void Clear(DeviceContext ctx, int value);
     }
 
-    public unsafe abstract class DX11StructuredBuffer<T> : IDX11StructuredBuffer where T : struct
+    public unsafe abstract class DX11StructuredBuffer : IDX11StructuredBuffer
     {
         public Buffer Buffer { get; protected set; }
 
         public int Size { get; protected set; }
 
-        public int ElementCount { get; protected set; }
-
         public int Stride { get; protected set; }
 
-        protected abstract void OnDispose();
+        public int ElementCount { get; protected set; }
 
-        public void Copy(DeviceContext ctx, DX11StructuredBuffer<T> destination)
+        protected virtual void OnDispose() { }
+
+        public void Copy(DeviceContext ctx, DX11StructuredBuffer destination)
         {
             if (this.Size == destination.Size)
             {
@@ -54,10 +51,10 @@ namespace FeralTic.DX11.Resources
             }
         }
 
-        public virtual void Dispose()
+        public void Dispose()
         {
-            this.OnDispose();
             if (this.Buffer != null) { this.Buffer.Dispose(); }
+            this.OnDispose();
         }
     }
 }

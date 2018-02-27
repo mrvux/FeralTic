@@ -13,26 +13,37 @@ using Buffer = SlimDX.Direct3D11.Buffer;
 
 namespace FeralTic.DX11.Resources
 {
-    public class DX11RWStructuredBuffer<T> : DX11StructuredBuffer<T>, IDX11RWStructureBuffer where T : struct
+    public class DX11RWStructuredBuffer : DX11StructuredBuffer, IDX11RWStructureBuffer
     {
+        public eDX11BufferMode BufferType { get; protected set; }
+
         public UnorderedAccessView UAV { get; protected set; }
 
         public ShaderResourceView SRV { get; protected set; }
 
-        public eDX11BufferMode BufferType { get; protected set; }
+        public DX11RWStructuredBuffer(int elementcount, int stride, IntPtr uav, IntPtr srv)
+        {
+            this.ElementCount = elementcount;
+            this.Stride = stride;
+            this.UAV = UnorderedAccessView.FromPointer(uav);
+            //this.UAV.Dispose();
+            this.SRV = ShaderResourceView.FromPointer(srv);
+            //this.SRV.Dispose();
+        }
 
-        public DX11RWStructuredBuffer(Device dev, int elementcount)
-            : this(dev, elementcount, eDX11BufferMode.Default)//Dynamic default buffer
+
+        public DX11RWStructuredBuffer(Device dev, int elementcount, int stride)
+            : this(dev, elementcount, stride, eDX11BufferMode.Default)//Dynamic default buffer
         {
 
         }
 
-        public DX11RWStructuredBuffer(Device dev, int elementcount, eDX11BufferMode mode)
+        public DX11RWStructuredBuffer(Device dev, int elementcount, int stride, eDX11BufferMode mode)
         {
-            this.Size = elementcount * Marshal.SizeOf(typeof(T));
+            this.Stride = stride;
+            this.Size = elementcount * stride;
             this.ElementCount = elementcount;
             this.BufferType = mode;
-            this.Stride = Marshal.SizeOf(typeof(T));
 
             BufferDescription bd = new BufferDescription()
             {
@@ -40,7 +51,7 @@ namespace FeralTic.DX11.Resources
                 CpuAccessFlags = CpuAccessFlags.None,
                 OptionFlags = ResourceOptionFlags.StructuredBuffer,
                 SizeInBytes = this.Size,
-                StructureByteStride = Marshal.SizeOf(typeof(T)),
+                StructureByteStride = this.Stride,
                 Usage = ResourceUsage.Default,
             };
             this.Buffer = new Buffer(dev, bd);
@@ -57,16 +68,37 @@ namespace FeralTic.DX11.Resources
             this.UAV = new UnorderedAccessView(dev, this.Buffer, uavd);
         }
 
-        protected override void OnDispose()
-        {
-            if (this.SRV != null) { this.SRV.Dispose(); }
-            if (this.UAV != null) { this.UAV.Dispose(); }
-        }
-
         public void Clear(DeviceContext ctx, int value)
         {
             int[] mask = new int[] { value, value, value, value };
             ctx.ClearUnorderedAccessView(this.UAV, mask);
+        }
+
+        public void ResetCounter(DeviceContext ctx)
+        {
+            int slot = -1;
+            bool found = false;
+            UnorderedAccessView[] uavs = ctx.ComputeShader.GetUnorderedAccessViews(0, 8);
+            foreach (UnorderedAccessView ua in uavs)
+            {
+                slot++;
+                if (ua == this.UAV)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (found)
+            {
+                ctx.ComputeShader.SetUnorderedAccessView(this.UAV, slot, 0);
+            }
+        }
+
+        protected override void OnDispose()
+        {
+            if (this.SRV != null) { this.SRV.Dispose(); }
+            if (this.UAV != null) { this.UAV.Dispose(); }
+            base.OnDispose();
         }
     }
 }

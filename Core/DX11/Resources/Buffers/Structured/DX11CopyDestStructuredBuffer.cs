@@ -13,93 +13,24 @@ using Buffer = SlimDX.Direct3D11.Buffer;
 
 namespace FeralTic.DX11.Resources
 {
-    public class DX11CopyDestStructuredBuffer<T> : DX11StructuredBuffer<T>, IDX11ReadableStructureBuffer where T : struct
+    public class DX11CopyDestStructuredBuffer : DX11StructuredBuffer, IDX11ReadableStructureBuffer
     {
         public ShaderResourceView SRV { get; protected set; }
 
-        private DX11RenderContext context;
-
-
-        public DX11CopyDestStructuredBuffer(DX11RenderContext context, int cnt)
+        public DX11CopyDestStructuredBuffer(Device dev, BufferDescription desc)
         {
-            this.context = context;
-            this.Size = cnt * Marshal.SizeOf(typeof(T));
-            this.ElementCount = cnt;
-            this.Stride = Marshal.SizeOf(typeof(T));
+            this.Stride = desc.StructureByteStride;
+            this.Size = desc.SizeInBytes;
+            this.ElementCount = this.Size / this.Stride;
 
-            BufferDescription bd = new BufferDescription()
-            {
-                BindFlags = BindFlags.ShaderResource,
-                CpuAccessFlags = CpuAccessFlags.None,
-                OptionFlags = ResourceOptionFlags.StructuredBuffer,
-                SizeInBytes = this.Size,
-                StructureByteStride = Marshal.SizeOf(typeof(T)),
-                Usage = ResourceUsage.Default
-            };
-
-            this.Buffer = new Buffer(context.Device, bd);
-            this.SRV = new ShaderResourceView(context.Device, this.Buffer);
-        }
-
-        public DX11CopyDestStructuredBuffer(DX11RenderContext context, Buffer buffer, int cnt) //Dynamic default buffer
-        {
-            this.context = context;
-            this.Size = cnt;
-            this.Buffer = buffer;
-            this.SRV = new ShaderResourceView(context.Device, this.Buffer);
-            this.Stride = Marshal.SizeOf(typeof(T));
-        }
-
-        public DX11CopyDestStructuredBuffer(DX11RenderContext context, IntPtr initial, int cnt) //Dynamic default buffer
-        {
-            this.context = context;
-            this.Size = cnt * Marshal.SizeOf(typeof(T));
-            this.ElementCount = cnt;
-            this.Stride = Marshal.SizeOf(typeof(T));
-
-            BufferDescription bd = new BufferDescription()
-            {
-                BindFlags = BindFlags.ShaderResource,
-                CpuAccessFlags = CpuAccessFlags.None,
-                OptionFlags = ResourceOptionFlags.StructuredBuffer,
-                SizeInBytes = this.Size,
-                StructureByteStride = Marshal.SizeOf(typeof(T)),
-                Usage = ResourceUsage.Immutable
-            };
-
-            DataStream ds = new DataStream(initial, this.Size, true, false);
-            ds.Position = 0;
-
-            this.Buffer = new Buffer(context.Device, ds, bd);
-            this.SRV = new ShaderResourceView(context.Device, this.Buffer);
-        }
-
-        public void WriteData(T[] data)
-        {
-            WriteData(data, 0, data.Length);
-        }
-
-        public void WriteData(T[] data, int offset, int count)
-        {
-            using (var ds = new DataStream(data, true, true))
-            {
-                DataBox db = new DataBox(0, 0, ds);
-                this.context.CurrentDeviceContext.UpdateSubresource(db, this.Buffer, 0);
-            }
-        }
-
-        public void WriteData(IntPtr ptr, int length)
-        {
-            using (var ds = new DataStream(ptr, length, true, true))
-            {
-                DataBox db = new DataBox(0, 0, ds);
-                this.context.CurrentDeviceContext.UpdateSubresource(db, this.Buffer, 0); 
-            }
+            this.Buffer = new Buffer(dev, desc);
+            this.SRV = new ShaderResourceView(dev, this.Buffer);
         }
 
         protected override void OnDispose()
         {
             if (this.SRV != null) { this.SRV.Dispose(); }
+            base.OnDispose();
         }
     }
 }
