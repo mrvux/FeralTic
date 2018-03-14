@@ -18,8 +18,6 @@ namespace FeralTic.DX11.Resources
         private IDX11GeometryDrawer<DX11VertexGeometry> drawer;
         private bool ownsvbo;
 
-
-
         public IDX11GeometryDrawer<DX11VertexGeometry> Drawer { get { return this.drawer; } }
 
         public DX11VertexGeometry(DX11RenderContext context)
@@ -87,6 +85,23 @@ namespace FeralTic.DX11.Resources
         public override IDX11Geometry ShallowCopy()
         {
             return new DX11VertexGeometry(this);
+        }
+
+
+        public static DX11VertexGeometry StreamOut(DX11RenderContext context, int vertexCount, int vertexSize, bool autoDrawer)
+        {
+            DX11VertexBuffer vertexBuffer = DX11VertexBuffer.CreateStreamOutput(context, vertexCount, vertexSize, false);
+            var vg = new DX11VertexGeometry(context);
+            if (autoDrawer)
+            {
+                vg.drawer = new DX11VertexAutoDrawer();
+            }
+            vg.ownsvbo = true;
+            vg.VertexBuffer = vertexBuffer.Buffer;            vg.VerticesCount = vertexBuffer.VertexCount;            vg.VertexSize = vertexBuffer.VertexSize;
+            vg.HasBoundingBox = false;
+            vg.PrimitiveType = "StreamOut";
+            vg.Topology = PrimitiveTopology.TriangleList;
+            return vg;
         }
     }
 }

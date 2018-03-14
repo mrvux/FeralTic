@@ -6,7 +6,7 @@ using SlimDX.Direct3D11;
 
 using Buffer = SlimDX.Direct3D11.Buffer;
 using SlimDX;
-
+using SlimDX.D3DCompiler;
 
 namespace FeralTic.DX11.Resources
 {
@@ -14,9 +14,24 @@ namespace FeralTic.DX11.Resources
     {
         private DX11RenderContext context;
 
-        public Buffer Buffer { get; protected set; }
-        public int VerticesCount { get; protected set; }
-        public int VertexSize { get; protected set; }
+        private Buffer buffer;
+        private readonly int vertexCount;
+        private readonly int vertexSize;
+
+        public Buffer Buffer
+        {
+            get { return this.buffer; }
+        }
+
+        public int VertexCount
+        {
+            get { return this.vertexCount; }
+        }
+
+        public int VertexSize
+        {
+            get { return this.vertexSize; }
+        }
 
         public bool AllowStreamOutput { get; private set; }
         public int TotalSize { get; private set; }
@@ -26,58 +41,108 @@ namespace FeralTic.DX11.Resources
         /// </summary>
         public InputElement[] InputLayout { get; set; }
 
-        public DX11VertexBuffer(DX11RenderContext context, int verticescount, int vertexsize, bool allowstreamout)
+        private DX11VertexBuffer(DX11RenderContext context, BufferDescription bufferDescription, int vertexCount, int vertexSize, DataStream initialData)
         {
+            if (!bufferDescription.BindFlags.HasFlag(BindFlags.VertexBuffer))
+                throw new ArgumentException("bufferDescription", "Sohuld have VertexBuffer bind flag");
+            if (vertexCount <= 0)
+                throw new ArgumentOutOfRangeException("vertexCount", "must be greater than 0");
+            if (vertexSize <= 0)
+                throw new ArgumentOutOfRangeException("vertexSize", "must be greater than 0");
+
             this.context = context;
-            this.TotalSize = verticescount * vertexsize;
-            this.AllowStreamOutput = allowstreamout;
+            this.buffer = new SlimDX.Direct3D11.Buffer(context.Device, initialData, bufferDescription);
+            this.vertexSize = vertexSize;
+            this.vertexCount = vertexCount;
+        }
 
-            BindFlags flags = BindFlags.VertexBuffer;
-
-            if (allowstreamout)
+        public static DX11VertexBuffer CreateDynamic(DX11RenderContext context, int vertexCount, int vertexSize, bool allowRawView)
+        {
+            BindFlags bindFlags = BindFlags.VertexBuffer;
+            ResourceOptionFlags optionFlags = ResourceOptionFlags.None;
+            if (allowRawView)
             {
-                flags |= BindFlags.StreamOutput;
+                bindFlags |= BindFlags.ShaderResource;
+                optionFlags |= ResourceOptionFlags.RawBuffer;
             }
 
-            BufferDescription bd = new BufferDescription()
+            BufferDescription desc = new BufferDescription()
             {
-                BindFlags = flags,
+                BindFlags = bindFlags,
+                CpuAccessFlags = CpuAccessFlags.Write,
+                OptionFlags = optionFlags,
+                SizeInBytes = vertexCount * vertexSize,
+                Usage = ResourceUsage.Dynamic
+            };
+
+            return new DX11VertexBuffer(context, desc, vertexCount, vertexSize, null);
+        }
+
+        public static DX11VertexBuffer CreateImmutable(DX11RenderContext context, int vertexCount, int vertexSize, DataStream initialData, bool allowRawView)
+        {
+            if (initialData == null)
+                throw new ArgumentNullException("initialData");
+
+            BindFlags bindFlags = BindFlags.VertexBuffer;
+            ResourceOptionFlags optionFlags = ResourceOptionFlags.None;
+            if (allowRawView)
+            {
+                bindFlags |= BindFlags.ShaderResource;
+                optionFlags |= ResourceOptionFlags.RawBuffer;
+            }
+
+            BufferDescription desc = new BufferDescription()
+            {
+                BindFlags = bindFlags,
                 CpuAccessFlags = CpuAccessFlags.None,
-                OptionFlags = ResourceOptionFlags.None,
-                SizeInBytes = this.TotalSize,
+                OptionFlags = optionFlags,
+                SizeInBytes = vertexCount * vertexSize,
+                Usage = ResourceUsage.Immutable
+            };
+
+            return new DX11VertexBuffer(context, desc, vertexCount, vertexSize, initialData);
+        }
+
+        public static DX11VertexBuffer CreateStreamOutput(DX11RenderContext context, int vertexCount, int vertexSize, bool allowRawView)
+        {
+            BindFlags bindFlags = BindFlags.VertexBuffer | BindFlags.StreamOutput;
+            ResourceOptionFlags optionFlags = ResourceOptionFlags.None;
+            if (allowRawView)
+            {
+                bindFlags |= BindFlags.ShaderResource;
+                optionFlags |= ResourceOptionFlags.RawBuffer;
+            }
+
+            BufferDescription desc = new BufferDescription()
+            {
+                BindFlags = bindFlags,
+                CpuAccessFlags = CpuAccessFlags.None,
+                OptionFlags = optionFlags,
+                SizeInBytes = vertexCount * vertexSize,
                 Usage = ResourceUsage.Default
             };
 
-            this.Buffer = new SlimDX.Direct3D11.Buffer(context.Device, bd);
-            this.VertexSize = vertexsize;
-            this.VerticesCount = verticescount;
-        }
-
-        public DX11VertexBuffer(DX11RenderContext context, DataStream initial,int verticescount,int vertexsize, bool dynamic, bool dispose)
-        {
-            this.context = context;
-
-            BufferDescription bd = new BufferDescription()
-            {
-                BindFlags = BindFlags.VertexBuffer,
-                CpuAccessFlags = dynamic ? CpuAccessFlags.Write : CpuAccessFlags.None,
-                OptionFlags = ResourceOptionFlags.None,
-                SizeInBytes = (int)initial.Length,
-                Usage = dynamic ? ResourceUsage.Dynamic : ResourceUsage.Immutable,
-            };
-
-            initial.Position = 0;
-            this.Buffer = new SlimDX.Direct3D11.Buffer(context.Device, initial, bd);
-            this.VertexSize = vertexsize;
-            this.VerticesCount = verticescount;
-
-            if (dispose) { initial.Dispose(); }
+            return new DX11VertexBuffer(context, desc, vertexCount, vertexSize, null);
         }
 
         public void Bind(InputLayout layout, int slot = 0)
         {
             this.context.CurrentDeviceContext.InputAssembler.InputLayout = layout;
             this.context.CurrentDeviceContext.InputAssembler.SetVertexBuffers(slot, new VertexBufferBinding(this.Buffer, this.VertexSize,0));
+        }
+
+        public bool TryValidateLayout(ShaderSignature shaderSignature, out InputLayout result)
+        {
+            try
+            {
+                result = new InputLayout(this.context.Device, shaderSignature, this.InputLayout);
+                return true;
+            }
+            catch
+            {
+                result = null;
+                return false;
+            }
         }
 
         public void Dispose()
