@@ -17,7 +17,6 @@ namespace FeralTic.DX11
         private DX11StructuredBufferPool sbufferpool;
         private DX11VolumeTexturePool volumepool;
         private DX11DepthStencilPool depthpool;
-        private DX11VertexBufferPool vbopool;
 
         public DX11ResourcePoolManager(DX11RenderContext ctx)
         {
@@ -26,7 +25,6 @@ namespace FeralTic.DX11
             this.sbufferpool = new DX11StructuredBufferPool(this.ctx);
             this.volumepool = new DX11VolumeTexturePool(this.ctx);
             this.depthpool = new DX11DepthStencilPool(this.ctx);
-            this.vbopool = new DX11VertexBufferPool(this.ctx);
         }
 
         public void BeginFrame()
@@ -59,11 +57,6 @@ namespace FeralTic.DX11
             return this.depthpool.Lock(w, h, format,sd);
         }
 
-        public DX11ResourcePoolEntry<DX11VertexBuffer> LockVertexBuffer(int verticescount,int vertexsize,bool allowstreamout)
-        {
-            return this.vbopool.Lock(verticescount, vertexsize, allowstreamout);
-        }
-
         public void Unlock(DX11RenderTarget2D target)
         {
             this.targetpool.UnLock(target);
@@ -84,12 +77,6 @@ namespace FeralTic.DX11
             this.depthpool.UnLock(target);
         }
 
-
-        public void Unlock(DX11VertexBuffer target)
-        {
-            this.vbopool.UnLock(target);
-        }
-
         /*public void UnlockStructuredBuffers()
         {
             this.sbufferpool.UnlockAll();
@@ -100,7 +87,6 @@ namespace FeralTic.DX11
             this.sbufferpool.ClearUnlocked();
             this.targetpool.ClearUnlocked();
             this.volumepool.ClearUnlocked();
-            this.vbopool.ClearUnlocked();
             this.depthpool.ClearUnlocked();
         }
 
@@ -120,7 +106,6 @@ namespace FeralTic.DX11
             this.sbufferpool.Dispose();
             this.volumepool.Dispose();
             this.depthpool.Dispose();
-            this.vbopool.Dispose();
         }
     }
 }
