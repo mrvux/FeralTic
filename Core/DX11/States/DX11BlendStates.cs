@@ -293,7 +293,7 @@ namespace FeralTic.DX11
                     DestinationBlendAlpha = BlendOption.Zero,
                     RenderTargetWriteMask = ColorWriteMaskFlags.Alpha,
                     SourceBlend = BlendOption.Zero,
-                    SourceBlendAlpha = BlendOption.SourceAlpha
+                    SourceBlendAlpha = BlendOption.One
                 };
             }
             this.AddState("ReplaceAlpha", bs);
