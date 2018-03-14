@@ -17,7 +17,7 @@ namespace FeralTic.DX11.Resources
         /// </summary>
         PrimitiveTopology Topology { get; set; }
 
-        InputElement[] InputLayout { get; }
+        InputElement[] InputLayout { get; set;  }
 
         /// <summary>
         /// Creates an input layout 
