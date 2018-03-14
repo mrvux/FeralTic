@@ -16,6 +16,7 @@ namespace FeralTic.DX11.Resources
         private DX11RenderContext context;
 
         private Buffer buffer;
+
         private readonly int vertexCount;
         private readonly int vertexSize;
 
@@ -129,6 +130,20 @@ namespace FeralTic.DX11.Resources
                 BindFlags = bindFlags,
                 CpuAccessFlags = CpuAccessFlags.None,
                 OptionFlags = optionFlags,
+                SizeInBytes = vertexCount * vertexSize,
+                Usage = ResourceUsage.Default
+            };
+
+            return new DX11VertexBuffer(context, desc, vertexCount, vertexSize, null);
+        }
+
+        public static DX11VertexBuffer CreateComputeReadWrite(DX11RenderContext context, int vertexCount, int vertexSize)
+        {
+            BufferDescription desc = new BufferDescription()
+            {
+                BindFlags = BindFlags.VertexBuffer | BindFlags.UnorderedAccess | BindFlags.ShaderResource,
+                CpuAccessFlags = CpuAccessFlags.None,
+                OptionFlags = ResourceOptionFlags.RawBuffer,
                 SizeInBytes = vertexCount * vertexSize,
                 Usage = ResourceUsage.Default
             };
