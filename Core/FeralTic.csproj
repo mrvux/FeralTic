@@ -303,7 +303,6 @@
     <Compile Include="DX11\States\DX11DepthStencilStates.cs" />
     <Compile Include="DX11\States\DX11RasterizerStates.cs" />
     <Compile Include="DX11\States\DX11RenderState.cs" />
-    <Compile Include="DX11\States\DX11RenderStates.cs" />
     <Compile Include="DX11\States\DX11SamplerStates.cs" />
   </ItemGroup>
   <ItemGroup>
