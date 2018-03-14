@@ -6,50 +6,52 @@ using SlimDX.Direct3D11;
 
 namespace FeralTic.DX11
 {
-    public class DX11DepthStencilStates : DX11RenderStates<DepthStencilStateDescription>
+    public static class DX11DepthStencilStates
     {
-        private static DX11DepthStencilStates instance;
+        private static DepthStencilStateDescription[] descriptions;
 
-        public static DX11DepthStencilStates Instance
+        public static DepthStencilStateDescription GetState(DepthStencilStatePreset preset)
         {
-            get
+            if (descriptions == null)
             {
-                if (instance == null)
-                {
-                    instance = new DX11DepthStencilStates();
-                    instance.Initialize();
-                }
-                return instance;
+                Initialize();
+            }
+            return descriptions[(int)preset];
+        }
+
+        public static DepthStencilStateDescription GetState(string presetString)
+        {
+            DepthStencilStatePreset preset;
+            if (Enum.TryParse(presetString, out preset))
+            {
+                return GetState(preset);
+            }
+            else
+            {
+                throw new ArgumentException("preset", "Preset not found");
             }
         }
 
-        public override string EnumName
+        private static void Initialize()
         {
-            get
-            {
-                return "DX11.DepthStencilPresets";
-            }
-        }
-
-        protected override void Initialize()
-        {
-            this.CreateLessReadOnly();
-            this.CreateLessRW();
-            this.CreateNoDepth();
-            this.CreateLessEqualReadOnly();
-            this.CreateLessEqualRW();
-            this.CreateWriteOnly();
-            this.CreateLessStencilIncrement();
-            this.CreateStencilLess();
-            this.CreateStencilGreater();
-            this.CreateStencilIncrement();
-            this.CreateStencilInvert();
-            this.CreateLessStencilZero();
-            this.CreateStencilReplace();
+            descriptions = new DepthStencilStateDescription[Enum.GetValues(typeof(DepthStencilStatePreset)).Length];
+            CreateLessReadOnly();
+            CreateLessRW();
+            CreateNoDepth();
+            CreateLessEqualReadOnly();
+            CreateLessEqualRW();
+            CreateWriteOnly();
+            CreateLessStencilIncrement();
+            CreateStencilLess();
+            CreateStencilGreater();
+            CreateStencilIncrement();
+            CreateStencilInvert();
+            CreateLessStencilZero();
+            CreateStencilReplace();
 
         }
 
-        private void CreateNoDepth()
+        private static void CreateNoDepth()
         {
             DepthStencilStateDescription ds = new DepthStencilStateDescription()
             {
@@ -58,11 +60,10 @@ namespace FeralTic.DX11
                 DepthWriteMask = DepthWriteMask.Zero,
                 DepthComparison = Comparison.Always
             };
-
-            this.AddState("NoDepth", ds);
+            descriptions[(int)DepthStencilStatePreset.NoDepth] = ds;;
         }
 
-        private void CreateLessReadOnly()
+        private static void CreateLessReadOnly()
         {
             DepthStencilStateDescription ds = new DepthStencilStateDescription()
             {
@@ -71,11 +72,10 @@ namespace FeralTic.DX11
                 DepthWriteMask = DepthWriteMask.Zero,
                 DepthComparison = Comparison.Less
             };
-
-            this.AddState("LessRead", ds);
+            descriptions[(int)DepthStencilStatePreset.LessRead] = ds;
         }
 
-        private void CreateLessEqualReadOnly()
+        private static void CreateLessEqualReadOnly()
         {
             DepthStencilStateDescription ds = new DepthStencilStateDescription()
             {
@@ -84,11 +84,10 @@ namespace FeralTic.DX11
                 DepthWriteMask = DepthWriteMask.Zero,
                 DepthComparison = Comparison.LessEqual
             };
-
-            this.AddState("LessEqualRead", ds);
+            descriptions[(int)DepthStencilStatePreset.LessEqualRead] = ds;
         }
 
-        private void CreateLessRW()
+        private static void CreateLessRW()
         {
             DepthStencilStateDescription ds = new DepthStencilStateDescription()
             {
@@ -97,11 +96,10 @@ namespace FeralTic.DX11
                 DepthWriteMask = DepthWriteMask.All,
                 DepthComparison = Comparison.Less
             };
-
-            this.AddState("LessReadWrite", ds);
+            descriptions[(int)DepthStencilStatePreset.LessReadWrite] = ds;
         }
 
-        private void CreateLessEqualRW()
+        private static void CreateLessEqualRW()
         {
             DepthStencilStateDescription ds = new DepthStencilStateDescription()
             {
@@ -110,11 +108,10 @@ namespace FeralTic.DX11
                 DepthWriteMask = DepthWriteMask.All,
                 DepthComparison = Comparison.LessEqual
             };
-
-            this.AddState("LessEqualReadWrite", ds);
+            descriptions[(int)DepthStencilStatePreset.LessEqualReadWrite] = ds;
         }
 
-        private void CreateWriteOnly()
+        private static void CreateWriteOnly()
         {
             DepthStencilStateDescription ds = new DepthStencilStateDescription()
             {
@@ -123,11 +120,10 @@ namespace FeralTic.DX11
                 DepthWriteMask = DepthWriteMask.All,
                 DepthComparison = Comparison.Always
             };
-
-            this.AddState("WriteOnly", ds);
+            descriptions[(int)DepthStencilStatePreset.WriteOnly] = ds;
         }
 
-        private void CreateLessStencilIncrement()
+        private static void CreateLessStencilIncrement()
         {
             DepthStencilStateDescription ds = new DepthStencilStateDescription()
             {
@@ -152,11 +148,10 @@ namespace FeralTic.DX11
                     PassOperation = StencilOperation.IncrementAndClamp
                 }
             };
-
-            this.AddState("LessReadStencilIncrement", ds);
+            descriptions[(int)DepthStencilStatePreset.LessReadStencilIncrement] = ds;
         }
 
-        private void CreateLessStencilZero()
+        private static void CreateLessStencilZero()
         {
             DepthStencilStateDescription ds = new DepthStencilStateDescription()
             {
@@ -181,11 +176,10 @@ namespace FeralTic.DX11
                     PassOperation = StencilOperation.Zero
                 }
             };
-
-            this.AddState("LessReadStencilZero", ds);
+            descriptions[(int)DepthStencilStatePreset.LessReadStencilZero] = ds;
         }
 
-        private void CreateStencilLess()
+        private static void CreateStencilLess()
         {
             DepthStencilStateDescription ds = new DepthStencilStateDescription()
             {
@@ -210,11 +204,10 @@ namespace FeralTic.DX11
                     PassOperation = StencilOperation.Keep
                 }
             };
-
-            this.AddState("StencilLess", ds);
+            descriptions[(int)DepthStencilStatePreset.StencilLess] = ds;
         }
 
-        private void CreateStencilGreater()
+        private static void CreateStencilGreater()
         {
             DepthStencilStateDescription ds = new DepthStencilStateDescription()
             {
@@ -239,11 +232,10 @@ namespace FeralTic.DX11
                     PassOperation = StencilOperation.Keep
                 }
             };
-
-            this.AddState("StencilGreater", ds);
+            descriptions[(int)DepthStencilStatePreset.StencilGreater] = ds;
         }
 
-        private void CreateStencilIncrement()
+        private static void CreateStencilIncrement()
         {
             DepthStencilStateDescription ds = new DepthStencilStateDescription()
             {
@@ -268,11 +260,10 @@ namespace FeralTic.DX11
                     PassOperation = StencilOperation.IncrementAndClamp
                 }
             };
-
-            this.AddState("StencilIncrement", ds);
+            descriptions[(int)DepthStencilStatePreset.StencilIncrement] = ds;
         }
 
-        private void CreateStencilInvert()
+        private static void CreateStencilInvert()
         {
             DepthStencilStateDescription ds = new DepthStencilStateDescription()
             {
@@ -297,11 +288,10 @@ namespace FeralTic.DX11
                     PassOperation = StencilOperation.Invert
                 }
             };
-
-            this.AddState("StencilInvert", ds);
+            descriptions[(int)DepthStencilStatePreset.StencilInvert] = ds;
         }
 
-        private void CreateStencilReplace()
+        private static void CreateStencilReplace()
         {
             DepthStencilStateDescription ds = new DepthStencilStateDescription()
             {
@@ -326,8 +316,7 @@ namespace FeralTic.DX11
                     PassOperation = StencilOperation.Replace
                 }
             };
-
-            this.AddState("StencilReplace", ds);
+            descriptions[(int)DepthStencilStatePreset.StencilReplace] = ds;
         }
     }
 }

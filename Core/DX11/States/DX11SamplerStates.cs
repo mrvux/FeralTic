@@ -6,45 +6,47 @@ using SlimDX.Direct3D11;
 
 namespace FeralTic.DX11
 {
-    public class DX11SamplerStates : DX11RenderStates<SamplerDescription>
+    public static class DX11SamplerStates
     {
-        private static DX11SamplerStates instance;
+        private static SamplerDescription[] descriptions;
 
-        public static DX11SamplerStates Instance
+        public static SamplerDescription GetState(SamplerStatePreset preset)
         {
-            get
+            if (descriptions == null)
             {
-                if (instance == null)
-                {
-                    instance = new DX11SamplerStates();
-                    instance.Initialize();
-                }
-                return instance;
+                Initialize();
+            }
+            return descriptions[(int)preset];
+        }
+
+        public static SamplerDescription GetState(string presetString)
+        {
+            SamplerStatePreset preset;
+            if (Enum.TryParse(presetString, out preset))
+            {
+                return GetState(preset);
+            }
+            else
+            {
+                throw new ArgumentException("preset", "Preset not found");
             }
         }
 
-        public override string EnumName
+        private static void Initialize()
         {
-            get
-            {
-                return "DX11.SamplerPresets";
-            }
+            descriptions = new SamplerDescription[Enum.GetValues(typeof(SamplerStatePreset)).Length];
+            CreateLinearWrap();
+            CreateLinearBorder();
+            CreateLinearClamp();
+            CreateLinearMirror();
+
+            CreatePointBorder();
+            CreatePointClamp();
+            CreatePointWrap();
+            CreatePointMirror();
         }
 
-        protected override void Initialize()
-        {
-            this.CreateLinearWrap();
-            this.CreateLinearBorder();
-            this.CreateLinearClamp();
-            this.CreateLinearMirror();
-
-            this.CreatePointBorder();
-            this.CreatePointClamp();
-            this.CreatePointWrap();
-            this.CreatePointMirror();
-        }
-
-        private void CreateLinearWrap()
+        private static void CreateLinearWrap()
         {
             SamplerDescription sd = new SamplerDescription()
             {
@@ -54,10 +56,10 @@ namespace FeralTic.DX11
                 ComparisonFunction = Comparison.Always,
                 Filter = SlimDX.Direct3D11.Filter.MinMagMipLinear
             };
-            this.AddState("LinearWrap", sd);
+            descriptions[(int)SamplerStatePreset.LinearWrap] = sd;
         }
 
-        private void CreateLinearClamp()
+        private static void CreateLinearClamp()
         {
             SamplerDescription sd = new SamplerDescription()
             {
@@ -67,10 +69,10 @@ namespace FeralTic.DX11
                 ComparisonFunction = Comparison.Always,
                 Filter = SlimDX.Direct3D11.Filter.MinMagMipLinear
             };
-            this.AddState("LinearClamp", sd);
+            descriptions[(int)SamplerStatePreset.LinearClamp] = sd;
         }
 
-        private void CreateLinearBorder()
+        private static void CreateLinearBorder()
         {
             SamplerDescription sd = new SamplerDescription()
             {
@@ -81,10 +83,10 @@ namespace FeralTic.DX11
                 Filter = SlimDX.Direct3D11.Filter.MinMagMipLinear,
                 BorderColor=new SlimDX.Color4(0,0,0,1)
             };
-            this.AddState("LinearBorder", sd);
+            descriptions[(int)SamplerStatePreset.LinearBorder] = sd;
         }
 
-        private void CreateLinearMirror()
+        private static void CreateLinearMirror()
         {
             SamplerDescription sd = new SamplerDescription()
             {
@@ -95,10 +97,10 @@ namespace FeralTic.DX11
                 Filter = SlimDX.Direct3D11.Filter.MinMagMipLinear,
                 BorderColor = new SlimDX.Color4(0, 0, 0, 1)
             };
-            this.AddState("LinearMirror", sd);
+            descriptions[(int)SamplerStatePreset.LinearMirror] = sd;
         }
 
-        private void CreatePointWrap()
+        private static void CreatePointWrap()
         {
             SamplerDescription sd = new SamplerDescription()
             {
@@ -108,10 +110,10 @@ namespace FeralTic.DX11
                 ComparisonFunction = Comparison.Always,
                 Filter = SlimDX.Direct3D11.Filter.MinMagMipPoint
             };
-            this.AddState("PointWrap", sd);
+            descriptions[(int)SamplerStatePreset.PointWrap] = sd;
         }
 
-        private void CreatePointClamp()
+        private static void CreatePointClamp()
         {
             SamplerDescription sd = new SamplerDescription()
             {
@@ -121,10 +123,10 @@ namespace FeralTic.DX11
                 ComparisonFunction = Comparison.Always,
                 Filter = SlimDX.Direct3D11.Filter.MinMagMipPoint
             };
-            this.AddState("PointClamp", sd);
+            descriptions[(int)SamplerStatePreset.PointClamp] = sd;
         }
 
-        private void CreatePointBorder()
+        private static void CreatePointBorder()
         {
             SamplerDescription sd = new SamplerDescription()
             {
@@ -135,10 +137,10 @@ namespace FeralTic.DX11
                 Filter = SlimDX.Direct3D11.Filter.MinMagMipPoint,
                 BorderColor = new SlimDX.Color4(0, 0, 0, 1)
             };
-            this.AddState("PointBorder", sd);
+            descriptions[(int)SamplerStatePreset.PointBorder] = sd;
         }
 
-        private void CreatePointMirror()
+        private static void CreatePointMirror()
         {
             SamplerDescription sd = new SamplerDescription()
             {
@@ -148,7 +150,7 @@ namespace FeralTic.DX11
                 ComparisonFunction = Comparison.Always,
                 Filter = SlimDX.Direct3D11.Filter.MinMagMipPoint
             };
-            this.AddState("PointMirror", sd);
+            descriptions[(int)SamplerStatePreset.PointMirror] = sd;
         }
     }
 }

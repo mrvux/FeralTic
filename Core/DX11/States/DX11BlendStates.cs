@@ -7,47 +7,48 @@ using SlimDX.Direct3D11;
 
 namespace FeralTic.DX11
 {
-    public class DX11BlendStates : DX11RenderStates<BlendStateDescription>
+    public static class DX11BlendStates
     {
-        private static DX11BlendStates instance;
+        private static BlendStateDescription[] descriptions;
 
-        public static DX11BlendStates Instance
+        public static BlendStateDescription GetState(BlendStatePreset preset)
         {
-            get
+            if (descriptions == null)
             {
-                if (instance == null)
-                {
-                    instance = new DX11BlendStates();
-                    instance.Initialize();
-                }
-                return instance;
+                Initialize();
+            }
+            return descriptions[(int)preset];
+        }
+
+        public static BlendStateDescription GetState(string presetString)
+        {
+            BlendStatePreset preset;
+            if (Enum.TryParse(presetString, out preset))
+            {
+                return GetState(preset);
+            }
+            else
+            {
+                throw new ArgumentException("preset", "Preset not found");
             }
         }
 
-
-        public override string EnumName
+        private static void Initialize()
         {
-            get
-            {
-                return "DX11.BlendPresets";
-            }
+            descriptions = new BlendStateDescription[Enum.GetValues(typeof(BlendStatePreset)).Length];
+            CreateNoBlend();
+            CreateAddivite();
+            CreateBlend();
+            CreateMultiply();
+            CreateAlphaAdd();
+            CreateTextDefault();
+            CreateKeep();
+            CreateConstantFactor();
+            CreateBlendDestination();
+            CreateReplaceAlpha();
         }
 
-        protected override void Initialize()
-        {
-            this.CreateNoBlend();
-            this.CreateAddivite();
-            this.CreateBlend();
-            this.CreateMultiply();
-            this.CreateAlphaAdd();
-            this.CreateTextDefault();
-            this.CreateKeep();
-            this.CreateConstantFactor();
-            this.CreateBlendDestination();
-            this.CreateReplaceAlpha();
-        }
-
-        private void CreateNoBlend()
+        private static void CreateNoBlend()
         {
             BlendStateDescription bs = new BlendStateDescription()
             {
@@ -68,11 +69,10 @@ namespace FeralTic.DX11
                     SourceBlendAlpha = BlendOption.One
                 };
             }
-
-            this.AddState("Disabled", bs);
+            descriptions[(int)BlendStatePreset.Disabled] = bs;
         }
 
-        private void CreateAddivite()
+        private static void CreateAddivite()
         {
             BlendStateDescription bs = new BlendStateDescription()
             {
@@ -95,11 +95,10 @@ namespace FeralTic.DX11
                     SourceBlendAlpha = BlendOption.One
                 };
             }
-
-            this.AddState("Add", bs);
+            descriptions[(int)BlendStatePreset.Add] = bs;
         }
 
-        private void CreateBlend()
+        private static void CreateBlend()
         {
             BlendStateDescription bs = new BlendStateDescription()
             {
@@ -120,11 +119,10 @@ namespace FeralTic.DX11
                     SourceBlendAlpha = BlendOption.One
                 };
             }
-
-            this.AddState("Blend", bs);
+            descriptions[(int)BlendStatePreset.Blend] = bs;
         }
 
-        private void CreateMultiply()
+        private static void CreateMultiply()
         {
             BlendStateDescription bs = new BlendStateDescription()
             {
@@ -145,11 +143,10 @@ namespace FeralTic.DX11
                     SourceBlendAlpha = BlendOption.DestinationAlpha
                 };
             }
-
-            this.AddState("Multiply", bs);
+            descriptions[(int)BlendStatePreset.Multiply] = bs;
         }
 
-        private void CreateAlphaAdd()
+        private static void CreateAlphaAdd()
         {
             BlendStateDescription bs = new BlendStateDescription()
             {
@@ -170,11 +167,10 @@ namespace FeralTic.DX11
                     SourceBlendAlpha = BlendOption.Zero
                 };
             }
-
-            this.AddState("AlphaAdd", bs);
+            descriptions[(int)BlendStatePreset.AlphaAdd] = bs;
         }
 
-        private void CreateTextDefault()
+        private static void CreateTextDefault()
         {
             BlendStateDescription bs = new BlendStateDescription()
             {
@@ -195,11 +191,10 @@ namespace FeralTic.DX11
                     SourceBlendAlpha = BlendOption.One
                 };
             }
-
-            this.AddState("TextDefault", bs);
+            descriptions[(int)BlendStatePreset.TextDefault] = bs;
         }
 
-        private void CreateKeep()
+        private static void CreateKeep()
         {
             BlendStateDescription bs = new BlendStateDescription()
             {
@@ -222,11 +217,10 @@ namespace FeralTic.DX11
                     SourceBlendAlpha = BlendOption.Zero
                 };
             }
-
-            this.AddState("Keep", bs);
+            descriptions[(int)BlendStatePreset.Keep] = bs;
         }
 
-        private void CreateConstantFactor()
+        private static void CreateConstantFactor()
         {
             BlendStateDescription bs = new BlendStateDescription()
             {
@@ -247,11 +241,10 @@ namespace FeralTic.DX11
                     SourceBlendAlpha = BlendOption.One
                 };
             }
-
-            this.AddState("ConstantFactor", bs);
+            descriptions[(int)BlendStatePreset.ConstantFactor] = bs;
         }
 
-        private void CreateBlendDestination()
+        private static void CreateBlendDestination()
         {
             BlendStateDescription bs = new BlendStateDescription()
             {
@@ -272,10 +265,10 @@ namespace FeralTic.DX11
                     SourceBlendAlpha = BlendOption.One
                 };
             }
-            this.AddState("BlendDestination", bs);
+            descriptions[(int)BlendStatePreset.BlendDestination] = bs;
         }
 
-        private void CreateReplaceAlpha()
+        private static void CreateReplaceAlpha()
         {
             BlendStateDescription bs = new BlendStateDescription()
             {
@@ -296,10 +289,10 @@ namespace FeralTic.DX11
                     SourceBlendAlpha = BlendOption.One
                 };
             }
-            this.AddState("ReplaceAlpha", bs);
+            descriptions[(int)BlendStatePreset.ReplaceAlpha] = bs;
         }
 
-        private void CreateMultiplyAlpha()
+        private static void CreateMultiplyAlpha()
         {
             BlendStateDescription bs = new BlendStateDescription()
             {
@@ -320,7 +313,7 @@ namespace FeralTic.DX11
                     SourceBlendAlpha = BlendOption.DestinationAlpha
                 };
             }
-            this.AddState("MultiplyAlpha", bs);
+            descriptions[(int)BlendStatePreset.MultiplyAlpha] = bs;
         }
     }
 }

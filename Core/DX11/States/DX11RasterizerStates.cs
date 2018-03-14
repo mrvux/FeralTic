@@ -6,41 +6,42 @@ using SlimDX.Direct3D11;
 
 namespace FeralTic.DX11
 {
-    public class DX11RasterizerStates : DX11RenderStates<RasterizerStateDescription>
+    public class DX11RasterizerStates
     {
-        private static DX11RasterizerStates instance;
+        private static RasterizerStateDescription[] descriptions;
 
-        public static DX11RasterizerStates Instance
+        public static RasterizerStateDescription GetState(RasterizerStatePreset preset)
         {
-            get
+            if (descriptions == null)
             {
-                if (instance == null)
-                {
-                    instance = new DX11RasterizerStates();
-                    instance.Initialize();
-                }
-                return instance;
+                Initialize();
+            }
+            return descriptions[(int)preset];
+        }
+
+        public static RasterizerStateDescription GetState(string presetString)
+        {
+            RasterizerStatePreset preset;
+            if (Enum.TryParse(presetString, out preset))
+            {
+                return GetState(preset);
+            }
+            else
+            {
+                throw new ArgumentException("preset", "Preset not found");
             }
         }
 
-
-        public override string EnumName
+        private static void Initialize()
         {
-            get
-            {
-                return "DX11.RasterizerPresets";
-            }
+            descriptions = new RasterizerStateDescription[Enum.GetValues(typeof(RasterizerStatePreset)).Length];
+            CreateBackCull();
+            CreateFrontCull();
+            CreateNoCull();
+            CreateLine();
         }
 
-        protected override void Initialize()
-        {
-            this.CreateBackCullSimple();
-            this.CreateFrontCullSimple();
-            this.CreateNoCullSimple();
-            this.CreateLine();
-        }
-
-        private void CreateNoCullSimple()
+        private static void CreateNoCull()
         {
             RasterizerStateDescription rsd = new RasterizerStateDescription()
             {
@@ -55,13 +56,13 @@ namespace FeralTic.DX11
                 IsScissorEnabled = false,
                 SlopeScaledDepthBias = 0.0f             
             };
-            this.AddState("NoCullSimple", rsd);
+            descriptions[(int)RasterizerStatePreset.NoCullSimple] = rsd;
 
             rsd.FillMode = FillMode.Wireframe;
-            this.AddState("NoCullWireframe", rsd);
+            descriptions[(int)RasterizerStatePreset.NoCullWireframe] = rsd;
         }
 
-        private void CreateBackCullSimple()
+        private static void CreateBackCull()
         {
             RasterizerStateDescription rsd = new RasterizerStateDescription()
             {
@@ -76,13 +77,13 @@ namespace FeralTic.DX11
                 IsScissorEnabled = false,
                 SlopeScaledDepthBias = 0.0f
             };
-            this.AddState("BackCullSimple", rsd);
+            descriptions[(int)RasterizerStatePreset.BackCullSimple] = rsd;
 
             rsd.FillMode = FillMode.Wireframe;
-            this.AddState("BackCullWireframe", rsd);
+            descriptions[(int)RasterizerStatePreset.BackCullWireframe] = rsd;
         }
 
-        private void CreateFrontCullSimple()
+        private static void CreateFrontCull()
         {
             RasterizerStateDescription rsd = new RasterizerStateDescription()
             {
@@ -97,13 +98,13 @@ namespace FeralTic.DX11
                 IsScissorEnabled = false,
                 SlopeScaledDepthBias = 0.0f
             };
-            this.AddState("FrontCullSimple", rsd);
+            descriptions[(int)RasterizerStatePreset.FrontCullSimple] = rsd;
 
             rsd.FillMode = FillMode.Wireframe;
-            this.AddState("FrontCullWireframe", rsd);
+            descriptions[(int)RasterizerStatePreset.FrontCullWireframe] = rsd;
         }
 
-        private void CreateLine()
+        private static void CreateLine()
         {
             RasterizerStateDescription rsd = new RasterizerStateDescription()
             {
@@ -117,11 +118,10 @@ namespace FeralTic.DX11
                 IsScissorEnabled = false,
                 SlopeScaledDepthBias = 0.0f
             };
-
-            this.AddState("LineAlpha", rsd);
+            descriptions[(int)RasterizerStatePreset.LineAlpha] = rsd;
 
             rsd.IsMultisampleEnabled = true;
-            this.AddState("LineQuadrilateral", rsd);
+            descriptions[(int)RasterizerStatePreset.LineQuadrilateral] = rsd;
         }
     }
 }
