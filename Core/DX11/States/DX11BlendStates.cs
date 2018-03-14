@@ -43,6 +43,8 @@ namespace FeralTic.DX11
             this.CreateTextDefault();
             this.CreateKeep();
             this.CreateConstantFactor();
+            this.CreateBlendDestination();
+            this.CreateReplaceAlpha();
         }
 
         private void CreateNoBlend()
@@ -247,6 +249,78 @@ namespace FeralTic.DX11
             }
 
             this.AddState("ConstantFactor", bs);
+        }
+
+        private void CreateBlendDestination()
+        {
+            BlendStateDescription bs = new BlendStateDescription()
+            {
+                AlphaToCoverageEnable = false,
+                IndependentBlendEnable = false,
+            };
+            for (int i = 0; i < 8; i++)
+            {
+                bs.RenderTargets[i] = new RenderTargetBlendDescription()
+                {
+                    BlendEnable = true,
+                    BlendOperation = SlimDX.Direct3D11.BlendOperation.Add,
+                    BlendOperationAlpha = SlimDX.Direct3D11.BlendOperation.Add,
+                    DestinationBlend = BlendOption.InverseDestinationAlpha,
+                    DestinationBlendAlpha = BlendOption.One,
+                    RenderTargetWriteMask = ColorWriteMaskFlags.All,
+                    SourceBlend = BlendOption.DestinationAlpha,
+                    SourceBlendAlpha = BlendOption.One
+                };
+            }
+            this.AddState("BlendDestination", bs);
+        }
+
+        private void CreateReplaceAlpha()
+        {
+            BlendStateDescription bs = new BlendStateDescription()
+            {
+                AlphaToCoverageEnable = false,
+                IndependentBlendEnable = false,
+            };
+            for (int i = 0; i < 8; i++)
+            {
+                bs.RenderTargets[i] = new RenderTargetBlendDescription()
+                {
+                    BlendEnable = true,
+                    BlendOperation = SlimDX.Direct3D11.BlendOperation.Add,
+                    BlendOperationAlpha = SlimDX.Direct3D11.BlendOperation.Add,
+                    DestinationBlend = BlendOption.Zero,
+                    DestinationBlendAlpha = BlendOption.Zero,
+                    RenderTargetWriteMask = ColorWriteMaskFlags.Alpha,
+                    SourceBlend = BlendOption.Zero,
+                    SourceBlendAlpha = BlendOption.SourceAlpha
+                };
+            }
+            this.AddState("ReplaceAlpha", bs);
+        }
+
+        private void CreateMultiplyAlpha()
+        {
+            BlendStateDescription bs = new BlendStateDescription()
+            {
+                AlphaToCoverageEnable = false,
+                IndependentBlendEnable = false,
+            };
+            for (int i = 0; i < 8; i++)
+            {
+                bs.RenderTargets[i] = new RenderTargetBlendDescription()
+                {
+                    BlendEnable = true,
+                    BlendOperation = SlimDX.Direct3D11.BlendOperation.Add,
+                    BlendOperationAlpha = SlimDX.Direct3D11.BlendOperation.Add,
+                    DestinationBlend = BlendOption.Zero,
+                    DestinationBlendAlpha = BlendOption.Zero,
+                    RenderTargetWriteMask = ColorWriteMaskFlags.Alpha,
+                    SourceBlend = BlendOption.Zero,
+                    SourceBlendAlpha = BlendOption.DestinationAlpha
+                };
+            }
+            this.AddState("MultiplyAlpha", bs);
         }
     }
 }
