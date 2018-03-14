@@ -7,6 +7,7 @@ using SlimDX.Direct3D11;
 using Buffer = SlimDX.Direct3D11.Buffer;
 using SlimDX;
 using SlimDX.D3DCompiler;
+using System.Runtime.InteropServices;
 
 namespace FeralTic.DX11.Resources
 {
@@ -32,9 +33,6 @@ namespace FeralTic.DX11.Resources
         {
             get { return this.vertexSize; }
         }
-
-        public bool AllowStreamOutput { get; private set; }
-        public int TotalSize { get; private set; }
 
         /// <summary>
         /// Vertex Input Layout
@@ -103,6 +101,19 @@ namespace FeralTic.DX11.Resources
             return new DX11VertexBuffer(context, desc, vertexCount, vertexSize, initialData);
         }
 
+        public static DX11VertexBuffer CreateImmutable<TVertex>(DX11RenderContext context, TVertex[] initialData, bool allowRawView) where TVertex : struct
+        {
+            if (initialData == null)
+                throw new ArgumentNullException("initialData");
+            if (initialData.Length == 0)
+                throw new ArgumentException("initialData", "must not be an empty array");
+
+            using (DataStream stream = new DataStream(initialData, true, true))
+            {
+                return DX11VertexBuffer.CreateImmutable(context, initialData.Length, Marshal.SizeOf(typeof(TVertex)), stream, true);
+            }
+        }
+
         public static DX11VertexBuffer CreateStreamOutput(DX11RenderContext context, int vertexCount, int vertexSize, bool allowRawView)
         {
             BindFlags bindFlags = BindFlags.VertexBuffer | BindFlags.StreamOutput;
@@ -147,7 +158,11 @@ namespace FeralTic.DX11.Resources
 
         public void Dispose()
         {
-            if (this.Buffer != null) { this.Buffer.Dispose(); }
+            if (this.buffer != null)
+            {
+                this.buffer.Dispose();
+                this.buffer = null;
+            }
         }
     }
 }
