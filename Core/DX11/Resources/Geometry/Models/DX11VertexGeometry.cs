@@ -91,13 +91,17 @@ namespace FeralTic.DX11.Resources
         public static DX11VertexGeometry StreamOut(DX11RenderContext context, int vertexCount, int vertexSize, bool autoDrawer)
         {
             DX11VertexBuffer vertexBuffer = DX11VertexBuffer.CreateStreamOutput(context, vertexCount, vertexSize, false);
-            var vg = new DX11VertexGeometry(context);
+            var vg = new DX11VertexGeometry(context);
+
             if (autoDrawer)
             {
                 vg.drawer = new DX11VertexAutoDrawer();
             }
-            vg.ownsvbo = true;
-            vg.VertexBuffer = vertexBuffer.Buffer;            vg.VerticesCount = vertexBuffer.VertexCount;            vg.VertexSize = vertexBuffer.VertexSize;
+            vg.ownsvbo = true;
+
+            vg.VertexBuffer = vertexBuffer.Buffer;
+            vg.VerticesCount = vertexBuffer.VertexCount;
+            vg.VertexSize = vertexBuffer.VertexSize;
             vg.HasBoundingBox = false;
             vg.PrimitiveType = "StreamOut";
             vg.Topology = PrimitiveTopology.TriangleList;
