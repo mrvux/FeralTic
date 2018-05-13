@@ -16,10 +16,20 @@ namespace FeralTic.DX11
 
         private bool running = false;
 
+        private int sleepTime;
+
+        public int SleepTime
+        {
+            get { return this.sleepTime; }
+            set { this.sleepTime = value; }
+        }
+            
+
         public DX11SchedulerThread(DX11ResourceScheduler scheduler, DX11RenderContext context)
         {
             this.scheduler = scheduler;
             this.context = context;
+            this.sleepTime = 10;
         }
 
         public void Start()
@@ -53,7 +63,11 @@ namespace FeralTic.DX11
                 {
                     task.Process();
                 }
-                Thread.Sleep(10);
+                else
+                {
+                    if (this.sleepTime > 0)
+                        Thread.Sleep(this.sleepTime);
+                }
             }
         }
 
