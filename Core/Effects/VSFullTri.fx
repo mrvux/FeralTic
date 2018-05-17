@@ -37,7 +37,6 @@ technique10 FullScreenTriangleVSOnly
 	}
 }
 
-
 technique10 FullScreenTriangle
 {
 	pass P0

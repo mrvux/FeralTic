@@ -30,6 +30,7 @@ namespace FeralTic.DX11
         public DX11PrimitivesManager Primitives { get; private set; }
         public DX11RenderStateStack RenderStateStack { get; private set; }
         public DX11ResourceScheduler ResourceScheduler { get; private set; }
+        public DX11BasicEffects BasicEffects { get; private set; }
 
         private ShaderResourceView[] nullsrvs = new ShaderResourceView[128];
         private UnorderedAccessView[] nulluavs = new UnorderedAccessView[8];
@@ -97,6 +98,7 @@ namespace FeralTic.DX11
 
         public void Initialize(int schedulerthreadcount = 1)
         {
+            this.BasicEffects = new DX11BasicEffects(this);
             this.ResourcePool = new DX11ResourcePoolManager(this);
             this.RenderTargetStack = new DX11RenderTargetStack(this);
             this.DefaultTextures = new DefaultTextures(this);
@@ -181,6 +183,7 @@ namespace FeralTic.DX11
         {
             this.immediatecontext.ClearState();
 
+            this.BasicEffects.Dispose();
             this.ResourcePool.Dispose();
             this.DefaultTextures.Dispose();
             this.Primitives.Dispose();

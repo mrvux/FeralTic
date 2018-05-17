@@ -164,6 +164,7 @@
     <Compile Include="DX11\Queries\DX11TimeStampQuery.cs" />
     <Compile Include="DX11\Queries\IDX11Query.cs" />
     <Compile Include="DX11\Devices\NullRenderDevice.cs" />
+    <Compile Include="DX11\Rendering\DX11BasicEffects.cs" />
     <Compile Include="DX11\Resources\Buffers\Structured\DX11CopyDestStructuredBuffer.cs" />
     <Compile Include="DX11\Resources\Buffers\Structured\DX11CopyDestStructuredBuffer%271.cs" />
     <Compile Include="DX11\Resources\Buffers\Structured\DX11DynamicStructuredBuffer.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="DX11\States\RasterizerStatePreset.cs" />
     <Compile Include="DX11\States\DepthStencilStatePreset.cs" />
     <Compile Include="DX11\States\BlendStatePreset.cs" />
+    <Compile Include="DX11\StockEffects\PointSamplerPSPass.cs" />
     <Compile Include="DX11\StockEffects\SolidColorTransformed.cs" />
     <Compile Include="DX11\Utils\FormatHelper.cs" />
     <Compile Include="DX11\Utils\UpAxis.cs" />
@@ -320,6 +322,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Effects\VSFullTriMulltiTransform.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Effects\PSPassPoint.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
