@@ -102,7 +102,7 @@ namespace FeralTic.DX11
             };
         }
 
-        public void Apply(DX11RenderContext context)
+        public virtual void Apply(DX11RenderContext context)
         {
             DeviceContext ctx = context.CurrentDeviceContext;
 
