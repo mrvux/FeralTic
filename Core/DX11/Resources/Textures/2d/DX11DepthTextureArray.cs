@@ -19,6 +19,9 @@ namespace FeralTic.DX11.Resources
 
         public DX11SliceDepthStencil[] SliceDSV { get; protected set; }
 
+        public DX11Texture2D Stencil { get; protected set; }
+        private ShaderResourceView stencilview;
+
         public int ElemCnt { get { return desc.ArraySize; } }
 
         private Format original;
@@ -66,6 +69,28 @@ namespace FeralTic.DX11.Resources
             };
 
             this.DSV = new DepthStencilView(context.Device, this.Resource, dsvd);
+
+            if (format == Format.D24_UNorm_S8_UInt || format == Format.D32_Float_S8X24_UInt)
+            {
+                ShaderResourceViewDescription stencild = new ShaderResourceViewDescription()
+                {
+                    ArraySize = elemcnt,
+                    Format = format == Format.D24_UNorm_S8_UInt ? SlimDX.DXGI.Format.X24_Typeless_G8_UInt : Format.X32_Typeless_G8X24_UInt,
+                    Dimension = ShaderResourceViewDimension.Texture2DArray,
+                    MipLevels = 1,
+                    MostDetailedMip = 0
+                };
+
+                this.stencilview = new ShaderResourceView(this.context.Device, this.Resource, stencild);
+
+                this.Stencil = DX11Texture2D.FromTextureAndSRV(this.context, this.Resource, this.stencilview);
+
+            }
+            else
+            {
+                //Just pass depth instead
+                this.Stencil = DX11Texture2D.FromTextureAndSRV(this.context, this.Resource, this.SRV);
+            }
 
             dsvd.Flags = DepthStencilViewFlags.ReadOnlyDepth;
             if (format == Format.D24_UNorm_S8_UInt) { dsvd.Flags |= DepthStencilViewFlags.ReadOnlyStencil; }
