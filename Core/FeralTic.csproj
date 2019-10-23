@@ -138,7 +138,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Maths\Frustrum.cs" />
+    <Compile Include="Core\Maths\Frustum.cs" />
     <Compile Include="Core\Maths\BernsteinBasis.cs" />
     <Compile Include="Core\RefCounter.cs" />
     <Compile Include="DX11\Geometry\Primitives\DX11Primitive_IcoSphere.cs" />

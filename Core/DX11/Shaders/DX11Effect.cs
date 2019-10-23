@@ -16,6 +16,8 @@ namespace FeralTic.DX11
     {
         public string BaseShaderPath { get; set; }
 
+        public string AdditionalSystemPath { get; set; }
+
         private string sysincludepath;
 
         public FolderIncludeHandler()
@@ -81,6 +83,18 @@ namespace FeralTic.DX11
             }
             else
             {
+                //search in additional path
+                //only if set
+                if (!string.IsNullOrEmpty(this.AdditionalSystemPath))
+                {
+                    path = Path.Combine(this.AdditionalSystemPath, fileName);
+                    if (File.Exists(path))
+                    {
+                        stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+                    }
+                }
+                
+
                 stream = null;
             }
         }
@@ -94,7 +108,7 @@ namespace FeralTic.DX11
     /// </summary>
     public class DX11Effect : IDisposable
     {
-        private static FolderIncludeHandler folderhandler = new FolderIncludeHandler();
+        public static FolderIncludeHandler folderhandler = new FolderIncludeHandler();
 
         private DX11Effect()
         {
